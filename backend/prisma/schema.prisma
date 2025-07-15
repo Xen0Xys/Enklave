@@ -1,0 +1,45 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../prisma/generated"
+  previewFeatures = ["queryCompiler", "driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id            String      @id @db.VarChar(36)
+  username      String      @db.VarChar(30) // Public display name
+  email         String      @unique
+  password      String // Hashed
+  jwt_id        Bytes // Unique json web token identifier | Ciphered
+  argon2id_salt Bytes // User salt for frontend key derivation | Ciphered
+  user_files    UserFiles[]
+
+  @@map("users")
+}
+
+model UserFiles {
+  file_id    String      @db.VarChar(32) // sha256 hash of the file
+  file       ServerFiles @relation(fields: [file_id], references: [id])
+  user_id    String      @db.VarChar(36) // Foreign key to Users
+  user       Users       @relation(fields: [user_id], references: [id])
+  // File metadata
+  file_name  String      @db.VarChar(255) // Original file name
+  file_size  Int // Size in bytes
+  file_type  String      @db.VarChar(50) // MIME type of the file
+  created_at DateTime    @default(now()) // Timestamp of when the file was uploaded
+  updated_at DateTime    @default(now()) @updatedAt // Timestamp of last update
+
+  @@id([file_id, user_id])
+  @@map("user_files")
+}
+
+model ServerFiles {
+  id         String      @id @db.VarChar(32) // sha256 hash of the file
+  user_files UserFiles[]
+
+  @@map("server_files")
+}

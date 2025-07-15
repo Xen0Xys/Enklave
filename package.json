@@ -1,0 +1,36 @@
+{
+    "name": "enclave-monorepo",
+    "version": "1.0.0-alpha.0",
+    "type": "module",
+    "author": "Tom CZEKAJ aka Xen0Xys",
+    "license": "UNLICENSED",
+    "scripts": {
+        "lint": "oxlint .",
+        "lint:fix": "oxlint --fix .",
+        "format": "prettier --write .",
+        "check": "bun run lint && bun run format --check"
+    },
+    "workspaces": [
+        "./*"
+    ],
+    "peerDependencies": {
+        "typescript": "^5.8.3"
+    },
+    "trustedDependencies": [
+        "@nestjs/core",
+        "@parcel/watcher",
+        "@prisma/client",
+        "@prisma/engines",
+        "@scarf/scarf",
+        "@swc/core",
+        "enclave",
+        "esbuild",
+        "prisma",
+        "sharp"
+    ],
+    "devDependencies": {
+        "@prettier/plugin-oxc": "^0.0.4",
+        "oxlint": "^1.6.0",
+        "prettier": "^3.6.2"
+    }
+}

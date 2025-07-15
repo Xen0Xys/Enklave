@@ -1,0 +1,23 @@
+{
+    "name": "enclave",
+    "type": "module",
+    "scripts": {
+        "build": "nuxt build --prerender",
+        "build:ssr": "nuxt build",
+        "dev": "nuxt dev",
+        "tauri:dev": "tauri dev",
+        "tauri:build": "tauri build",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare"
+    },
+    "dependencies": {
+        "@nuxt/icon": "^1.15.0",
+        "nuxt": "^4.0.0",
+        "vue": "^3.5.17",
+        "vue-router": "^4.5.1"
+    },
+    "devDependencies": {
+        "@tauri-apps/cli": "^2.6.2"
+    }
+}
