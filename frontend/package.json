@@ -2,14 +2,14 @@
     "name": "enclave",
     "type": "module",
     "scripts": {
-        "build": "nuxt build --prerender",
-        "build:ssr": "nuxt build",
-        "dev": "nuxt dev",
-        "tauri:dev": "tauri dev",
-        "tauri:build": "tauri build",
-        "generate": "nuxt generate",
-        "preview": "nuxt preview",
-        "postinstall": "nuxt prepare"
+        "build": "bun nuxt build --prerender",
+        "build:ssr": "bun nuxt build",
+        "dev": "bun nuxt dev",
+        "tauri:dev": "bun tauri dev",
+        "tauri:build": "bun tauri build",
+        "generate": "bun nuxt generate",
+        "preview": "bun nuxt preview",
+        "postinstall": "bun nuxt prepare"
     },
     "dependencies": {
         "@nuxt/icon": "^1.15.0",
