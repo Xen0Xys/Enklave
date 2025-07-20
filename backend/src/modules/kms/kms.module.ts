@@ -1,5 +1,5 @@
-import KmsUtilsService from "./kms-utils.service";
-import KmsService from "./kms.service";
+import {KmsUtilsService} from "./kms-utils.service";
+import {KmsService} from "./kms.service";
 import {Module} from "@nestjs/common";
 
 @Module({
@@ -8,4 +8,4 @@ import {Module} from "@nestjs/common";
     providers: [KmsUtilsService, KmsService],
     exports: [],
 })
-export default class KmsModule {}
+export class KmsModule {}

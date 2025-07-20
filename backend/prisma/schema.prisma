@@ -18,6 +18,8 @@ model Users {
   master_key           Bytes // Encrypted master key (from application key, derivated from application secret)
   public_key           Bytes // Public key for encryption
   private_key          Bytes // Private key for decryption; Encrypted with master key
+  created_at           DateTime             @default(now())
+  updated_at           DateTime             @updatedAt
   folders              Folders[]
   files                Files[]
   folder_shares        FolderShares[]

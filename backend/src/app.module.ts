@@ -1,11 +1,11 @@
 import {ClassSerializerInterceptor} from "@nestjs/common/serializer";
 import HelperModule from "./modules/helper/helper.module";
-import AuthModule from "./modules/auth/auth.module";
-import KmsModule from "./modules/kms/kms.module";
 import {APP_INTERCEPTOR} from "@nestjs/core";
 import {Module} from "@nestjs/common";
 import {ScheduleModule} from "@nestjs/schedule";
 import {ThrottlerModule} from "@nestjs/throttler";
+import {KmsModule} from "./modules/kms/kms.module";
+import {AuthModule} from "./modules/auth/auth.module";
 
 @Module({
     imports: [
