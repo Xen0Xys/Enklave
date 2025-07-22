@@ -3,7 +3,7 @@
     "version": "1.0.0-alpha.0",
     "type": "module",
     "author": "Tom CZEKAJ aka Xen0Xys",
-    "license": "UNLICENSED",
+    "license": "CC-BY-NC-ND",
     "scripts": {
         "lint": "oxlint .",
         "lint:fix": "oxlint --fix .",
