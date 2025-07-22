@@ -1,5 +1,5 @@
-import KmsUtilsService from "../src/modules/kms/kms-utils.service";
-import {PrismaClient, Users} from "./generated/client";
+import {KmsUtilsService} from "../src/modules/kms/kms-utils.service";
+import {PrismaClient} from "./generated/client";
 import {PrismaPg} from "@prisma/adapter-pg";
 
 // initialize Prisma Client
@@ -25,7 +25,7 @@ async function main() {
             master_key: kmsUtilsService.randomBytes(32),
             public_key: kmsUtilsService.randomBytes(32),
             private_key: kmsUtilsService.randomBytes(32),
-        } as Users,
+        },
     ];
     await idSeed(prisma.users, users_values, false);
     console.log(`\n✅  Seeding completed ! (${Date.now() - gStart}ms)`);

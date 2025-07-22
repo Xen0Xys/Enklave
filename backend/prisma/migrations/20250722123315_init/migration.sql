@@ -1,4 +1,14 @@
 -- CreateTable
+CREATE TABLE "newsletter_subscriptions" (
+    "id" VARCHAR(36) NOT NULL,
+    "email" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "newsletter_subscriptions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "users" (
     "id" VARCHAR(36) NOT NULL,
     "username" VARCHAR(30) NOT NULL,
@@ -8,6 +18,8 @@ CREATE TABLE "users" (
     "master_key" BYTEA NOT NULL,
     "public_key" BYTEA NOT NULL,
     "private_key" BYTEA NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -92,6 +104,9 @@ CREATE TABLE "shopping_list_shares" (
 
     CONSTRAINT "shopping_list_shares_pkey" PRIMARY KEY ("user_id","shopping_list_id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "newsletter_subscriptions_email_key" ON "newsletter_subscriptions"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");

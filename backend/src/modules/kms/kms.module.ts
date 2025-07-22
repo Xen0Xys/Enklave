@@ -6,6 +6,6 @@ import {Module} from "@nestjs/common";
     imports: [],
     controllers: [],
     providers: [KmsUtilsService, KmsService],
-    exports: [],
+    exports: [KmsUtilsService, KmsService],
 })
 export class KmsModule {}

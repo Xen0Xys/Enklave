@@ -9,6 +9,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model NewsLetterSubscriptions {
+  id         String   @id @db.VarChar(36)
+  email      String   @unique
+  created_at DateTime @default(now())
+
+  @@map("newsletter_subscriptions")
+}
+
 model Users {
   id                   String               @id @db.VarChar(36)
   username             String               @db.VarChar(30) // Public display name

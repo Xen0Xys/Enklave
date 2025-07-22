@@ -27,7 +27,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
                         ? 0
                         : result.length || 1;
                     PrismaService.logger.log(
-                        `${model?.toUpperCase()} ${operation.toLowerCase()} ${duration}ms ${requestCount} ${resultCount}`,
+                        `${model} ${operation} ${duration}ms ${requestCount} ${resultCount}`,
                     );
                     return result;
                 },

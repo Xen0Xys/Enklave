@@ -6,6 +6,7 @@ import {ScheduleModule} from "@nestjs/schedule";
 import {ThrottlerModule} from "@nestjs/throttler";
 import {KmsModule} from "./modules/kms/kms.module";
 import {AuthModule} from "./modules/auth/auth.module";
+import {NewsletterModule} from "./modules/newsletter/newsletter.module";
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import {AuthModule} from "./modules/auth/auth.module";
             },
         ]),
         HelperModule,
+        NewsletterModule,
         KmsModule,
         AuthModule,
     ],

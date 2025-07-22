@@ -3,6 +3,12 @@ import * as crypto from "crypto";
 
 @Injectable()
 export class KmsUtilsService {
+    generateUuid(version: 4 | 7 = 7): string {
+        if (version === 4) return crypto.randomUUID();
+        else if (version === 7) return Bun.randomUUIDv7();
+        else throw new Error("Unsupported UUID version");
+    }
+
     randomBytes(length: number): Buffer {
         return crypto.randomBytes(length);
     }

@@ -8,4 +8,4 @@ import {PrismaService} from "./prisma.service";
     imports: [],
     controllers: [],
 })
-export default class AppModule {}
+export default class HelperModule {}
