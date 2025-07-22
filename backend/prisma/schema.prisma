@@ -9,37 +9,129 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model NewsLetterSubscriptions {
+  id         String   @id @db.VarChar(36)
+  email      String   @unique
+  created_at DateTime @default(now())
+
+  @@map("newsletter_subscriptions")
+}
+
 model Users {
-  id            String      @id @db.VarChar(36)
-  username      String      @db.VarChar(30) // Public display name
-  email         String      @unique
-  password      String // Hashed
-  jwt_id        Bytes // Unique json web token identifier | Ciphered
-  argon2id_salt Bytes // User salt for frontend key derivation | Ciphered
-  user_files    UserFiles[]
+  id                   String               @id @db.VarChar(36)
+  username             String               @db.VarChar(30) // Public display name
+  email                String               @unique
+  password             String // Hashed
+  jwt_id               Bytes // JWT ID for token revocation
+  master_key           Bytes // Encrypted master key (from application key, derivated from application secret)
+  public_key           Bytes // Public key for encryption
+  private_key          Bytes // Private key for decryption; Encrypted with master key
+  created_at           DateTime             @default(now())
+  updated_at           DateTime             @updatedAt
+  folders              Folders[]
+  files                Files[]
+  folder_shares        FolderShares[]
+  file_shares          FileShares[]
+  shopping_lists       ShoppingLists[]
+  shopping_list_shares ShoppingListShares[]
 
   @@map("users")
 }
 
-model UserFiles {
-  file_id    String      @db.VarChar(32) // sha256 hash of the file
-  file       ServerFiles @relation(fields: [file_id], references: [id])
-  user_id    String      @db.VarChar(36) // Foreign key to Users
-  user       Users       @relation(fields: [user_id], references: [id])
-  // File metadata
-  file_name  String      @db.VarChar(255) // Original file name
-  file_size  Int // Size in bytes
-  file_type  String      @db.VarChar(50) // MIME type of the file
-  created_at DateTime    @default(now()) // Timestamp of when the file was uploaded
-  updated_at DateTime    @default(now()) @updatedAt // Timestamp of last update
+model Folders {
+  id         String         @id @db.VarChar(36)
+  user_id    String         @db.VarChar(36)
+  user       Users          @relation(fields: [user_id], references: [id])
+  folder_key Bytes // Encrypted folder key (from master key)
+  name       String         @db.VarChar(100)
+  parent_id  String? // Null for root folders
+  parent     Folders?       @relation("folder_hierarchy", fields: [parent_id], references: [id])
+  children   Folders[]      @relation("folder_hierarchy")
+  files      Files[]
+  shares     FolderShares[]
 
-  @@id([file_id, user_id])
-  @@map("user_files")
+  @@unique([user_id, name, parent_id])
+  @@map("folders")
 }
 
-model ServerFiles {
-  id         String      @id @db.VarChar(32) // sha256 hash of the file
-  user_files UserFiles[]
+model Files {
+  id           String       @id @db.VarChar(36) // Sum or random
+  user_id      String       @db.VarChar(36)
+  user         Users        @relation(fields: [user_id], references: [id])
+  name         String       @db.VarChar(100)
+  file_key     Bytes // Encrypted file key (from folder key)
+  folder_id    String? // Null for root files
+  folder       Folders?     @relation(fields: [folder_id], references: [id])
+  thumbnail_id String       @db.VarChar(36) // Thumbnail file ID; Sum or random
+  shares       FileShares[]
 
-  @@map("server_files")
+  @@unique([user_id, name, folder_id])
+  @@map("files")
+}
+
+model FolderShares {
+  user_id    String  @db.VarChar(36)
+  user       Users   @relation(fields: [user_id], references: [id])
+  folder_id  String  @db.VarChar(36)
+  folder     Folders @relation(fields: [folder_id], references: [id])
+  folder_key Bytes // Encrypted folder key (from public key, decrypted with private key)
+
+  @@id([user_id, folder_id])
+  @@map("folder_shares")
+}
+
+model FileShares {
+  user_id  String @db.VarChar(36)
+  user     Users  @relation(fields: [user_id], references: [id])
+  file_id  String @db.VarChar(36)
+  file     Files  @relation(fields: [file_id], references: [id])
+  file_key Bytes // Encrypted file key (from public key, decrypted with private key)
+
+  @@id([user_id, file_id])
+  @@map("file_shares")
+}
+
+model ShoppingLists {
+  id      String               @id @db.VarChar(36)
+  user_id String               @db.VarChar(36)
+  user    Users                @relation(fields: [user_id], references: [id])
+  key     Bytes // Encrypted shopping list key (from master key)
+  items   ShoppingListItems[]
+  cards   ShoppingListCards[]
+  shares  ShoppingListShares[]
+
+  @@map("shopping_lists")
+}
+
+model ShoppingListItems {
+  id               Int           @id @default(autoincrement())
+  shopping_list_id String        @db.VarChar(36)
+  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id])
+  name             String        @db.VarChar(100)
+  quantity         Int
+  unit             String        @db.VarChar(20) // e.g., "kg", "pcs"
+  completed        Boolean       @default(false)
+
+  @@map("shopping_list_items")
+}
+
+model ShoppingListCards {
+  id               String        @id @db.VarChar(36)
+  shopping_list_id String        @db.VarChar(36)
+  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id])
+  name             String        @db.VarChar(100) // Name of the card
+  value            String        @db.VarChar(100) // Value of the card (e.g., a code or identifier)
+
+  @@map("shopping_list_cards")
+}
+
+model ShoppingListShares {
+  user_id          String        @db.VarChar(36)
+  user             Users         @relation(fields: [user_id], references: [id])
+  shopping_list_id String        @db.VarChar(36)
+  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id])
+  key              Bytes // Encrypted shopping list key (from public key, decrypted with private key)
+
+  @@id([user_id, shopping_list_id])
+  @@map("shopping_list_shares")
 }

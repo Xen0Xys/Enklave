@@ -33,6 +33,11 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # Finder (MacOS) folder config
 .DS_Store
 
+# Website
+website/.nuxt
+website/.output
+website/dist
+
 # Frontend
 frontend/.nuxt
 frontend/.output

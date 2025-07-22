@@ -14,4 +14,5 @@ export default {
     bracketSameLine: true,
     arrowParens: "always",
     endOfLine: "auto",
+    objectWrap: "preserve",
 };

@@ -3,12 +3,13 @@
     "version": "1.0.0-alpha.0",
     "type": "module",
     "author": "Tom CZEKAJ aka Xen0Xys",
-    "license": "UNLICENSED",
+    "license": "CC-BY-NC-ND",
     "scripts": {
         "lint": "oxlint .",
         "lint:fix": "oxlint --fix .",
         "format": "prettier --write .",
-        "check": "bun run lint && bun run format --check"
+        "check": "bun run lint && bun run format --check",
+        "test": "bun test"
     },
     "workspaces": [
         "./*"
@@ -30,7 +31,7 @@
     ],
     "devDependencies": {
         "@prettier/plugin-oxc": "^0.0.4",
-        "oxlint": "^1.6.0",
+        "oxlint": "^1.8.0",
         "prettier": "^3.6.2"
     }
 }
