@@ -4,8 +4,7 @@
         "build": "bun build.ts",
         "start": "bun --bun nest start",
         "start:dev": "bun --hot ./src/app.ts",
-        "start:prod": "bun dist/app",
-        "lint:fix": "eslint . --fix"
+        "start:prod": "bun dist/app"
     },
     "dependencies": {
         "@fastify/cookie": "^11.0.2",

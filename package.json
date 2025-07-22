@@ -8,7 +8,8 @@
         "lint": "oxlint .",
         "lint:fix": "oxlint --fix .",
         "format": "prettier --write .",
-        "check": "bun run lint && bun run format --check"
+        "check": "bun run lint && bun run format --check",
+        "test": "bun test"
     },
     "workspaces": [
         "./*"
