@@ -31,7 +31,7 @@
     ],
     "devDependencies": {
         "@prettier/plugin-oxc": "^0.0.4",
-        "oxlint": "^1.6.0",
+        "oxlint": "^1.8.0",
         "prettier": "^3.6.2"
     }
 }
