@@ -3,7 +3,6 @@ CREATE TABLE "newsletter_subscriptions" (
     "id" VARCHAR(36) NOT NULL,
     "email" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "newsletter_subscriptions_pkey" PRIMARY KEY ("id")
 );

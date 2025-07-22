@@ -27,7 +27,9 @@ export class KmsService {
         if (!process.env.APP_SECRET)
             throw new Error("APP_SECRET environment variable is not set.");
         const appSecret: string = process.env.APP_SECRET;
-        const appSalt: string = appSecret.split("").reverse().join("");
+        const appSalt: string = this.kmsUtilsService
+            .hash("cloud.enklave.app")
+            .toString("hex"); // Use a fixed salt for the app key
         this.appKey = await this.kmsUtilsService.generateAesKey(
             appSecret,
             appSalt,
