@@ -1,4 +1,5 @@
 frontend/src-tauri/target
 frontend/src-tauri/gen/schemas
 frontend/.nuxt
+website/.nuxt
 backend/prisma/generated
