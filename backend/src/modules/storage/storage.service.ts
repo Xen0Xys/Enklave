@@ -41,6 +41,7 @@ export class StorageService {
                     folder_key: wrappedFolderKey,
                 },
             });
+            // oxlint-disable-next-line no-unused-vars
         } catch (_: any) {
             throw new ConflictException(
                 "Folder already exists or conflict occurred",

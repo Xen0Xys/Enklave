@@ -43,6 +43,7 @@ export const useUserStore = defineStore("user", {
                         Authorization: `Bearer ${tokenCookie.value}`,
                     },
                 });
+                // oxlint-disable-next-line no-unused-vars
             } catch (_: any) {
                 this.user = undefined;
                 toast.error("Failed to fetch user data. Please log in again.", {
