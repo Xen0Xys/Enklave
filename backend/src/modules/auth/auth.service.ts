@@ -7,13 +7,13 @@ import {
 } from "@nestjs/common";
 import {StorageService} from "../storage/storage.service";
 import {KmsUtilsService} from "../kms/kms-utils.service";
+import {UserEntity} from "../users/entities/user.entity";
 import {PrismaService} from "../helper/prisma.service";
 import {Users} from "../../../prisma/generated/client";
 import {UsersService} from "../users/users.service";
 import {LoginEntity} from "./entities/login.entity";
 import {KmsService} from "../kms/kms.service";
 import {JwtService} from "@nestjs/jwt";
-import {UserEntity} from "../users/entities/user.entity";
 
 @Injectable()
 export class AuthService {
@@ -31,8 +31,6 @@ export class AuthService {
         email: string,
         password: string,
     ): Promise<LoginEntity> {
-        // Start transaction
-
         // Check if the user already exists
         const existingUser = await this.prismaService.users.findUnique({
             where: {email},
