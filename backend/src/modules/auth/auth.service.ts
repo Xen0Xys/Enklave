@@ -1,5 +1,10 @@
 import {WrappedKeyPair} from "../kms/entities/wrapped-key-pair";
-import {ConflictException, Injectable} from "@nestjs/common";
+import {
+    ConflictException,
+    Injectable,
+    NotFoundException,
+    UnauthorizedException,
+} from "@nestjs/common";
 import {StorageService} from "../storage/storage.service";
 import {KmsUtilsService} from "../kms/kms-utils.service";
 import {PrismaService} from "../helper/prisma.service";
@@ -82,12 +87,13 @@ export class AuthService {
         const user: Users | null = await this.prismaService.users.findFirst({
             where: {email},
         });
-        if (!user) throw new ConflictException("User not found.");
+        if (!user) throw new NotFoundException("User not found.");
 
         // Verify the password
         const isPasswordValid: boolean =
             await this.kmsUtilsService.verifyPassword(password, user.password);
-        if (!isPasswordValid) throw new ConflictException("Invalid password.");
+        if (!isPasswordValid)
+            throw new UnauthorizedException("Invalid password.");
 
         // Create a login entity and return it
         return new LoginEntity({
