@@ -39,7 +39,6 @@ model Users {
 }
 
 enum FolderTypes {
-  ROOT
   MEDIA
 
   @@map("folder_types")

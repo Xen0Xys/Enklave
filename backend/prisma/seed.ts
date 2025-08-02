@@ -60,29 +60,17 @@ async function main() {
 
     // Admin folders
     start = Date.now();
-    const wrappedRootFolderKey = await kmsService.wrapSymmetricKey(
-        adminUserEntity,
-        await kmsService.generateRandomSymmetricKey(),
-    );
     const wrappedMediaFolderKey = await kmsService.wrapSymmetricKey(
         adminUserEntity,
         await kmsService.generateRandomSymmetricKey(),
     );
     const folders: FoldersUncheckedCreateInput[] = [
         {
-            id: "0195dc7c-f315-7881-b35b-da9cbb6ee4a1",
-            user_id: adminUser.id,
-            folder_key: wrappedRootFolderKey,
-            parent_id: null,
-            type: FolderTypes.ROOT,
-        },
-        {
             id: "0195dc7c-f315-7881-b35b-da9cbb6ee4a2",
             name: "Media",
             user_id: adminUser.id,
             type: FolderTypes.MEDIA,
             folder_key: wrappedMediaFolderKey,
-            parent_id: "0195dc7c-f315-7881-b35b-da9cbb6ee4a1",
         },
     ];
 

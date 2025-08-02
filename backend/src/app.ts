@@ -31,6 +31,7 @@ async function bootstrap() {
     } as FastifyListenOptions);
     app.enableShutdownHooks();
     logger.log(`Listening on http://0.0.0.0:${port}`);
+    logger.log(`API Documentation available at http://localhost:${port}/api`);
 }
 
 async function loadServer(server: NestFastifyApplication) {

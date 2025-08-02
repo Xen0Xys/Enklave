@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "folder_types" AS ENUM ('ROOT', 'MEDIA');
+CREATE TYPE "folder_types" AS ENUM ('MEDIA');
 
 -- CreateTable
 CREATE TABLE "newsletter_subscriptions" (

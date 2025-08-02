@@ -20,6 +20,13 @@ export class KmsUtilsService {
         });
     }
 
+    async verifyPassword(
+        data: Bun.StringOrBuffer,
+        hash: string,
+    ): Promise<boolean> {
+        return await Bun.password.verify(data, hash);
+    }
+
     hash(data: string | Buffer): Buffer {
         const hash: crypto.Hash = crypto.createHash("sha256");
         hash.update(data);
