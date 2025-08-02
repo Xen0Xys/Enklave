@@ -38,30 +38,41 @@ model Users {
   @@map("users")
 }
 
+enum FolderTypes {
+  ROOT
+  MEDIA
+
+  @@map("folder_types")
+}
+
 model Folders {
   id         String         @id @db.VarChar(36)
   user_id    String         @db.VarChar(36)
-  user       Users          @relation(fields: [user_id], references: [id])
+  user       Users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
   folder_key Bytes // Encrypted folder key (from master key)
-  name       String         @db.VarChar(100)
+  name       String?        @db.VarChar(100) // Optional name for root folders
+  type       FolderTypes? // Optional type for special folders (e.g., media)
   parent_id  String? // Null for root folders
-  parent     Folders?       @relation("folder_hierarchy", fields: [parent_id], references: [id])
+  created_at DateTime       @default(now())
+  updated_at DateTime       @updatedAt
+  parent     Folders?       @relation("folder_hierarchy", fields: [parent_id], references: [id], onDelete: Cascade)
   children   Folders[]      @relation("folder_hierarchy")
   files      Files[]
   shares     FolderShares[]
 
   @@unique([user_id, name, parent_id])
+  @@unique([user_id, type]) // Ensure unique folder names per user and type
   @@map("folders")
 }
 
 model Files {
   id           String       @id @db.VarChar(36) // Sum or random
   user_id      String       @db.VarChar(36)
-  user         Users        @relation(fields: [user_id], references: [id])
+  user         Users        @relation(fields: [user_id], references: [id], onDelete: Cascade)
   name         String       @db.VarChar(100)
   file_key     Bytes // Encrypted file key (from folder key)
   folder_id    String? // Null for root files
-  folder       Folders?     @relation(fields: [folder_id], references: [id])
+  folder       Folders?     @relation(fields: [folder_id], references: [id], onDelete: Cascade)
   thumbnail_id String       @db.VarChar(36) // Thumbnail file ID; Sum or random
   shares       FileShares[]
 
@@ -71,9 +82,9 @@ model Files {
 
 model FolderShares {
   user_id    String  @db.VarChar(36)
-  user       Users   @relation(fields: [user_id], references: [id])
+  user       Users   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   folder_id  String  @db.VarChar(36)
-  folder     Folders @relation(fields: [folder_id], references: [id])
+  folder     Folders @relation(fields: [folder_id], references: [id], onDelete: Cascade)
   folder_key Bytes // Encrypted folder key (from public key, decrypted with private key)
 
   @@id([user_id, folder_id])
@@ -82,9 +93,9 @@ model FolderShares {
 
 model FileShares {
   user_id  String @db.VarChar(36)
-  user     Users  @relation(fields: [user_id], references: [id])
+  user     Users  @relation(fields: [user_id], references: [id], onDelete: Cascade)
   file_id  String @db.VarChar(36)
-  file     Files  @relation(fields: [file_id], references: [id])
+  file     Files  @relation(fields: [file_id], references: [id], onDelete: Cascade)
   file_key Bytes // Encrypted file key (from public key, decrypted with private key)
 
   @@id([user_id, file_id])
@@ -94,7 +105,7 @@ model FileShares {
 model ShoppingLists {
   id      String               @id @db.VarChar(36)
   user_id String               @db.VarChar(36)
-  user    Users                @relation(fields: [user_id], references: [id])
+  user    Users                @relation(fields: [user_id], references: [id], onDelete: Cascade)
   key     Bytes // Encrypted shopping list key (from master key)
   items   ShoppingListItems[]
   cards   ShoppingListCards[]
@@ -106,7 +117,7 @@ model ShoppingLists {
 model ShoppingListItems {
   id               Int           @id @default(autoincrement())
   shopping_list_id String        @db.VarChar(36)
-  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id])
+  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
   name             String        @db.VarChar(100)
   quantity         Int
   unit             String        @db.VarChar(20) // e.g., "kg", "pcs"
@@ -118,7 +129,7 @@ model ShoppingListItems {
 model ShoppingListCards {
   id               String        @id @db.VarChar(36)
   shopping_list_id String        @db.VarChar(36)
-  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id])
+  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
   name             String        @db.VarChar(100) // Name of the card
   value            String        @db.VarChar(100) // Value of the card (e.g., a code or identifier)
 
@@ -127,9 +138,9 @@ model ShoppingListCards {
 
 model ShoppingListShares {
   user_id          String        @db.VarChar(36)
-  user             Users         @relation(fields: [user_id], references: [id])
+  user             Users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   shopping_list_id String        @db.VarChar(36)
-  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id])
+  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
   key              Bytes // Encrypted shopping list key (from public key, decrypted with private key)
 
   @@id([user_id, shopping_list_id])
