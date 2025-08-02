@@ -20,7 +20,6 @@ export const useUserStore = defineStore("user", {
                 this.user = response.user;
                 toast.success("Login successful!", {
                     description: "Welcome back!",
-                    duration: 3000,
                 });
                 await useRouter().push("/");
             } catch (e: any) {
@@ -48,6 +47,31 @@ export const useUserStore = defineStore("user", {
                 this.user = undefined;
                 toast.error("Failed to fetch user data. Please log in again.", {
                     description: "Your session may have expired.",
+                });
+            }
+        },
+        async register(username: string, email: string, password: string) {
+            try {
+                const response = await useEnklaveApi("auth/register", "POST", {
+                    body: {
+                        username,
+                        email,
+                        password,
+                    },
+                });
+                const tokenCookie = useCookie("token");
+                tokenCookie.value = response.token;
+                this.user = response.user;
+                toast.success("Login successful!", {
+                    description: "Welcome back!",
+                });
+                await useRouter().push("/");
+            } catch (e: any) {
+                toast.error("Erreur lors de l'inscription", {
+                    description:
+                        e.data?.message ||
+                        e.message ||
+                        "Une erreur est survenue lors de l'inscription.",
                 });
             }
         },
