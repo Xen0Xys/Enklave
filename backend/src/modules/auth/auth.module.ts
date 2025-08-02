@@ -4,10 +4,11 @@ import {AuthController} from "./auth.controller";
 import {KmsModule} from "../kms/kms.module";
 import {AuthService} from "./auth.service";
 import {Module} from "@nestjs/common";
+import {JwtStrategy} from "./strategies/jwt.strategy";
 
 @Module({
     imports: [UsersModule, KmsModule, StorageModule],
-    providers: [AuthService],
+    providers: [AuthService, JwtStrategy],
     exports: [],
     controllers: [AuthController],
 })
