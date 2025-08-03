@@ -1,13 +1,19 @@
 import {Users} from "../../../prisma/generated/client";
 import {UserEntity} from "./entities/user.entity";
 import {KmsService} from "../kms/kms.service";
-import {Injectable} from "@nestjs/common";
+import {
+    Injectable,
+    NotFoundException,
+    UnauthorizedException,
+} from "@nestjs/common";
 import {PrismaService} from "../helper/prisma.service";
+import {KmsUtilsService} from "../kms/kms-utils.service";
 
 @Injectable()
 export class UsersService {
     constructor(
         private readonly kmsService: KmsService,
+        private readonly kmsUtilService: KmsUtilsService,
         private readonly prismaService: PrismaService,
     ) {}
 
@@ -38,7 +44,40 @@ export class UsersService {
         const user = await this.prismaService.users.findUnique({
             where: {id: user_id},
         });
-        if (!user) throw new Error("User not found");
+        if (!user) throw new NotFoundException("User not found");
         return this.toUser(user);
+    }
+
+    async changePassword(
+        user: UserEntity,
+        oldPassword: string,
+        newPassword: string,
+    ): Promise<void> {
+        if (
+            !(await this.kmsUtilService.verifyPassword(
+                oldPassword,
+                user.password,
+            ))
+        )
+            throw new UnauthorizedException("Old password is incorrect");
+        const hashedNewPassword: string =
+            await this.kmsUtilService.hashPassword(newPassword);
+        await this.prismaService.users.update({
+            where: {id: user.id},
+            data: {
+                password: hashedNewPassword,
+                updated_at: new Date(),
+            },
+        });
+    }
+
+    async changeUsername(user: UserEntity, username: string): Promise<void> {
+        await this.prismaService.users.update({
+            where: {id: user.id},
+            data: {
+                username,
+                updated_at: new Date(),
+            },
+        });
     }
 }
