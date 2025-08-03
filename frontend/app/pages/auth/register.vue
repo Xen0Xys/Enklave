@@ -32,20 +32,20 @@ async function onSubmit(e: Event) {
         <div class="flex w-full items-center justify-center md:w-1/2">
             <div class="w-full max-w-[330px] px-5">
                 <h1 class="text-2xl font-bold tracking-tight lg:text-3xl">
-                    Inscription
+                    Register
                 </h1>
                 <p class="text-muted-foreground mt-1">
-                    Créez votre compte pour accéder à la plateforme.
+                    Create your account to access the platform.
                 </p>
                 <form class="mt-10" @submit="onSubmit">
                     <fieldset class="grid gap-5">
                         <div class="grid w-full max-w-sm items-center gap-1.5">
-                            <Label for="username">Nom d'utilisateur</Label>
+                            <Label for="username">Username</Label>
                             <Input
                                 label="Nom d'utilisateur"
                                 type="text"
                                 name="username"
-                                placeholder="Votre nom d'utilisateur"
+                                placeholder="Your username"
                                 v-model="username" />
                         </div>
                         <div class="grid w-full max-w-sm items-center gap-1.5">
@@ -58,9 +58,9 @@ async function onSubmit(e: Event) {
                                 v-model="email" />
                         </div>
                         <div class="grid w-full max-w-sm items-center gap-1.5">
-                            <Label for="password">Mot de passe</Label>
+                            <Label for="password">Password</Label>
                             <Input
-                                label="Mot de passe"
+                                label="Password"
                                 type="password"
                                 name="password"
                                 v-model="password" />
@@ -70,17 +70,17 @@ async function onSubmit(e: Event) {
                                 class="w-full"
                                 type="submit"
                                 :disabled="loading">
-                                S'inscrire
+                                Register
                             </Button>
                         </div>
                     </fieldset>
                 </form>
                 <p class="text-muted-foreground mt-4 text-sm">
-                    Vous avez déjà un compte ?
+                    Already have an account?
                     <NuxtLink
                         class="text-primary font-semibold underline-offset-2 hover:underline"
                         to="/auth/login"
-                        >Se connecter</NuxtLink
+                        >Log in</NuxtLink
                     >
                 </p>
             </div>

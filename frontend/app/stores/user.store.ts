@@ -63,16 +63,16 @@ export const useUserStore = defineStore("user", {
                 const tokenCookie = useCookie("token");
                 tokenCookie.value = response.token;
                 this.user = response.user;
-                toast.success("Login successful!", {
-                    description: "Welcome back!",
+                toast.success("Registration successful!", {
+                    description: "Welcome! Your account has been created.",
                 });
                 await useRouter().push("/");
             } catch (e: any) {
-                toast.error("Erreur lors de l'inscription", {
+                toast.error("Registration failed.", {
                     description:
                         e.data?.message ||
                         e.message ||
-                        "Une erreur est survenue lors de l'inscription.",
+                        "An error occurred during registration.",
                 });
             }
         },

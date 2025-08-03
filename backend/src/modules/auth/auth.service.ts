@@ -72,9 +72,9 @@ export class AuthService {
             token: this.jwtService.sign(
                 {},
                 {
-                    subject: prismaUser.id,
+                    subject: user.id,
                     expiresIn: "30d",
-                    jwtid: prismaUser.jwt_id.toHex(),
+                    jwtid: user.jwtId.toString("hex"),
                 },
             ),
         });
@@ -82,26 +82,31 @@ export class AuthService {
 
     async loginUser(email: string, password: string): Promise<LoginEntity> {
         // Find the user by username or email
-        const user: Users | null = await this.prismaService.users.findFirst({
-            where: {email},
-        });
-        if (!user) throw new NotFoundException("User not found.");
+        const prismaUser: Users | null =
+            await this.prismaService.users.findFirst({
+                where: {email},
+            });
+        if (!prismaUser) throw new NotFoundException("User not found.");
 
         // Verify the password
         const isPasswordValid: boolean =
-            await this.kmsUtilsService.verifyPassword(password, user.password);
+            await this.kmsUtilsService.verifyPassword(
+                password,
+                prismaUser.password,
+            );
         if (!isPasswordValid)
             throw new UnauthorizedException("Invalid password.");
 
         // Create a login entity and return it
+        const user: UserEntity = await this.usersService.toUser(prismaUser);
         return new LoginEntity({
-            user: await this.usersService.toUser(user),
+            user,
             token: this.jwtService.sign(
                 {},
                 {
                     subject: user.id,
                     expiresIn: "30d",
-                    jwtid: user.jwt_id.toHex(),
+                    jwtid: user.jwtId.toString("hex"),
                 },
             ),
         });
