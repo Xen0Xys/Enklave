@@ -1,5 +1,5 @@
 {
-    "name": "enclave",
+    "name": "enklave",
     "type": "module",
     "scripts": {
         "build": "bun nuxt build --prerender",

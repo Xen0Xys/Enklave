@@ -1,8 +1,8 @@
 {
     "$schema": "../../node_modules/@tauri-apps/cli/config.schema.json",
-    "productName": "enclave",
+    "productName": "enklave",
     "version": "0.1.0",
-    "identifier": "fr.xen0xys.enclave",
+    "identifier": "fr.xen0xys.enklave",
     "build": {
         "frontendDist": "../.output/public",
         "devUrl": "http://localhost:3000",
@@ -12,9 +12,9 @@
     "app": {
         "windows": [
             {
-                "title": "Enclave",
-                "width": 800,
-                "height": 600,
+                "title": "Enklave",
+                "width": 1280,
+                "height": 720,
                 "resizable": true,
                 "fullscreen": false
             }
