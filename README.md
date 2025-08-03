@@ -11,86 +11,89 @@ Enklave is a collaborative family and couple management software designed to sim
 ## Installation
 
 1. **Install global dependencies**:
-   ```bash
-   bun install
-   ```
+    ```bash
+    bun install
+    ```
 2. **Install dependencies for each module**:
-   ```bash
-   cd backend && bun install
-   cd ../frontend && bun install
-   cd ../website && bun install
-   ```
+    ```bash
+    cd backend && bun install
+    cd ../frontend && bun install
+    cd ../website && bun install
+    ```
 
 ## Usage
 
 ### Backend (API)
+
 - **Development**:
-  ```bash
-  cd backend
-  bun run start:dev
-  ```
+    ```bash
+    cd backend
+    bun run start:dev
+    ```
 - **Production**:
-  ```bash
-  bun run build
-  bun run start:prod
-  ```
+    ```bash
+    bun run build
+    bun run start:prod
+    ```
 
 ### Frontend (Web/Desktop)
+
 - **Web development**:
-  ```bash
-  cd frontend
-  bun run dev
-  ```
+    ```bash
+    cd frontend
+    bun run dev
+    ```
 - **Desktop app (Tauri)**:
-  ```bash
-  bun run tauri:dev
-  # For desktop build
-  bun run tauri:build
-  ```
+    ```bash
+    bun run tauri:dev
+    # For desktop build
+    bun run tauri:build
+    ```
 
 ### Website (Public)
+
 - **Development**:
-  ```bash
-  cd website
-  bun run dev
-  ```
+    ```bash
+    cd website
+    bun run dev
+    ```
 - **Static build**:
-  ```bash
-  bun run generate
-  ```
+    ```bash
+    bun run generate
+    ```
 
 ## Database & Prisma
 
 - **Migration**:
-  ```bash
-  cd backend
-  bunx prisma migrate dev
-  ```
+    ```bash
+    cd backend
+    bunx prisma migrate dev
+    ```
 - **Seed**:
-  ```bash
-  bun run prisma:seed
-  ```
+    ```bash
+    bun run prisma:seed
+    ```
 
 ## Configuration
 
 - Environment variables should be set in each folder (`.env`).
 - Example for backend:
-  ```env
-  DATABASE_URL=postgresql://user:password@localhost:5432/enklave
-  JWT_SECRET=...
-  ```
+    ```env
+    DATABASE_URL=postgresql://user:password@localhost:5432/enklave
+    JWT_SECRET=...
+    ```
 
 ## Development & Contribution
 
 - **Lint**:
-  ```bash
-  bun run lint
-  bun run lint:fix
-  ```
+    ```bash
+    bun run lint
+    bun run lint:fix
+    ```
 - **Tests**:
-  ```bash
-  bun run test
-  ```
+    ```bash
+    bun run test
+    ```
 
 ## Deployment
 
