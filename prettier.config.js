@@ -5,7 +5,7 @@
  * @type {import("prettier").Config}
  */
 export default {
-    plugins: ["@prettier/plugin-oxc"],
+    plugins: ["@prettier/plugin-oxc", "prettier-plugin-tailwindcss"],
     trailingComma: "all",
     tabWidth: 4,
     semi: true,

@@ -1,6 +1,7 @@
 import {WrappedKeyPair} from "./entities/wrapped-key-pair";
 import {KmsUtilsService} from "./kms-utils.service";
 import {Injectable, Logger} from "@nestjs/common";
+import {UserEntity} from "../users/entities/user.entity";
 
 @Injectable()
 export class KmsService {
@@ -37,7 +38,7 @@ export class KmsService {
         );
     }
 
-    async generateRandomMasterKey(): Promise<CryptoKey> {
+    async generateRandomSymmetricKey(): Promise<CryptoKey> {
         await this.awaitInitialization();
         const secret: string = this.kmsUtilsService
             .randomBytes(32)
@@ -58,6 +59,25 @@ export class KmsService {
         return await this.kmsUtilsService.unwrapCryptoKey(
             wrappedMasterKey,
             this.appKey,
+            "AES-GCM",
+        );
+    }
+
+    async wrapSymmetricKey(user: UserEntity, key: CryptoKey): Promise<Buffer> {
+        await this.awaitInitialization();
+        if (!user.masterKey) throw new Error("User master key is not set.");
+        return await this.kmsUtilsService.wrapCryptoKey(key, user.masterKey);
+    }
+
+    async unwrapSymmetricKey(
+        user: UserEntity,
+        wrappedKey: Buffer,
+    ): Promise<CryptoKey> {
+        await this.awaitInitialization();
+        if (!user.masterKey) throw new Error("User master key is not set.");
+        return await this.kmsUtilsService.unwrapCryptoKey(
+            wrappedKey,
+            user.masterKey,
             "AES-GCM",
         );
     }

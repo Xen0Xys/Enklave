@@ -1,8 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import tailwindcss from "@tailwindcss/vite";
+
+// noinspection TypeScriptValidateTypes
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: {enabled: true},
+    modules: ["@nuxt/icon", "shadcn-nuxt", "@pinia/nuxt"],
     vite: {
+        plugins: [tailwindcss() as unknown as any],
         clearScreen: false,
         envPrefix: ["VITE_", "TAURI_"],
         server: {
@@ -12,6 +17,16 @@ export default defineNuxtConfig({
                 host: "0.0.0.0",
                 port: 5183,
             },
+        },
+    },
+    css: ["./app/assets/css/tailwind.css"],
+    shadcn: {
+        prefix: "",
+        componentDir: "./app/components/ui",
+    },
+    runtimeConfig: {
+        public: {
+            apiBase: "",
         },
     },
 });
