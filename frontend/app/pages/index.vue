@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+definePageMeta({
+    layout: "navigation",
+});
+</script>
 
 <template>
     <h1>Dashboard</h1>

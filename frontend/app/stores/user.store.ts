@@ -3,7 +3,7 @@ import useEnklaveApi from "~/composables/useEnklaveApi";
 import {toast} from "vue-sonner";
 
 export const useUserStore = defineStore("user", {
-    state: () => ({
+    state: (): {user?: any} => ({
         user: undefined,
     }),
     actions: {
@@ -75,6 +75,15 @@ export const useUserStore = defineStore("user", {
                         "Une erreur est survenue lors de l'inscription.",
                 });
             }
+        },
+        async logout() {
+            const tokenCookie = useCookie("token");
+            tokenCookie.value = undefined;
+            this.user = undefined;
+            toast.success("Logout successful!", {
+                description: "You have been logged out.",
+            });
+            await useRouter().push("/auth/login");
         },
     },
 });
