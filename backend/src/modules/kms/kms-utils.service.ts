@@ -1,5 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import * as crypto from "crypto";
+import {Readable} from "stream";
 
 @Injectable()
 export class KmsUtilsService {
@@ -164,6 +165,88 @@ export class KmsUtilsService {
             extractable,
             ["encrypt", "decrypt", "wrapKey", "unwrapKey"],
         );
+    }
+
+    async encryptWithAesGcmStream(
+        sourceStream: Readable,
+        key: CryptoKey,
+    ): Promise<{
+        encryptedStream: Readable;
+        iv: string;
+        getAuthTag: () => Promise<string>;
+        getEncryptedSize: () => Promise<number>;
+    }> {
+        const iv: Buffer = crypto.randomBytes(12);
+        const exportedKey: Buffer = Buffer.from(
+            await crypto.subtle.exportKey("raw", key),
+        );
+
+        const cipher: crypto.CipherGCM = crypto.createCipheriv(
+            "aes-256-gcm",
+            exportedKey,
+            iv,
+        );
+
+        let encryptedSize: number = 0;
+        cipher.on("data", (chunk: Buffer) => {
+            encryptedSize += chunk.length;
+        });
+
+        const finalizationPromise = new Promise<{
+            authTag: Buffer;
+            size: number;
+        }>((resolve, reject) => {
+            cipher.on("finish", () => {
+                resolve({
+                    authTag: cipher.getAuthTag(),
+                    size: encryptedSize,
+                });
+            });
+            cipher.on("error", reject);
+            sourceStream.on("error", (err) => cipher.emit("error", err));
+        });
+
+        const encryptedStream: crypto.CipherGCM = sourceStream.pipe(cipher);
+
+        return {
+            encryptedStream,
+            iv: iv.toString("base64"),
+            getAuthTag: () =>
+                finalizationPromise.then((data) =>
+                    data.authTag.toString("base64"),
+                ),
+            getEncryptedSize: () =>
+                finalizationPromise.then((data) => data.size),
+        };
+    }
+
+    async decryptWithAesGcmStream(
+        encryptedStream: Readable,
+        key: CryptoKey,
+        iv: string,
+        authTag: string,
+    ): Promise<Readable> {
+        const ivBuffer: Buffer = Buffer.from(iv, "base64");
+        const authTagBuffer: Buffer = Buffer.from(authTag, "base64");
+        const exportedKey: Buffer = Buffer.from(
+            await crypto.subtle.exportKey("raw", key),
+        );
+
+        const decipher: crypto.DecipherGCM = crypto.createDecipheriv(
+            "aes-256-gcm",
+            exportedKey,
+            ivBuffer,
+        );
+        decipher.setAuthTag(authTagBuffer);
+
+        const decryptedStream: crypto.DecipherGCM =
+            encryptedStream.pipe(decipher);
+
+        encryptedStream.on("error", (err) => {
+            decryptedStream.emit("error", err);
+        });
+
+        return decryptedStream;
     }
 
     async encryptWithAesGcm(

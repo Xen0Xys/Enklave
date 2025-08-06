@@ -1,5 +1,16 @@
 import {KmsUtilsService} from "../../src/modules/kms/kms-utils.service";
 import {beforeAll, describe, expect, test} from "bun:test";
+import {Readable} from "stream";
+import * as crypto from "crypto";
+
+function streamToBuffer(stream: Readable): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+        const chunks: Buffer[] = [];
+        stream.on("data", (chunk) => chunks.push(chunk));
+        stream.on("error", reject);
+        stream.on("end", () => resolve(Buffer.concat(chunks)));
+    });
+}
 
 describe("generateAesKey (PBKDF2 Key Derivation)", () => {
     let kmsUtilsService: KmsUtilsService;
@@ -301,5 +312,198 @@ describe("AES-GCM Encryption with Associated Data (AAD)", () => {
         expect(
             kmsUtilsService.decryptWithAesGcm(aesKey, encrypted), // No AAD provided
         ).rejects.toThrow();
+    });
+});
+
+describe("AES-GCM Stream Encryption/Decryption", () => {
+    let kmsUtilsService: KmsUtilsService;
+    let aesKey: CryptoKey;
+
+    beforeAll(async () => {
+        kmsUtilsService = new KmsUtilsService();
+        aesKey = await kmsUtilsService.generateAesKey(
+            "stream-secret",
+            "stream-salt",
+            true,
+        );
+    });
+
+    test("should encrypt and decrypt a data stream (round-trip)", async () => {
+        const originalData: Buffer = crypto.randomBytes(1024 * 64);
+        const sourceStream: Readable = Readable.from(originalData);
+
+        const {encryptedStream, iv, getAuthTag, getEncryptedSize} =
+            await kmsUtilsService.encryptWithAesGcmStream(sourceStream, aesKey);
+
+        expect(iv).toBeString();
+        expect(iv.length).toBe(16);
+
+        const encryptedBuffer: Buffer = await streamToBuffer(encryptedStream);
+        const authTag: string = await getAuthTag();
+        const encryptedSize: number = await getEncryptedSize();
+
+        expect(encryptedSize).toBe(originalData.length);
+        expect(encryptedBuffer.length).toBe(originalData.length);
+        expect(authTag).toBeString();
+        expect(authTag.length).toBe(24);
+
+        const encryptedSourceStream: Readable = Readable.from(encryptedBuffer);
+        const decryptedStream: Readable =
+            await kmsUtilsService.decryptWithAesGcmStream(
+                encryptedSourceStream,
+                aesKey,
+                iv,
+                authTag,
+            );
+
+        const decryptedBuffer: Buffer = await streamToBuffer(decryptedStream);
+
+        expect(decryptedBuffer).toEqual(originalData);
+    });
+
+    test("should correctly handle an empty stream", async () => {
+        const sourceStream: Readable = Readable.from(Buffer.from(""));
+
+        const {encryptedStream, iv, getAuthTag, getEncryptedSize} =
+            await kmsUtilsService.encryptWithAesGcmStream(sourceStream, aesKey);
+
+        const encryptedBuffer: Buffer = await streamToBuffer(encryptedStream);
+        const authTag: string = await getAuthTag();
+        const encryptedSize: number = await getEncryptedSize();
+
+        expect(encryptedSize).toBe(0);
+        expect(encryptedBuffer.length).toBe(0);
+
+        const encryptedSourceStream: Readable = Readable.from(encryptedBuffer);
+        const decryptedStream: Readable =
+            await kmsUtilsService.decryptWithAesGcmStream(
+                encryptedSourceStream,
+                aesKey,
+                iv,
+                authTag,
+            );
+
+        const decryptedBuffer: Buffer = await streamToBuffer(decryptedStream);
+        expect(decryptedBuffer).toEqual(Buffer.from(""));
+    });
+
+    test(
+        "should correctly handle a large stream (e.g., 5MB)",
+        async () => {
+            const originalData: Buffer = crypto.randomBytes(1024 * 1024 * 5); // 5 MB
+            const sourceStream: Readable = Readable.from(originalData);
+
+            const {encryptedStream, iv, getAuthTag} =
+                await kmsUtilsService.encryptWithAesGcmStream(
+                    sourceStream,
+                    aesKey,
+                );
+
+            const encryptedBuffer: Buffer =
+                await streamToBuffer(encryptedStream);
+            const authTag: string = await getAuthTag();
+
+            const encryptedSourceStream: Readable =
+                Readable.from(encryptedBuffer);
+            const decryptedStream: Readable =
+                await kmsUtilsService.decryptWithAesGcmStream(
+                    encryptedSourceStream,
+                    aesKey,
+                    iv,
+                    authTag,
+                );
+
+            const decryptedBuffer: Buffer =
+                await streamToBuffer(decryptedStream);
+            expect(decryptedBuffer).toEqual(originalData);
+        },
+        {
+            timeout: 10000,
+        },
+    );
+
+    test("should fail decryption with the wrong key", async () => {
+        const originalData: Buffer = Buffer.from("This will not be decrypted");
+        const sourceStream: Readable = Readable.from(originalData);
+        const wrongKey: CryptoKey = await kmsUtilsService.generateAesKey(
+            "wrong-key",
+            "salt",
+            true,
+        );
+
+        const {encryptedStream, iv, getAuthTag} =
+            await kmsUtilsService.encryptWithAesGcmStream(sourceStream, aesKey);
+        const encryptedBuffer: Buffer = await streamToBuffer(encryptedStream);
+        const authTag: string = await getAuthTag();
+        const encryptedSourceStream: Readable = Readable.from(encryptedBuffer);
+
+        expect(
+            (async () => {
+                const decryptedStream =
+                    await kmsUtilsService.decryptWithAesGcmStream(
+                        encryptedSourceStream,
+                        wrongKey,
+                        iv,
+                        authTag,
+                    );
+                await streamToBuffer(decryptedStream);
+            })(),
+        ).rejects.toThrow("Unsupported state or unable to authenticate");
+    });
+
+    test("should fail decryption with a tampered auth tag", async () => {
+        const originalData: Buffer = Buffer.from("Data integrity is key");
+        const sourceStream: Readable = Readable.from(originalData);
+
+        const {encryptedStream, iv, getAuthTag} =
+            await kmsUtilsService.encryptWithAesGcmStream(sourceStream, aesKey);
+        const encryptedBuffer: Buffer = await streamToBuffer(encryptedStream);
+        await getAuthTag();
+
+        const tamperedAuthTag: string = crypto
+            .randomBytes(16)
+            .toString("base64");
+
+        const encryptedSourceStream: Readable = Readable.from(encryptedBuffer);
+
+        expect(
+            (async () => {
+                const decryptedStream =
+                    await kmsUtilsService.decryptWithAesGcmStream(
+                        encryptedSourceStream,
+                        aesKey,
+                        iv,
+                        tamperedAuthTag,
+                    );
+                await streamToBuffer(decryptedStream);
+            })(),
+        ).rejects.toThrow("Unsupported state or unable to authenticate");
+    });
+
+    test("should fail decryption if the ciphertext stream is corrupted", async () => {
+        const originalData: Buffer = crypto.randomBytes(1024);
+        const sourceStream: Readable = Readable.from(originalData);
+
+        const {encryptedStream, iv, getAuthTag} =
+            await kmsUtilsService.encryptWithAesGcmStream(sourceStream, aesKey);
+        const encryptedBuffer: Buffer = await streamToBuffer(encryptedStream);
+        const authTag: string = await getAuthTag();
+
+        if (encryptedBuffer.length > 20) encryptedBuffer[10] ^= 1; // Flip a bit in the middle
+
+        const encryptedSourceStream: Readable = Readable.from(encryptedBuffer);
+
+        expect(
+            (async () => {
+                const decryptedStream: Readable =
+                    await kmsUtilsService.decryptWithAesGcmStream(
+                        encryptedSourceStream,
+                        aesKey,
+                        iv,
+                        authTag,
+                    );
+                await streamToBuffer(decryptedStream);
+            })(),
+        ).rejects.toThrow("Unsupported state or unable to authenticate");
     });
 });
