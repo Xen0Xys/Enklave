@@ -172,9 +172,10 @@ export class KmsUtilsService {
         key: CryptoKey,
     ): Promise<{
         encryptedStream: Readable;
-        iv: string;
-        getAuthTag: () => Promise<string>;
+        iv: Buffer;
+        getAuthTag: () => Promise<Buffer>;
         getEncryptedSize: () => Promise<number>;
+        getSha256: () => Promise<string>;
     }> {
         const iv: Buffer = crypto.randomBytes(12);
         const exportedKey: Buffer = Buffer.from(
@@ -186,20 +187,24 @@ export class KmsUtilsService {
             exportedKey,
             iv,
         );
+        const hash: crypto.Hash = crypto.createHash("sha256");
 
         let encryptedSize: number = 0;
         cipher.on("data", (chunk: Buffer) => {
             encryptedSize += chunk.length;
+            hash.update(chunk);
         });
 
         const finalizationPromise = new Promise<{
             authTag: Buffer;
             size: number;
+            sha256: string;
         }>((resolve, reject) => {
             cipher.on("finish", () => {
                 resolve({
                     authTag: cipher.getAuthTag(),
                     size: encryptedSize,
+                    sha256: hash.digest("hex"),
                 });
             });
             cipher.on("error", reject);
@@ -210,24 +215,21 @@ export class KmsUtilsService {
 
         return {
             encryptedStream,
-            iv: iv.toString("base64"),
-            getAuthTag: () =>
-                finalizationPromise.then((data) =>
-                    data.authTag.toString("base64"),
-                ),
+            iv: iv,
+            getAuthTag: () => finalizationPromise.then((data) => data.authTag),
             getEncryptedSize: () =>
                 finalizationPromise.then((data) => data.size),
+            getSha256: () => finalizationPromise.then((data) => data.sha256),
         };
     }
 
     async decryptWithAesGcmStream(
         encryptedStream: Readable,
         key: CryptoKey,
-        iv: string,
-        authTag: string,
+        iv: Buffer,
+        authTag: Buffer,
+        sha256?: string,
     ): Promise<Readable> {
-        const ivBuffer: Buffer = Buffer.from(iv, "base64");
-        const authTagBuffer: Buffer = Buffer.from(authTag, "base64");
         const exportedKey: Buffer = Buffer.from(
             await crypto.subtle.exportKey("raw", key),
         );
@@ -235,9 +237,40 @@ export class KmsUtilsService {
         const decipher: crypto.DecipherGCM = crypto.createDecipheriv(
             "aes-256-gcm",
             exportedKey,
-            ivBuffer,
+            iv,
         );
-        decipher.setAuthTag(authTagBuffer);
+        decipher.setAuthTag(authTag);
+
+        if (sha256) {
+            const hash = crypto.createHash("sha256");
+            const passThrough = new Readable({
+                read() {},
+            });
+
+            const decryptedStream = encryptedStream.pipe(decipher);
+
+            encryptedStream.on("data", (chunk) => {
+                hash.update(chunk);
+                passThrough.push(chunk);
+            });
+
+            encryptedStream.on("end", () => {
+                const computedHash = hash.digest("hex");
+                if (computedHash !== sha256) {
+                    decryptedStream.emit(
+                        "error",
+                        new Error("SHA256 hash mismatch"),
+                    );
+                }
+                passThrough.push(null);
+            });
+
+            encryptedStream.on("error", (err) => {
+                decryptedStream.emit("error", err);
+            });
+
+            return decryptedStream;
+        }
 
         const decryptedStream: crypto.DecipherGCM =
             encryptedStream.pipe(decipher);
