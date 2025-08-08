@@ -25,6 +25,8 @@ import {KmsService} from "../kms/kms.service";
 import {PrismaService} from "../helper/prisma.service";
 import {CryptoKey} from "@simplewebauthn/server/script/types/dom";
 import {Avatars, ServerFiles} from "../../../prisma/generated/client";
+import * as sharp from "sharp";
+import {Readable} from "stream";
 
 @Controller("users")
 @UseGuards(JwtAuthGuard)
@@ -107,12 +109,24 @@ export class UsersController {
                 oldAvatar.server_file_id,
             );
 
+        const transformer: sharp.Sharp = sharp().webp({
+            preset: "picture",
+            effort: 6,
+            smartSubsample: false,
+            quality: 80,
+            nearLossless: false,
+            lossless: false,
+            alphaQuality: 100,
+        });
+        const transformedStream: Readable = part.file.pipe(transformer);
+
         const appKey: CryptoKey = await this.kmsService.getAppKey();
-        const serverFile = await this.storageService.uploadFileStream(
-            part.file,
-            appKey,
-            mimeType,
-        );
+        const serverFile: ServerFiles =
+            await this.storageService.uploadFileStream(
+                transformedStream,
+                appKey,
+                "image/webp",
+            );
         await this.prismaService.avatars.create({
             data: {
                 user_id: user.id,
@@ -139,10 +153,7 @@ export class UsersController {
         if (!serverFile) throw new NotFoundException("Avatar not found");
         const appKey: CryptoKey = await this.kmsService.getAppKey();
         // Set mimeType
-        res.header(
-            "Content-Type",
-            serverFile.mime_type || "application/octet-stream",
-        );
+        res.header("Content-Type", "image/webp");
         const buffer: Buffer = await this.storageService.downloadFileBuffer(
             serverFile,
             appKey,
