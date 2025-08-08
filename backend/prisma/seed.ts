@@ -27,8 +27,9 @@ async function main() {
     const keyPair: CryptoKeyPair = await kmsService.generateAsymmetricKeyPair();
     const wrappedKeyPair: WrappedKeyPair =
         await kmsService.wrapAsymmetricKeypair(keyPair);
+    const ADMIN_USER_ID = "0195dc7c-f315-7881-b35b-da9cbb6ee4a0";
     const adminUser: UsersCreateInput = {
-        id: "0195dc7c-f315-7881-b35b-da9cbb6ee4a0",
+        id: ADMIN_USER_ID,
         username: process.env.ADMIN_USERNAME || "admin",
         email: process.env.ADMIN_EMAIL || "admin@admin.com",
         password: await kmsUtilsService.hashPassword(
@@ -42,7 +43,7 @@ async function main() {
     await idSeed(prisma.users, [adminUser], false);
 
     const adminUserEntity: UserEntity = {
-        id: adminUser.id,
+        id: ADMIN_USER_ID,
         username: adminUser.username,
         email: adminUser.email,
         createdAt: new Date(),
@@ -68,7 +69,7 @@ async function main() {
         {
             id: "0195dc7c-f315-7881-b35b-da9cbb6ee4a2",
             name: "Media",
-            user_id: adminUser.id,
+            user_id: adminUserEntity.id,
             type: FolderTypes.MEDIA,
             folder_key: wrappedMediaFolderKey,
         },

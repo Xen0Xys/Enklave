@@ -1,11 +1,11 @@
-import {WrappedKeyPair} from "../kms/entities/wrapped-key-pair";
 import {
     ConflictException,
     Injectable,
     NotFoundException,
     UnauthorizedException,
 } from "@nestjs/common";
-import {StorageService} from "../storage/storage.service";
+import {WrappedKeyPair} from "../kms/entities/wrapped-key-pair";
+import {FoldersService} from "../storage/folders.service";
 import {KmsUtilsService} from "../kms/kms-utils.service";
 import {UserEntity} from "../users/entities/user.entity";
 import {PrismaService} from "../helper/prisma.service";
@@ -23,7 +23,7 @@ export class AuthService {
         private readonly kmsService: KmsService,
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService,
-        private readonly storageService: StorageService,
+        private readonly storageService: FoldersService,
     ) {}
 
     async registerUser(
@@ -32,9 +32,10 @@ export class AuthService {
         password: string,
     ): Promise<LoginEntity> {
         // Check if the user already exists
-        const existingUser = await this.prismaService.users.findUnique({
-            where: {email},
-        });
+        const existingUser: Users | null =
+            await this.prismaService.users.findUnique({
+                where: {email},
+            });
         if (existingUser)
             throw new ConflictException("User already exists with this email.");
         // Create the user
@@ -51,7 +52,6 @@ export class AuthService {
 
         const prismaUser: Users = await this.prismaService.users.create({
             data: {
-                id: this.kmsUtilsService.generateUuid(),
                 username,
                 email,
                 password: hashedPassword,

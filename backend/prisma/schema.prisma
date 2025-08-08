@@ -10,7 +10,7 @@ datasource db {
 }
 
 model NewsLetterSubscriptions {
-  id         String   @id @db.VarChar(36)
+  id         String   @id @default(uuid(7)) @db.Uuid
   email      String   @unique
   created_at DateTime @default(now())
 
@@ -18,24 +18,46 @@ model NewsLetterSubscriptions {
 }
 
 model Users {
-  id                   String               @id @db.VarChar(36)
-  username             String               @db.VarChar(30) // Public display name
-  email                String               @unique
-  password             String // Hashed
-  jwt_id               Bytes // JWT ID for token revocation
-  master_key           Bytes // Encrypted master key (from application key, derivated from application secret)
-  public_key           Bytes // Public key for encryption
-  private_key          Bytes // Private key for decryption; Encrypted with master key
-  created_at           DateTime             @default(now())
-  updated_at           DateTime             @updatedAt
-  folders              Folders[]
-  files                Files[]
-  folder_shares        FolderShares[]
-  file_shares          FileShares[]
-  shopping_lists       ShoppingLists[]
-  shopping_list_shares ShoppingListShares[]
+  id          String    @id @default(uuid(7)) @db.Uuid
+  username    String    @db.VarChar(30) // Public display name
+  email       String    @unique
+  password    String // Hashed
+  jwt_id      Bytes // JWT ID for token revocation
+  master_key  Bytes // Encrypted master key (from application key, derivated from application secret)
+  public_key  Bytes // Public key for encryption
+  private_key Bytes // Private key for decryption; Encrypted with master key
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  avatars     Avatars?
+  folders     Folders[]
+  files       Files[]
 
   @@map("users")
+}
+
+model ServerFiles {
+  id               String   @id @default(uuid(7)) @db.Uuid
+  s3_key           String   @unique @db.Uuid
+  thumbnail_s3_key String?  @db.Uuid
+  checksum         String   @db.VarChar(64) // SHA-256 checksum for file integrity
+  mime_type        String?  @db.VarChar(50) // Optional MIME type for the file
+  file_key         Bytes // Encrypted file key (from master key)
+  iv               Bytes // Initialization vector for encryption
+  auth_tag         Bytes // Authentication tag for encryption
+  size             Int // Size in bytes
+  avatar           Avatars?
+  files            Files[]
+
+  @@map("server_files")
+}
+
+model Avatars {
+  user_id        String      @id @db.Uuid
+  user           Users       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  server_file_id String      @unique @db.Uuid
+  server_file    ServerFiles @relation(fields: [server_file_id], references: [id], onDelete: Cascade)
+
+  @@map("avatars")
 }
 
 enum FolderTypes {
@@ -45,103 +67,79 @@ enum FolderTypes {
 }
 
 model Folders {
-  id         String         @id @db.VarChar(36)
-  user_id    String         @db.VarChar(36)
-  user       Users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id         String       @id @default(uuid(7)) @db.Uuid
+  user_id    String       @db.Uuid
+  user       Users        @relation(fields: [user_id], references: [id], onDelete: Cascade)
   folder_key Bytes // Encrypted folder key (from master key)
-  name       String?        @db.VarChar(100) // Optional name for root folders
+  name       String?      @db.VarChar(100) // Optional name for root folders
   type       FolderTypes? // Optional type for special folders (e.g., media)
-  parent_id  String? // Null for root folders
-  created_at DateTime       @default(now())
-  updated_at DateTime       @updatedAt
-  parent     Folders?       @relation("folder_hierarchy", fields: [parent_id], references: [id], onDelete: Cascade)
-  children   Folders[]      @relation("folder_hierarchy")
+  parent_id  String?      @db.Uuid // Null for root folders
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
+  parent     Folders?     @relation("folder_hierarchy", fields: [parent_id], references: [id], onDelete: Cascade)
+  children   Folders[]    @relation("folder_hierarchy")
   files      Files[]
-  shares     FolderShares[]
 
-  @@unique([user_id, name, parent_id])
+  @@unique([name, parent_id]) // Ensure unique folder names per parent
   @@unique([user_id, type]) // Ensure unique folder names per user and type
   @@map("folders")
 }
 
 model Files {
-  id           String       @id @db.VarChar(36) // Sum or random
-  user_id      String       @db.VarChar(36)
-  user         Users        @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  name         String       @db.VarChar(100)
-  file_key     Bytes // Encrypted file key (from folder key)
-  folder_id    String? // Null for root files
-  folder       Folders?     @relation(fields: [folder_id], references: [id], onDelete: Cascade)
-  thumbnail_id String       @db.VarChar(36) // Thumbnail file ID; Sum or random
-  shares       FileShares[]
+  id        String      @id @default(uuid(7)) @db.Uuid
+  user_id   String      @db.Uuid
+  user      Users       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  file_id   String      @db.Uuid
+  file      ServerFiles @relation(fields: [file_id], references: [id], onDelete: Cascade)
+  name      String      @db.VarChar(100)
+  folder_id String?     @db.Uuid // Null for root files
+  folder    Folders?    @relation(fields: [folder_id], references: [id], onDelete: Cascade)
 
-  @@unique([user_id, name, folder_id])
+  @@unique([name, folder_id]) // Ensure unique file names per folder
   @@map("files")
 }
 
-model FolderShares {
-  user_id    String  @db.VarChar(36)
-  user       Users   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  folder_id  String  @db.VarChar(36)
-  folder     Folders @relation(fields: [folder_id], references: [id], onDelete: Cascade)
-  folder_key Bytes // Encrypted folder key (from public key, decrypted with private key)
-
-  @@id([user_id, folder_id])
-  @@map("folder_shares")
-}
-
-model FileShares {
-  user_id  String @db.VarChar(36)
-  user     Users  @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  file_id  String @db.VarChar(36)
-  file     Files  @relation(fields: [file_id], references: [id], onDelete: Cascade)
-  file_key Bytes // Encrypted file key (from public key, decrypted with private key)
-
-  @@id([user_id, file_id])
-  @@map("file_shares")
-}
-
-model ShoppingLists {
-  id      String               @id @db.VarChar(36)
-  user_id String               @db.VarChar(36)
-  user    Users                @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  key     Bytes // Encrypted shopping list key (from master key)
-  items   ShoppingListItems[]
-  cards   ShoppingListCards[]
-  shares  ShoppingListShares[]
-
-  @@map("shopping_lists")
-}
-
-model ShoppingListItems {
-  id               Int           @id @default(autoincrement())
-  shopping_list_id String        @db.VarChar(36)
-  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
-  name             String        @db.VarChar(100)
-  quantity         Int
-  unit             String        @db.VarChar(20) // e.g., "kg", "pcs"
-  completed        Boolean       @default(false)
-
-  @@map("shopping_list_items")
-}
-
-model ShoppingListCards {
-  id               String        @id @db.VarChar(36)
-  shopping_list_id String        @db.VarChar(36)
-  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
-  name             String        @db.VarChar(100) // Name of the card
-  value            String        @db.VarChar(100) // Value of the card (e.g., a code or identifier)
-
-  @@map("shopping_list_cards")
-}
-
-model ShoppingListShares {
-  user_id          String        @db.VarChar(36)
-  user             Users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  shopping_list_id String        @db.VarChar(36)
-  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
-  key              Bytes // Encrypted shopping list key (from public key, decrypted with private key)
-
-  @@id([user_id, shopping_list_id])
-  @@map("shopping_list_shares")
-}
+// model ShoppingLists {
+//   id      String               @id @db.VarChar(36)
+//   user_id String               @db.VarChar(36)
+//   user    Users                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+//   key     Bytes // Encrypted shopping list key (from master key)
+//   items   ShoppingListItems[]
+//   cards   ShoppingListCards[]
+//   shares  ShoppingListShares[]
+//
+//   @@map("shopping_lists")
+// }
+//
+// model ShoppingListItems {
+//   id               Int           @id @default(autoincrement())
+//   shopping_list_id String        @db.VarChar(36)
+//   shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+//   name             String        @db.VarChar(100)
+//   quantity         Int
+//   unit             String        @db.VarChar(20) // e.g., "kg", "pcs"
+//   completed        Boolean       @default(false)
+//
+//   @@map("shopping_list_items")
+// }
+//
+// model ShoppingListCards {
+//   id               String        @id @db.VarChar(36)
+//   shopping_list_id String        @db.VarChar(36)
+//   shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+//   name             String        @db.VarChar(100) // Name of the card
+//   value            String        @db.VarChar(100) // Value of the card (e.g., a code or identifier)
+//
+//   @@map("shopping_list_cards")
+// }
+//
+// model ShoppingListShares {
+//   user_id          String        @db.VarChar(36)
+//   user             Users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+//   shopping_list_id String        @db.VarChar(36)
+//   shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+//   key              Bytes // Encrypted shopping list key (from public key, decrypted with private key)
+//
+//   @@id([user_id, shopping_list_id])
+//   @@map("shopping_list_shares")
+// }
