@@ -1,4 +1,5 @@
 import {Injectable} from "@nestjs/common";
+import * as argon2 from "argon2";
 import * as crypto from "crypto";
 import {Readable} from "stream";
 
@@ -14,18 +15,23 @@ export class KmsUtilsService {
         return crypto.randomBytes(length);
     }
 
-    async hashPassword(data: Bun.StringOrBuffer): Promise<string> {
-        return await Bun.password.hash(data, {
-            algorithm: "argon2id",
-            timeCost: 12,
+    async hashPassword(data: Buffer | string): Promise<string> {
+        return await argon2.hash(data, {
+            timeCost: 3,
+            memoryCost: 65536,
+            parallelism: 4,
         });
     }
 
     async verifyPassword(
-        data: Bun.StringOrBuffer,
+        data: Buffer | string,
         hash: string,
     ): Promise<boolean> {
-        return await Bun.password.verify(data, hash);
+        try {
+            return await argon2.verify(hash, data);
+        } catch {
+            return false;
+        }
     }
 
     hash(data: string | Buffer): Buffer {
@@ -148,7 +154,7 @@ export class KmsUtilsService {
             {
                 name: "PBKDF2",
                 salt: encoder.encode(salt),
-                iterations: 200_000,
+                iterations: 400_000,
                 hash: "SHA-512",
             },
             importedKey,
