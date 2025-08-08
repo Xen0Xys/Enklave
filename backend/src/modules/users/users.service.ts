@@ -1,4 +1,3 @@
-import {Users} from "../../../prisma/generated/client";
 import {UserEntity} from "./entities/user.entity";
 import {KmsService} from "../kms/kms.service";
 import {
@@ -8,6 +7,13 @@ import {
 } from "@nestjs/common";
 import {PrismaService} from "../helper/prisma.service";
 import {KmsUtilsService} from "../kms/kms-utils.service";
+import {UsersGetPayload} from "../../../prisma/generated/models/Users";
+
+export type UserWithAvatar = UsersGetPayload<{
+    include: {
+        avatars: true;
+    };
+}>;
 
 @Injectable()
 export class UsersService {
@@ -17,7 +23,7 @@ export class UsersService {
         private readonly prismaService: PrismaService,
     ) {}
 
-    async toUser(user: Users): Promise<UserEntity> {
+    async toUser(user: UserWithAvatar): Promise<UserEntity> {
         const masterKey: CryptoKey = await this.kmsService.unwrapMasterKey(
             Buffer.from(user.master_key),
         );
@@ -32,6 +38,7 @@ export class UsersService {
             email: user.email,
             password: user.password,
             jwtId: Buffer.from(user.jwt_id),
+            avatarId: user.avatars?.server_file_id,
             createdAt: user.created_at,
             updatedAt: user.updated_at,
             masterKey,
@@ -43,6 +50,9 @@ export class UsersService {
     async getUserById(user_id: string): Promise<UserEntity> {
         const user = await this.prismaService.users.findUnique({
             where: {id: user_id},
+            include: {
+                avatars: true,
+            },
         });
         if (!user) throw new NotFoundException("User not found");
         return this.toUser(user);

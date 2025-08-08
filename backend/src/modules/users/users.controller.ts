@@ -1,18 +1,40 @@
-import {Controller, Get, HttpCode, Patch, UseGuards} from "@nestjs/common";
+import {
+    BadRequestException,
+    Controller,
+    Get,
+    HttpCode,
+    NotFoundException,
+    Param,
+    Patch,
+    Req,
+    Res,
+    UseGuards,
+} from "@nestjs/common";
 import {ChangePasswordDto} from "./dto/change-password.dto";
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
 import {User} from "../auth/decorators/users.decorator";
 import {UserEntity} from "./entities/user.entity";
-import {Body} from "@nestjs/common/decorators";
-import {ApiBearerAuth} from "@nestjs/swagger";
+import {Body, Post} from "@nestjs/common/decorators";
+import {ApiBearerAuth, ApiBody, ApiConsumes} from "@nestjs/swagger";
 import {UsersService} from "./users.service";
 import {HttpStatus} from "@nestjs/common/enums/http-status.enum";
 import {ChangeUsernameDto} from "./dto/change-username.dto";
+import {FastifyReply, FastifyRequest} from "fastify";
+import {StorageService} from "../storage/storage.service";
+import {KmsService} from "../kms/kms.service";
+import {PrismaService} from "../helper/prisma.service";
+import {CryptoKey} from "@simplewebauthn/server/script/types/dom";
+import {Avatars, ServerFiles} from "../../../prisma/generated/client";
 
 @Controller("users")
 @UseGuards(JwtAuthGuard)
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+    constructor(
+        private readonly usersService: UsersService,
+        private readonly prismaService: PrismaService,
+        private readonly storageService: StorageService,
+        private readonly kmsService: KmsService,
+    ) {}
 
     @Get("me")
     @ApiBearerAuth()
@@ -42,5 +64,89 @@ export class UsersController {
         @Body() body: ChangeUsernameDto,
     ): Promise<void> {
         return await this.usersService.changeUsername(user, body.username);
+    }
+
+    @Post("avatar")
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiBearerAuth()
+    @ApiConsumes("multipart/form-data")
+    @ApiBody({
+        description:
+            "Fichier avatar à uploader. Seules les images sont autorisées.",
+        schema: {
+            type: "object",
+            properties: {
+                file: {
+                    type: "string",
+                    format: "binary",
+                },
+            },
+        },
+    })
+    async changeAvatar(
+        @User() user: UserEntity,
+        @Req() req: FastifyRequest,
+    ): Promise<void> {
+        if (!req.isMultipart())
+            throw new BadRequestException("Request is not multipart");
+        const part = await req.file();
+        if (!part) throw new BadRequestException("No file uploaded");
+        const mimeType: string | undefined = part?.mimetype;
+        if (!mimeType || !mimeType.startsWith("image/"))
+            throw new BadRequestException(
+                "Invalid file type. Only images are allowed.",
+            );
+
+        // Find and delete old avatar if it exists
+        const oldAvatar: Avatars | null =
+            await this.prismaService.avatars.findFirst({
+                where: {user_id: user.id},
+            });
+        if (oldAvatar)
+            await this.storageService.deleteServerFile(
+                oldAvatar.server_file_id,
+            );
+
+        const appKey: CryptoKey = await this.kmsService.getAppKey();
+        const serverFile = await this.storageService.uploadFileStream(
+            part.file,
+            appKey,
+            mimeType,
+        );
+        await this.prismaService.avatars.create({
+            data: {
+                user_id: user.id,
+                server_file_id: serverFile.id,
+            },
+        });
+    }
+
+    @Get("avatar/:avatarId")
+    @HttpCode(HttpStatus.OK)
+    @ApiBearerAuth()
+    async getAvatar(
+        @User() user: UserEntity,
+        @Param("avatarId") avatarId: string,
+        @Res() res: FastifyReply,
+    ): Promise<void> {
+        const avatar: Avatars | null =
+            await this.prismaService.avatars.findFirst({
+                where: {user_id: user.id},
+            });
+        if (!avatar) throw new BadRequestException("No avatar found for user");
+        const serverFile: ServerFiles | null =
+            await this.storageService.getServerFileFromId(avatarId);
+        if (!serverFile) throw new NotFoundException("Avatar not found");
+        const appKey: CryptoKey = await this.kmsService.getAppKey();
+        // Set mimeType
+        res.header(
+            "Content-Type",
+            serverFile.mime_type || "application/octet-stream",
+        );
+        const buffer: Buffer = await this.storageService.downloadFileBuffer(
+            serverFile,
+            appKey,
+        );
+        res.send(buffer);
     }
 }

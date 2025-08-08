@@ -30,7 +30,6 @@ CREATE TABLE "public"."users" (
 CREATE TABLE "public"."server_files" (
     "id" UUID NOT NULL,
     "s3_key" UUID NOT NULL,
-    "thumbnail_s3_key" UUID,
     "checksum" VARCHAR(64) NOT NULL,
     "mime_type" VARCHAR(50),
     "file_key" BYTEA NOT NULL,

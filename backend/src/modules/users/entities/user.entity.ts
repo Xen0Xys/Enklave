@@ -5,6 +5,7 @@ export class UserEntity {
     id: string;
     username: string;
     email: string;
+    avatarId?: string;
     createdAt: Date;
     updatedAt: Date;
 

@@ -16,11 +16,37 @@ export class StorageService {
         private readonly kmsService: KmsService,
     ) {
         this.s3Client = new Bun.S3Client({
-            accessKeyId: "your-access-key",
-            secretAccessKey: "your-secret-key",
-            bucket: "my-bucket",
-            endpoint: "http://localhost:9000",
+            accessKeyId: process.env.S3_ACCESS_KEY_ID,
+            secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+            region: process.env.S3_REGION,
+            bucket: process.env.S3_BUCKET,
+            endpoint: process.env.S3_ENDPOINT,
         });
+    }
+
+    async getServerFileFromId(
+        serverFileId: string,
+    ): Promise<ServerFiles | null> {
+        return this.prismaService.serverFiles.findUnique({
+            where: {id: serverFileId},
+        });
+    }
+
+    async deleteServerFile(serverFileId: string): Promise<void> {
+        const serverFile: ServerFiles | null =
+            await this.getServerFileFromId(serverFileId);
+        if (!serverFile) {
+            throw new Error("Server file not found");
+        }
+        const remoteFile: Bun.S3File = this.s3Client.file(serverFile.s3_key);
+        try {
+            await this.prismaService.serverFiles.delete({
+                where: {id: serverFileId},
+            });
+            await remoteFile.delete();
+        } catch (e: any) {
+            throw new Error(`Failed to delete file: ${e.message}`);
+        }
     }
 
     async uploadFileStream(
@@ -57,7 +83,6 @@ export class StorageService {
             return await this.prismaService.serverFiles.create({
                 data: {
                     s3_key: fileUuid,
-                    thumbnail_s3_key: undefined,
                     checksum: sha256,
                     mime_type: mimeType,
                     file_key: await this.kmsUtilsService.wrapCryptoKey(
@@ -76,14 +101,42 @@ export class StorageService {
         }
     }
 
-    async downloadFileStream(fileSum: string): Promise<Readable> {
+    async downloadFileStream(
+        serverFile: ServerFiles,
+        wrappingKey: CryptoKey,
+    ): Promise<Readable> {
+        const fileKey: CryptoKey = await this.kmsUtilsService.unwrapCryptoKey(
+            Buffer.from(serverFile.file_key),
+            wrappingKey,
+            "AES-GCM",
+        );
+        const remoteFile: Bun.S3File = this.s3Client.file(serverFile.s3_key);
+        const reader: ReadableStream = remoteFile.stream();
         try {
-            // Get the file metadata from the database
-            // Download the file stream from s3 storage
-            // Decrypt the file stream
-            return new Readable(); // Placeholder for actual stream
+            const readable: Readable = Readable.fromWeb(reader as any);
+            return await this.kmsUtilsService.decryptWithAesGcmStream(
+                readable,
+                fileKey,
+                Buffer.from(serverFile.iv),
+                Buffer.from(serverFile.auth_tag),
+            );
         } catch (e: any) {
             throw new Error(`Failed to download file: ${e.message}`);
         }
+    }
+
+    async downloadFileBuffer(
+        serverFile: ServerFiles,
+        wrappingKey: CryptoKey,
+    ): Promise<Buffer> {
+        const readable: Readable = await this.downloadFileStream(
+            serverFile,
+            wrappingKey,
+        );
+        const chunks: Buffer[] = [];
+        for await (const chunk of readable) {
+            chunks.push(chunk);
+        }
+        return Buffer.concat(chunks);
     }
 }

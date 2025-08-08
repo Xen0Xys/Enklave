@@ -36,17 +36,16 @@ model Users {
 }
 
 model ServerFiles {
-  id               String   @id @default(uuid(7)) @db.Uuid
-  s3_key           String   @unique @db.Uuid
-  thumbnail_s3_key String?  @db.Uuid
-  checksum         String   @db.VarChar(64) // SHA-256 checksum for file integrity
-  mime_type        String?  @db.VarChar(50) // Optional MIME type for the file
-  file_key         Bytes // Encrypted file key (from master key)
-  iv               Bytes // Initialization vector for encryption
-  auth_tag         Bytes // Authentication tag for encryption
-  size             Int // Size in bytes
-  avatar           Avatars?
-  files            Files[]
+  id        String   @id @default(uuid(7)) @db.Uuid
+  s3_key    String   @unique @db.Uuid
+  checksum  String   @db.VarChar(64) // SHA-256 checksum for file integrity
+  mime_type String?  @db.VarChar(50) // Optional MIME type for the file
+  file_key  Bytes // Encrypted file key (from master key)
+  iv        Bytes // Initialization vector for encryption
+  auth_tag  Bytes // Authentication tag for encryption
+  size      Int // Size in bytes
+  avatar    Avatars?
+  files     Files[]
 
   @@map("server_files")
 }

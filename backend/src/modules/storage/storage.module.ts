@@ -8,6 +8,6 @@ import {StorageService} from "./storage.service";
     imports: [KmsModule],
     controllers: [],
     providers: [StorageService, FilesService, FoldersService],
-    exports: [FilesService, FoldersService],
+    exports: [StorageService, FilesService, FoldersService],
 })
 export class StorageModule {}

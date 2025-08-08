@@ -43,7 +43,11 @@ async function loadServer(server: NestFastifyApplication) {
 
     // Middlewares
     server.use(new LoggerMiddleware().use);
-    await server.register(fastifyMultipart as any);
+    await server.register(fastifyMultipart as any, {
+        limits: {
+            fileSize: 500 * 1024 * 1024, // 500MB
+        },
+    });
     await server.register(
         fastifyHelmet as any,
         {

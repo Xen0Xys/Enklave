@@ -10,7 +10,7 @@ import {KmsUtilsService} from "../kms/kms-utils.service";
 import {UserEntity} from "../users/entities/user.entity";
 import {PrismaService} from "../helper/prisma.service";
 import {Users} from "../../../prisma/generated/client";
-import {UsersService} from "../users/users.service";
+import {UsersService, UserWithAvatar} from "../users/users.service";
 import {LoginEntity} from "./entities/login.entity";
 import {KmsService} from "../kms/kms.service";
 import {JwtService} from "@nestjs/jwt";
@@ -50,17 +50,21 @@ export class AuthService {
         const wrappedKeyPair: WrappedKeyPair =
             await this.kmsService.wrapAsymmetricKeypair(keyPair);
 
-        const prismaUser: Users = await this.prismaService.users.create({
-            data: {
-                username,
-                email,
-                password: hashedPassword,
-                jwt_id: this.kmsUtilsService.randomBytes(32),
-                master_key: wrappedMasterKey,
-                public_key: wrappedKeyPair.wrappedPublicKey,
-                private_key: wrappedKeyPair.wrappedPrivateKey,
-            },
-        });
+        const prismaUser: UserWithAvatar =
+            await this.prismaService.users.create({
+                data: {
+                    username,
+                    email,
+                    password: hashedPassword,
+                    jwt_id: this.kmsUtilsService.randomBytes(32),
+                    master_key: wrappedMasterKey,
+                    public_key: wrappedKeyPair.wrappedPublicKey,
+                    private_key: wrappedKeyPair.wrappedPrivateKey,
+                },
+                include: {
+                    avatars: true,
+                },
+            });
 
         const user: UserEntity = await this.usersService.toUser(prismaUser);
 
@@ -82,9 +86,12 @@ export class AuthService {
 
     async loginUser(email: string, password: string): Promise<LoginEntity> {
         // Find the user by username or email
-        const prismaUser: Users | null =
+        const prismaUser: UserWithAvatar | null =
             await this.prismaService.users.findFirst({
                 where: {email},
+                include: {
+                    avatars: true,
+                },
             });
         if (!prismaUser) throw new NotFoundException("User not found.");
 

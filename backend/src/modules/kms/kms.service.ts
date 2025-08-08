@@ -130,4 +130,9 @@ export class KmsService {
             publicKey: publicKey,
         };
     }
+
+    async getAppKey(): Promise<CryptoKey> {
+        await this.awaitInitialization();
+        return this.appKey;
+    }
 }
