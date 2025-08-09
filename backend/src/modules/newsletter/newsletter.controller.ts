@@ -25,7 +25,6 @@ export class NewsletterController {
         if (existingSubscription) return;
         await this.prismaService.newsLetterSubscriptions.create({
             data: {
-                id: this.kmsUtilsService.generateUuid(),
                 email: body.email,
             },
         });

@@ -26,6 +26,7 @@
         "@prisma/adapter-pg": "^6.13.0",
         "@prisma/client": "6.13.0",
         "@simplewebauthn/server": "^13.1.2",
+        "argon2": "^0.43.1",
         "cache-manager": "^7.1.0",
         "cacheable": "^1.10.3",
         "class-transformer": "^0.5.1",
