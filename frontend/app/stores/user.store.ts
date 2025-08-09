@@ -85,5 +85,54 @@ export const useUserStore = defineStore("user", {
             });
             await useRouter().push("/auth/login");
         },
+        async updateUsername(newUsername: string) {
+            const tokenCookie = useCookie("token");
+            try {
+                await useEnklaveApi("/users/username", "PATCH", {
+                    body: {username: newUsername},
+                    headers: {
+                        Authorization: `Bearer ${tokenCookie.value}`,
+                    },
+                });
+                await this.fetchCurrentUser();
+                toast.success("Username updated successfully.");
+            } catch {
+                toast.error("Failed to update username.");
+            }
+        },
+        async updatePassword(currentPassword: string, newPassword: string) {
+            const tokenCookie = useCookie("token");
+            try {
+                await useEnklaveApi("/users/password", "PATCH", {
+                    body: {
+                        oldPassword: currentPassword,
+                        newPassword: newPassword,
+                    },
+                    headers: {
+                        Authorization: `Bearer ${tokenCookie.value}`,
+                    },
+                });
+                toast.success("Password updated successfully.");
+            } catch {
+                toast.error(
+                    "Failed to update password. Check your current password.",
+                );
+            }
+        },
+        async uploadAvatar(formData: FormData) {
+            const tokenCookie = useCookie("token");
+            try {
+                await useEnklaveApi("/users/avatar", "POST", {
+                    body: formData,
+                    headers: {
+                        Authorization: `Bearer ${tokenCookie.value}`,
+                    },
+                });
+                await this.fetchCurrentUser();
+                toast.success("Avatar updated successfully.");
+            } catch {
+                toast.error("Failed to update avatar.");
+            }
+        },
     },
 });

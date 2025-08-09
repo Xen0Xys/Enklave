@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import {Sidebar, SidebarContent} from "~/components/ui/sidebar";
 
-const pathname = useRoute().path;
+const route = useRoute();
 const isActiveFunction = (path: string) => {
-    return pathname === path;
+    return route.path === path;
 };
 
 const config = useRuntimeConfig();
 const version = computed(() => {
-    console.log("App version:", config.public.appVersion);
     return config.public.appVersion;
 });
 </script>

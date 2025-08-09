@@ -25,7 +25,6 @@ const currentPassword = ref("");
 const newPassword = ref("");
 const newPasswordConfirmation = ref("");
 const runtimeConfig = useRuntimeConfig();
-const tokenCookie = useCookie("token");
 
 const avatarUrl = computed(() => {
     return userStore.user.avatarId
@@ -39,16 +38,7 @@ async function updateUsername() {
             "Le nom d'utilisateur doit contenir au moins 3 caractères.",
         );
     }
-
-    try {
-        await useEnklaveApi("/users/username", "PATCH", {
-            body: {username: newUsername.value},
-        });
-        await userStore.fetchCurrentUser();
-        toast.success("Nom d'utilisateur mis à jour avec succès.");
-    } catch (error) {
-        toast.error("Erreur lors de la mise à jour du nom d'utilisateur.");
-    }
+    await userStore.updateUsername(newUsername.value);
 }
 
 async function updatePassword() {
@@ -60,23 +50,10 @@ async function updatePassword() {
             "Le nouveau mot de passe doit contenir au moins 8 caractères.",
         );
     }
-
-    try {
-        await useEnklaveApi("/users/me/password", "PATCH", {
-            body: {
-                currentPassword: currentPassword.value,
-                newPassword: newPassword.value,
-            },
-        });
-        currentPassword.value = "";
-        newPassword.value = "";
-        newPasswordConfirmation.value = "";
-        toast.success("Mot de passe mis à jour avec succès.");
-    } catch (error) {
-        toast.error(
-            "Erreur lors de la mise à jour du mot de passe. Vérifiez votre mot de passe actuel.",
-        );
-    }
+    await userStore.updatePassword(currentPassword.value, newPassword.value);
+    currentPassword.value = "";
+    newPassword.value = "";
+    newPasswordConfirmation.value = "";
 }
 
 async function onAvatarChange(event: Event) {
@@ -87,18 +64,7 @@ async function onAvatarChange(event: Event) {
     const formData = new FormData();
     formData.append("avatar", file);
 
-    try {
-        await useEnklaveApi("/users/avatar", "POST", {
-            body: formData,
-            headers: {
-                Authorization: `Bearer ${tokenCookie.value}`,
-            },
-        });
-        await userStore.fetchCurrentUser();
-        toast.success("Avatar mis à jour avec succès.");
-    } catch (error) {
-        toast.error("Erreur lors de la mise à jour de l'avatar.");
-    }
+    await userStore.uploadAvatar(formData);
 }
 </script>
 
