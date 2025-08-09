@@ -25,8 +25,8 @@ import {KmsService} from "../kms/kms.service";
 import {PrismaService} from "../helper/prisma.service";
 import {CryptoKey} from "@simplewebauthn/server/script/types/dom";
 import {Avatars, ServerFiles} from "../../../prisma/generated/client";
-import * as sharp from "sharp";
 import {Readable} from "stream";
+import {ImagesService} from "../storage/images.service";
 
 @Controller("users")
 @UseGuards(JwtAuthGuard)
@@ -36,6 +36,7 @@ export class UsersController {
         private readonly prismaService: PrismaService,
         private readonly storageService: StorageService,
         private readonly kmsService: KmsService,
+        private readonly imagesService: ImagesService,
     ) {}
 
     @Get("me")
@@ -109,16 +110,9 @@ export class UsersController {
                 oldAvatar.server_file_id,
             );
 
-        const transformer: sharp.Sharp = sharp().webp({
-            preset: "picture",
-            effort: 6,
-            smartSubsample: false,
-            quality: 80,
-            nearLossless: false,
-            lossless: false,
-            alphaQuality: 100,
-        });
-        const transformedStream: Readable = part.file.pipe(transformer);
+        const transformedStream: Readable = this.imagesService.toAvatarStream(
+            part.file,
+        );
 
         const appKey: CryptoKey = await this.kmsService.getAppKey();
         const serverFile: ServerFiles =
