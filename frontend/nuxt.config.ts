@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from "@tailwindcss/vite";
+import * as fs from "fs";
+
+const pkg = JSON.parse(fs.readFileSync("../package.json", "utf-8"));
 
 // noinspection TypeScriptValidateTypes
 export default defineNuxtConfig({
@@ -27,6 +30,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiBase: "",
+            appVersion: pkg.version,
         },
     },
 });

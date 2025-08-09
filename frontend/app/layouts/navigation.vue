@@ -12,14 +12,18 @@ const defaultOpen = useCookie<boolean>("sidebar_state");
         <SidebarProvider :defaultOpen="defaultOpen">
             <EnklaveSidebar />
             <SidebarInset>
-                <header
-                    class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-                    <SidebarTrigger class="-ml-1" />
-                    <Separator orientation="vertical" class="mr-2 max-h-6" />
-                    <h3>Enklave</h3>
-                </header>
-                <div class="flex w-full grow flex-col p-2">
-                    <slot />
+                <div class="flex h-full flex-col">
+                    <header
+                        class="bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                        <SidebarTrigger class="-ml-1" />
+                        <Separator
+                            orientation="vertical"
+                            class="mr-2 max-h-6" />
+                        <h3>Enklave</h3>
+                    </header>
+                    <div class="flex flex-1 flex-col overflow-y-auto p-4">
+                        <slot />
+                    </div>
                 </div>
             </SidebarInset>
         </SidebarProvider>

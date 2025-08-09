@@ -8,9 +8,10 @@ export default async function useEnklaveApi(
     path: string,
     method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH",
     options: EnklaveApiOptions = {},
-) {
+): Promise<any> {
     const apiBase = useRuntimeConfig().public.apiBase;
-    return $fetch(`${apiBase}/${path}`, {
+    if (!path.startsWith("/")) path = `/${path}`;
+    return $fetch(`${apiBase}${path}`, {
         method,
         params: options.params,
         body: options.body,

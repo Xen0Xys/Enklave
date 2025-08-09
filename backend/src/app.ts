@@ -9,8 +9,11 @@ import fastifyHelmet from "@fastify/helmet";
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
 import {Logger} from "@nestjs/common";
+import * as fs from "fs";
 
 const logger: Logger = new Logger("App");
+
+const pkg = JSON.parse(fs.readFileSync("../package.json", "utf-8"));
 
 process.env.APP_NAME = process.env.npm_package_name
     ?.split("-")
@@ -63,7 +66,7 @@ async function loadServer(server: NestFastifyApplication) {
     const config = new DocumentBuilder()
         .setTitle(process.env.APP_NAME || "NestJS Application")
         .setDescription(`Documentation for ${process.env.APP_NAME}`)
-        .setVersion(process.env.npm_package_version || "Unknown")
+        .setVersion(pkg.version)
         .addBearerAuth()
         .build();
 

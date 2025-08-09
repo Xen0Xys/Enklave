@@ -9,7 +9,7 @@ export const useUserStore = defineStore("user", {
     actions: {
         async login(email: string, password: string) {
             try {
-                const response = await useEnklaveApi("auth/login", "POST", {
+                const response = await useEnklaveApi("/auth/login", "POST", {
                     body: {
                         email,
                         password,
@@ -38,7 +38,7 @@ export const useUserStore = defineStore("user", {
                 return;
             }
             try {
-                this.user = await useEnklaveApi("users/me", "GET", {
+                this.user = await useEnklaveApi("/users/me", "GET", {
                     headers: {
                         Authorization: `Bearer ${tokenCookie.value}`,
                     },
