@@ -34,20 +34,18 @@ const avatarUrl = computed(() => {
 
 async function updateUsername() {
     if (newUsername.value.length < 3) {
-        return toast.error(
-            "Le nom d'utilisateur doit contenir au moins 3 caractères.",
-        );
+        return toast.error("Username must be at least 3 characters long.");
     }
     await userStore.updateUsername(newUsername.value);
 }
 
 async function updatePassword() {
     if (newPassword.value !== newPasswordConfirmation.value) {
-        return toast.error("Les nouveaux mots de passe ne correspondent pas.");
+        return toast.error("The new passwords do not match.");
     }
     if (newPassword.value.length < 8) {
         return toast.error(
-            "Le nouveau mot de passe doit contenir au moins 8 caractères.",
+            "The new password must be at least 8 characters long.",
         );
     }
     await userStore.updatePassword(currentPassword.value, newPassword.value);
@@ -70,12 +68,12 @@ async function onAvatarChange(event: Event) {
 
 <template>
     <div class="container mx-auto flex flex-col gap-4">
-        <h1 class="text-3xl font-bold">Paramètres</h1>
+        <h1 class="text-3xl font-bold">Settings</h1>
         <Card>
             <CardHeader>
-                <CardTitle>Profil</CardTitle>
+                <CardTitle>Profile</CardTitle>
                 <CardDescription>
-                    Gérez les informations de votre profil.
+                    Manage your profile information.
                 </CardDescription>
             </CardHeader>
             <CardContent class="space-y-6">
@@ -92,7 +90,7 @@ async function onAvatarChange(event: Event) {
                     </Avatar>
                     <div>
                         <Label for="avatar-upload" class="cursor-pointer">
-                            <Button as="span">Changer l'avatar</Button>
+                            <Button as="span">Change avatar</Button>
                         </Label>
                         <input
                             id="avatar-upload"
@@ -104,35 +102,32 @@ async function onAvatarChange(event: Event) {
                 </div>
                 <form class="space-y-4" @submit.prevent="updateUsername">
                     <div class="space-y-2">
-                        <Label for="username">Nom d'utilisateur</Label>
+                        <Label for="username">Username</Label>
                         <Input id="username" v-model="newUsername" />
                     </div>
-                    <Button type="submit">Enregistrer les modifications</Button>
+                    <Button type="submit">Save changes</Button>
                 </form>
             </CardContent>
         </Card>
 
         <Card>
             <CardHeader>
-                <CardTitle>Sécurité</CardTitle>
+                <CardTitle>Security</CardTitle>
                 <CardDescription
-                    >Gérez les paramètres de sécurité de votre
-                    compte.</CardDescription
+                    >Manage your account's security settings.</CardDescription
                 >
             </CardHeader>
             <CardContent>
                 <form class="space-y-4" @submit.prevent="updatePassword">
                     <div class="space-y-2">
-                        <Label for="current-password"
-                            >Mot de passe actuel</Label
-                        >
+                        <Label for="current-password">Current password</Label>
                         <Input
                             id="current-password"
                             type="password"
                             v-model="currentPassword" />
                     </div>
                     <div class="space-y-2">
-                        <Label for="new-password">Nouveau mot de passe</Label>
+                        <Label for="new-password">New password</Label>
                         <Input
                             id="new-password"
                             type="password"
@@ -140,14 +135,14 @@ async function onAvatarChange(event: Event) {
                     </div>
                     <div class="space-y-2">
                         <Label for="new-password-confirmation"
-                            >Confirmer le nouveau mot de passe</Label
+                            >Confirm new password</Label
                         >
                         <Input
                             id="new-password-confirmation"
                             type="password"
                             v-model="newPasswordConfirmation" />
                     </div>
-                    <Button type="submit">Changer le mot de passe</Button>
+                    <Button type="submit">Change password</Button>
                 </form>
             </CardContent>
         </Card>
