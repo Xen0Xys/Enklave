@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import * as argon2 from "argon2";
 import * as crypto from "crypto";
-import {Readable} from "stream";
+import {pipeline, Readable, Transform} from "stream";
 
 @Injectable()
 export class KmsUtilsService {
@@ -187,18 +187,21 @@ export class KmsUtilsService {
         const exportedKey: Buffer = Buffer.from(
             await crypto.subtle.exportKey("raw", key),
         );
-
         const cipher: crypto.CipherGCM = crypto.createCipheriv(
             "aes-256-gcm",
             exportedKey,
             iv,
         );
         const hash: crypto.Hash = crypto.createHash("sha256");
-
         let encryptedSize: number = 0;
-        cipher.on("data", (chunk: Buffer) => {
-            encryptedSize += chunk.length;
-            hash.update(chunk);
+
+        const hashAndCountTransform = new Transform({
+            transform(chunk, encoding, callback) {
+                encryptedSize += chunk.length;
+                hash.update(chunk);
+                this.push(chunk);
+                callback();
+            },
         });
 
         const finalizationPromise = new Promise<{
@@ -206,21 +209,24 @@ export class KmsUtilsService {
             size: number;
             sha256: string;
         }>((resolve, reject) => {
-            cipher.on("finish", () => {
-                resolve({
-                    authTag: cipher.getAuthTag(),
-                    size: encryptedSize,
-                    sha256: hash.digest("hex"),
-                });
+            pipeline(sourceStream, cipher, hashAndCountTransform, (err) => {
+                if (err) return reject(err);
+                try {
+                    const authTag = cipher.getAuthTag();
+                    const sha256 = hash.digest("hex");
+                    resolve({
+                        authTag,
+                        size: encryptedSize,
+                        sha256,
+                    });
+                } catch (finalizationError) {
+                    reject(finalizationError);
+                }
             });
-            cipher.on("error", reject);
-            sourceStream.on("error", (err) => cipher.emit("error", err));
         });
 
-        const encryptedStream: crypto.CipherGCM = sourceStream.pipe(cipher);
-
         return {
-            encryptedStream,
+            encryptedStream: hashAndCountTransform,
             iv: iv,
             getAuthTag: () => finalizationPromise.then((data) => data.authTag),
             getEncryptedSize: () =>
@@ -236,56 +242,52 @@ export class KmsUtilsService {
         authTag: Buffer,
         sha256?: string,
     ): Promise<Readable> {
-        const exportedKey: Buffer = Buffer.from(
+        const exportedKey = Buffer.from(
             await crypto.subtle.exportKey("raw", key),
         );
-
-        const decipher: crypto.DecipherGCM = crypto.createDecipheriv(
+        const decipher = crypto.createDecipheriv(
             "aes-256-gcm",
             exportedKey,
             iv,
         );
         decipher.setAuthTag(authTag);
 
-        if (sha256) {
-            const hash = crypto.createHash("sha256");
-            const passThrough = new Readable({
-                read() {},
-            });
-
-            const decryptedStream = encryptedStream.pipe(decipher);
-
-            encryptedStream.on("data", (chunk) => {
-                hash.update(chunk);
-                passThrough.push(chunk);
-            });
-
-            encryptedStream.on("end", () => {
-                const computedHash = hash.digest("hex");
-                if (computedHash !== sha256) {
-                    decryptedStream.emit(
-                        "error",
-                        new Error("SHA256 hash mismatch"),
-                    );
+        if (!sha256) {
+            pipeline(encryptedStream, decipher, (err) => {
+                if (err) {
+                    decipher.destroy(err);
                 }
-                passThrough.push(null);
             });
-
-            encryptedStream.on("error", (err) => {
-                decryptedStream.emit("error", err);
-            });
-
-            return decryptedStream;
+            return decipher;
         }
 
-        const decryptedStream: crypto.DecipherGCM =
-            encryptedStream.pipe(decipher);
-
-        encryptedStream.on("error", (err) => {
-            decryptedStream.emit("error", err);
+        const hash = crypto.createHash("sha256");
+        const hashAndVerifyTransform = new Transform({
+            transform(chunk, encoding, callback) {
+                hash.update(chunk);
+                this.push(chunk);
+                callback();
+            },
+            flush(callback) {
+                const computedHash = hash.digest("hex");
+                if (computedHash !== sha256) {
+                    callback(
+                        new Error(
+                            `SHA256 hash mismatch. Expected ${sha256}, got ${computedHash}`,
+                        ),
+                    );
+                } else {
+                    callback();
+                }
+            },
         });
 
-        return decryptedStream;
+        pipeline(encryptedStream, hashAndVerifyTransform, decipher, (err) => {
+            if (err) {
+            }
+        });
+
+        return decipher;
     }
 
     async encryptWithAesGcm(

@@ -29,7 +29,6 @@ import {Readable} from "stream";
 import {ImagesService} from "../storage/images.service";
 
 @Controller("users")
-@UseGuards(JwtAuthGuard)
 export class UsersController {
     constructor(
         private readonly usersService: UsersService,
@@ -40,12 +39,14 @@ export class UsersController {
     ) {}
 
     @Get("me")
+    @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     getMe(@User() user: UserEntity): UserEntity {
         return user;
     }
 
     @Patch("password")
+    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiBearerAuth()
     async changePassword(
@@ -60,6 +61,7 @@ export class UsersController {
     }
 
     @Patch("username")
+    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiBearerAuth()
     async changeUsername(
@@ -70,6 +72,7 @@ export class UsersController {
     }
 
     @Post("avatar")
+    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiBearerAuth()
     @ApiConsumes("multipart/form-data")
@@ -131,25 +134,26 @@ export class UsersController {
 
     @Get("avatar/:avatarId")
     @HttpCode(HttpStatus.OK)
-    @ApiBearerAuth()
     async getAvatar(
-        @User() user: UserEntity,
         @Param("avatarId") avatarId: string,
         @Res() res: FastifyReply,
     ): Promise<void> {
-        const avatar: Avatars | null =
-            await this.prismaService.avatars.findFirst({
-                where: {user_id: user.id},
-            });
-        if (!avatar) throw new BadRequestException("No avatar found for user");
-        const serverFile: ServerFiles | null =
-            await this.storageService.getServerFileFromId(avatarId);
-        if (!serverFile) throw new NotFoundException("Avatar not found");
+        const avatarFile = await this.prismaService.serverFiles.findFirst({
+            where: {
+                id: avatarId,
+            },
+            include: {
+                avatar: true,
+            },
+        });
+        if (!avatarFile || !avatarFile.avatar)
+            throw new BadRequestException("No avatar found for user");
+        if (!avatarFile) throw new NotFoundException("Avatar not found");
         const appKey: CryptoKey = await this.kmsService.getAppKey();
         // Set mimeType
         res.header("Content-Type", "image/webp");
         const buffer: Buffer = await this.storageService.downloadFileBuffer(
-            serverFile,
+            avatarFile,
             appKey,
         );
         res.send(buffer);
