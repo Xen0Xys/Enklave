@@ -26,6 +26,10 @@ const newPassword = ref("");
 const newPasswordConfirmation = ref("");
 const runtimeConfig = useRuntimeConfig();
 
+const isUpdatingUsername = ref(false);
+const isUpdatingPassword = ref(false);
+const isUploadingAvatar = ref(false);
+
 const avatarUrl = computed(() => {
     return userStore.user.avatarId
         ? `${runtimeConfig.public.apiBase}/users/avatar/${userStore.user.avatarId}`
@@ -33,25 +37,34 @@ const avatarUrl = computed(() => {
 });
 
 async function updateUsername() {
-    if (newUsername.value.length < 3) {
+    if (newUsername.value.length < 3)
         return toast.error("Username must be at least 3 characters long.");
+    try {
+        await userStore.updateUsername(newUsername.value);
+    } finally {
+        isUpdatingUsername.value = false;
     }
-    await userStore.updateUsername(newUsername.value);
 }
 
 async function updatePassword() {
-    if (newPassword.value !== newPasswordConfirmation.value) {
+    if (newPassword.value !== newPasswordConfirmation.value)
         return toast.error("The new passwords do not match.");
-    }
-    if (newPassword.value.length < 8) {
+    if (newPassword.value.length < 8)
         return toast.error(
             "The new password must be at least 8 characters long.",
         );
+    isUpdatingPassword.value = true;
+    try {
+        await userStore.updatePassword(
+            currentPassword.value,
+            newPassword.value,
+        );
+        currentPassword.value = "";
+        newPassword.value = "";
+        newPasswordConfirmation.value = "";
+    } finally {
+        isUpdatingPassword.value = false;
     }
-    await userStore.updatePassword(currentPassword.value, newPassword.value);
-    currentPassword.value = "";
-    newPassword.value = "";
-    newPasswordConfirmation.value = "";
 }
 
 async function onAvatarChange(event: Event) {
@@ -62,7 +75,12 @@ async function onAvatarChange(event: Event) {
     const formData = new FormData();
     formData.append("avatar", file);
 
-    await userStore.uploadAvatar(formData);
+    isUploadingAvatar.value = true;
+    try {
+        await userStore.uploadAvatar(formData);
+    } finally {
+        isUploadingAvatar.value = false;
+    }
 }
 </script>
 
@@ -90,7 +108,9 @@ async function onAvatarChange(event: Event) {
                     </Avatar>
                     <div>
                         <Label for="avatar-upload" class="cursor-pointer">
-                            <Button as="span">Change avatar</Button>
+                            <Button as="span" :disabled="isUploadingAvatar"
+                                >Change avatar</Button
+                            >
                         </Label>
                         <input
                             id="avatar-upload"
@@ -105,7 +125,9 @@ async function onAvatarChange(event: Event) {
                         <Label for="username">Username</Label>
                         <Input id="username" v-model="newUsername" />
                     </div>
-                    <Button type="submit">Save changes</Button>
+                    <Button type="submit" :disabled="isUpdatingUsername"
+                        >Save changes</Button
+                    >
                 </form>
             </CardContent>
         </Card>
@@ -142,7 +164,9 @@ async function onAvatarChange(event: Event) {
                             type="password"
                             v-model="newPasswordConfirmation" />
                     </div>
-                    <Button type="submit">Change password</Button>
+                    <Button type="submit" :disabled="isUpdatingPassword"
+                        >Change password</Button
+                    >
                 </form>
             </CardContent>
         </Card>

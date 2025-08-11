@@ -18,21 +18,32 @@ model NewsLetterSubscriptions {
 }
 
 model Users {
-  id          String    @id @default(uuid(7)) @db.Uuid
-  username    String    @db.VarChar(30) // Public display name
-  email       String    @unique
-  password    String // Hashed
-  jwt_id      Bytes // JWT ID for token revocation
-  master_key  Bytes // Encrypted master key (from application key, derivated from application secret)
-  public_key  Bytes // Public key for encryption
-  private_key Bytes // Private key for decryption; Encrypted with master key
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
-  avatars     Avatars?
-  folders     Folders[]
-  files       Files[]
+  id                String              @id @default(uuid(7)) @db.Uuid
+  username          String              @db.VarChar(30) // Public display name
+  email             String              @unique
+  password          String // Hashed
+  jwt_id            Bytes // JWT ID for token revocation
+  master_key        Bytes // Encrypted master key (from application key, derivated from application secret)
+  public_key        Bytes // Public key for encryption
+  private_key       Bytes // Private key for decryption; Encrypted with master key
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  avatars           Avatars?
+  folders           Folders[]
+  files             Files[]
+  EmailVerification EmailVerification[]
 
   @@map("users")
+}
+
+model EmailVerification {
+  id         String   @id @default(uuid(4)) @db.Uuid
+  user_id    String   @db.Uuid
+  user       Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  expires_at DateTime
+
+  @@map("email_verification")
 }
 
 model ServerFiles {
