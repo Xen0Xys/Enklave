@@ -9,6 +9,8 @@ export class UserEntity {
     createdAt: Date;
     updatedAt: Date;
 
+    verified: boolean;
+
     @Exclude()
     @ApiHideProperty()
     password: string;

@@ -2,7 +2,7 @@ import {ConflictException, Injectable} from "@nestjs/common";
 import {FolderTypes} from "../../../prisma/generated/enums";
 import {KmsUtilsService} from "../kms/kms-utils.service";
 import {UserEntity} from "../users/entities/user.entity";
-import {PrismaService} from "../helper/prisma.service";
+import {PrismaService, TxClient} from "../helper/prisma.service";
 import {KmsService} from "../kms/kms.service";
 
 @Injectable()
@@ -13,9 +13,15 @@ export class FoldersService {
         private readonly kmsUtilsService: KmsUtilsService,
     ) {}
 
-    async createDefaultFolders(user: UserEntity): Promise<void> {
+    async createDefaultFolders(user: UserEntity, tx?: TxClient): Promise<void> {
         // Create media folder
-        await this.createFolder(user, "Media", undefined, FolderTypes.MEDIA);
+        await this.createFolder(
+            user,
+            "Media",
+            undefined,
+            FolderTypes.MEDIA,
+            tx,
+        );
     }
 
     private async createFolder(
@@ -23,6 +29,7 @@ export class FoldersService {
         name?: string,
         parentId?: string,
         type?: FolderTypes,
+        tx?: TxClient,
     ): Promise<void> {
         const folderKey: CryptoKey =
             await this.kmsService.generateRandomSymmetricKey();
@@ -31,7 +38,7 @@ export class FoldersService {
             folderKey,
         );
         try {
-            await this.prismaService.folders.create({
+            await this.prismaService.withTx(tx).folders.create({
                 data: {
                     user_id: user.id,
                     name: name || "New Folder",

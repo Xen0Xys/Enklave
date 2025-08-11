@@ -4,6 +4,7 @@ import {Body, Post} from "@nestjs/common/decorators";
 import {RegisterDto} from "./dto/register.dto";
 import {LoginEntity} from "./entities/login.entity";
 import {LoginDto} from "./dto/login.dto";
+import {VerifyDto} from "./dto/verify.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -13,6 +14,11 @@ export class AuthController {
     async registerUser(@Body() body: RegisterDto): Promise<LoginEntity> {
         const {username, email, password} = body;
         return await this.authService.registerUser(username, email, password);
+    }
+
+    @Post("register/verify")
+    async verifyUser(@Body() body: VerifyDto): Promise<void> {
+        return await this.authService.verifyEmail(body.token);
     }
 
     @Post("login")

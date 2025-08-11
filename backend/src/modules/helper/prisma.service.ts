@@ -1,6 +1,13 @@
+import {PrismaClientOptions} from "../../../prisma/generated/internal/prismaNamespace";
 import {Injectable, Logger, OnModuleInit} from "@nestjs/common";
 import {PrismaClient} from "../../../prisma/generated/client";
+import {DefaultArgs} from "@prisma/client/runtime/client";
 import {PrismaPg} from "@prisma/adapter-pg";
+
+export type TxClient = Omit<
+    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
+    "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends"
+>;
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -41,5 +48,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
 
     async onModuleDestroy() {
         await this.$disconnect();
+    }
+
+    withTx(tx?: TxClient): TxClient {
+        return tx || this;
     }
 }

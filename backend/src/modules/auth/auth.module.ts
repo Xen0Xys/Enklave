@@ -5,9 +5,10 @@ import {KmsModule} from "../kms/kms.module";
 import {AuthService} from "./auth.service";
 import {Module} from "@nestjs/common";
 import {JwtStrategy} from "./strategies/jwt.strategy";
+import {MailerModule} from "../mailer/mailer.module";
 
 @Module({
-    imports: [UsersModule, KmsModule, StorageModule],
+    imports: [UsersModule, KmsModule, StorageModule, MailerModule],
     providers: [AuthService, JwtStrategy],
     exports: [],
     controllers: [AuthController],

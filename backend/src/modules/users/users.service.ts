@@ -9,9 +9,10 @@ import {PrismaService} from "../helper/prisma.service";
 import {KmsUtilsService} from "../kms/kms-utils.service";
 import {UsersGetPayload} from "../../../prisma/generated/models/Users";
 
-export type UserWithAvatar = UsersGetPayload<{
+export type CompletePrismaUser = UsersGetPayload<{
     include: {
         avatars: true;
+        email_verifications: true;
     };
 }>;
 
@@ -23,7 +24,7 @@ export class UsersService {
         private readonly prismaService: PrismaService,
     ) {}
 
-    async toUser(user: UserWithAvatar): Promise<UserEntity> {
+    async toUser(user: CompletePrismaUser): Promise<UserEntity> {
         const masterKey: CryptoKey = await this.kmsService.unwrapMasterKey(
             Buffer.from(user.master_key),
         );
@@ -41,6 +42,7 @@ export class UsersService {
             avatarId: user.avatars?.server_file_id,
             createdAt: user.created_at,
             updatedAt: user.updated_at,
+            verified: !user.email_verifications,
             masterKey,
             publicKey: keyPair.publicKey,
             privateKey: keyPair.privateKey,
@@ -52,6 +54,7 @@ export class UsersService {
             where: {id: user_id},
             include: {
                 avatars: true,
+                email_verifications: true,
             },
         });
         if (!user) throw new NotFoundException("User not found");

@@ -10,10 +10,11 @@ import {KmsUtilsService} from "../kms/kms-utils.service";
 import {UserEntity} from "../users/entities/user.entity";
 import {PrismaService} from "../helper/prisma.service";
 import {Users} from "../../../prisma/generated/client";
-import {UsersService, UserWithAvatar} from "../users/users.service";
+import {UsersService} from "../users/users.service";
 import {LoginEntity} from "./entities/login.entity";
 import {KmsService} from "../kms/kms.service";
 import {JwtService} from "@nestjs/jwt";
+import {MailerService} from "../mailer/mailer.service";
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,7 @@ export class AuthService {
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService,
         private readonly storageService: FoldersService,
+        private readonly mailerService: MailerService,
     ) {}
 
     async registerUser(
@@ -50,50 +52,98 @@ export class AuthService {
         const wrappedKeyPair: WrappedKeyPair =
             await this.kmsService.wrapAsymmetricKeypair(keyPair);
 
-        const prismaUser: UserWithAvatar =
-            await this.prismaService.users.create({
-                data: {
-                    username,
-                    email,
-                    password: hashedPassword,
-                    jwt_id: this.kmsUtilsService.randomBytes(32),
-                    master_key: wrappedMasterKey,
-                    public_key: wrappedKeyPair.wrappedPublicKey,
-                    private_key: wrappedKeyPair.wrappedPrivateKey,
+        return this.prismaService.$transaction(async (tx) => {
+            const prismaUser = await this.prismaService
+                .withTx(tx)
+                .users.create({
+                    data: {
+                        username,
+                        email,
+                        password: hashedPassword,
+                        jwt_id: this.kmsUtilsService.randomBytes(32),
+                        master_key: wrappedMasterKey,
+                        public_key: wrappedKeyPair.wrappedPublicKey,
+                        private_key: wrappedKeyPair.wrappedPrivateKey,
+                        email_verifications: {
+                            create: {
+                                expires_at: new Date(
+                                    Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+                                ),
+                            },
+                        },
+                    },
+                    include: {
+                        avatars: true,
+                        email_verifications: true,
+                    },
+                });
+
+            const user: UserEntity = await this.usersService.toUser(prismaUser);
+
+            // Create default folders for the user
+            await this.storageService.createDefaultFolders(user, tx);
+
+            await this.mailerService.sendMail(
+                user.email,
+                "Welcome to Our Service",
+                "welcome",
+                {
+                    username: user.username,
+                    email: user.email,
+                    verification_link: `${process.env.FRONTEND_URL}/verify-email?token=${prismaUser.email_verifications?.id}`,
                 },
-                include: {
-                    avatars: true,
+            );
+
+            return new LoginEntity({
+                user,
+                token: this.jwtService.sign(
+                    {},
+                    {
+                        subject: user.id,
+                        expiresIn: "30d",
+                        jwtid: user.jwtId.toString("hex"),
+                    },
+                ),
+            });
+        });
+    }
+
+    async verifyEmail(token: string): Promise<void> {
+        // Find the email verification record
+        const emailVerification =
+            await this.prismaService.emailVerification.findUnique({
+                where: {
+                    id: token,
                 },
             });
 
-        const user: UserEntity = await this.usersService.toUser(prismaUser);
+        if (!emailVerification)
+            throw new NotFoundException("Email verification token not found.");
 
-        // Create default folders for the user
-        await this.storageService.createDefaultFolders(user);
+        if (emailVerification.expires_at < new Date())
+            throw new UnauthorizedException(
+                "Email verification token has expired.",
+            );
 
-        return new LoginEntity({
-            user,
-            token: this.jwtService.sign(
-                {},
-                {
-                    subject: user.id,
-                    expiresIn: "30d",
-                    jwtid: user.jwtId.toString("hex"),
-                },
-            ),
+        await this.prismaService.emailVerification.delete({
+            where: {
+                id: token,
+            },
         });
     }
 
     async loginUser(email: string, password: string): Promise<LoginEntity> {
         // Find the user by username or email
-        const prismaUser: UserWithAvatar | null =
-            await this.prismaService.users.findFirst({
-                where: {email},
-                include: {
-                    avatars: true,
-                },
-            });
+        const prismaUser = await this.prismaService.users.findFirst({
+            where: {email},
+            include: {
+                avatars: true,
+                email_verifications: true,
+            },
+        });
         if (!prismaUser) throw new NotFoundException("User not found.");
+        if (prismaUser.email_verifications)
+            throw new UnauthorizedException("User is not verified.");
 
         // Verify the password
         const isPasswordValid: boolean =

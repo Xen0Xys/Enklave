@@ -27,6 +27,16 @@ CREATE TABLE "public"."users" (
 );
 
 -- CreateTable
+CREATE TABLE "public"."email_verifications" (
+    "id" UUID NOT NULL,
+    "user_id" UUID NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "expires_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "email_verifications_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "public"."server_files" (
     "id" UUID NOT NULL,
     "s3_key" UUID NOT NULL,
@@ -80,6 +90,9 @@ CREATE UNIQUE INDEX "newsletter_subscriptions_email_key" ON "public"."newsletter
 CREATE UNIQUE INDEX "users_email_key" ON "public"."users"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "email_verifications_user_id_key" ON "public"."email_verifications"("user_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "server_files_s3_key_key" ON "public"."server_files"("s3_key");
 
 -- CreateIndex
@@ -93,6 +106,9 @@ CREATE UNIQUE INDEX "folders_user_id_type_key" ON "public"."folders"("user_id", 
 
 -- CreateIndex
 CREATE UNIQUE INDEX "files_name_folder_id_key" ON "public"."files"("name", "folder_id");
+
+-- AddForeignKey
+ALTER TABLE "public"."email_verifications" ADD CONSTRAINT "email_verifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."avatars" ADD CONSTRAINT "avatars_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

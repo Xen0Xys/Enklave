@@ -48,6 +48,7 @@ async function main() {
         email: adminUser.email,
         createdAt: new Date(),
         updatedAt: new Date(),
+        verified: true,
         password: adminUser.password,
         jwtId: Buffer.from(adminUser.jwt_id),
         masterKey: masterKey,
