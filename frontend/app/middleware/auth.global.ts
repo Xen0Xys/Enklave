@@ -1,19 +1,22 @@
 import {useUserStore} from "~/stores/user.store";
 
+const allowedPaths = [
+    "/auth/login",
+    "/auth/register",
+    "/callbacks/verify-email",
+];
+
 export default defineNuxtRouteMiddleware(async (to) => {
     const userStore = useUserStore();
-    if (userStore.user === undefined) {
-        await userStore.fetchCurrentUser();
-    }
+    if (userStore.user === undefined) await userStore.fetchCurrentUser();
 
-    const isLoggedIn = !!userStore.user;
-    const isLoginPage =
-        to.path === "/auth/login" || to.path === "/auth/register";
+    const isLoggedIn: boolean = !!userStore.user;
+    const isAllowedPage: boolean = allowedPaths.includes(to.path);
 
-    if (!isLoggedIn && !isLoginPage) {
+    if (!isLoggedIn && !isAllowedPage) {
         return navigateTo("/auth/login");
     }
-    if (isLoggedIn && isLoginPage) {
+    if (isLoggedIn && isAllowedPage) {
         return navigateTo("/");
     }
 });

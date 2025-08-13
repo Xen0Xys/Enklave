@@ -12,7 +12,8 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post("register")
-    async registerUser(@Body() body: RegisterDto): Promise<LoginEntity> {
+    @HttpCode(HttpStatus.NO_CONTENT)
+    async registerUser(@Body() body: RegisterDto): Promise<void> {
         const {username, email, password} = body;
         return await this.authService.registerUser(username, email, password);
     }

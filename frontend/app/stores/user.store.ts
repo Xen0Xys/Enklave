@@ -54,18 +54,16 @@ export const useUserStore = defineStore("user", {
         },
         async register(username: string, email: string, password: string) {
             try {
-                const response = await useEnklaveApi("auth/register", "POST", {
+                await useEnklaveApi("auth/register", "POST", {
                     body: {
                         username,
                         email,
                         password,
                     },
                 });
-                const tokenCookie = useCookie("token");
-                tokenCookie.value = response.token;
-                this.user = response.user;
                 toast.success("Registration successful!", {
-                    description: "Welcome! Your account has been created.",
+                    description:
+                        "Welcome! Your account has been created, please verify your email.",
                 });
                 await useRouter().push("/");
             } catch (e: any) {
@@ -76,6 +74,25 @@ export const useUserStore = defineStore("user", {
                         "An error occurred during registration.",
                 });
             }
+        },
+        async verifyEmail(token: string): Promise<boolean> {
+            try {
+                await useEnklaveApi("/auth/register/verify", "POST", {
+                    body: {token},
+                });
+                toast.success("Email verification successful!", {
+                    description: "Your email has been verified.",
+                });
+                return true;
+            } catch (e: any) {
+                toast.error("Email verification failed.", {
+                    description:
+                        e.data?.message ||
+                        e.message ||
+                        "An error occurred during email verification.",
+                });
+            }
+            return false;
         },
         async logout() {
             const tokenCookie = useCookie("token");
