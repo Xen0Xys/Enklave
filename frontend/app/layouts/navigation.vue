@@ -4,6 +4,7 @@ import Default from "~/layouts/default.vue";
 import EnklaveSidebar from "~/components/sidebar/EnklaveSidebar.vue";
 import {Separator} from "~/components/ui/separator";
 import ThemeToggle from "~/components/ThemeToggle.vue";
+import SidebarWatcher from "~/components/sidebar/SidebarWatcher.vue";
 
 const defaultOpen = useCookie<boolean>("sidebar_state");
 </script>
@@ -11,6 +12,7 @@ const defaultOpen = useCookie<boolean>("sidebar_state");
 <template>
     <default>
         <SidebarProvider :defaultOpen="defaultOpen">
+            <SidebarWatcher />
             <EnklaveSidebar />
             <SidebarInset>
                 <div class="flex h-full flex-col">
