@@ -3,7 +3,11 @@ import {ServerFiles} from "../../../prisma/generated/client";
 import {KmsUtilsService} from "../kms/kms-utils.service";
 import {PrismaService} from "../helper/prisma.service";
 import {KmsService} from "../kms/kms.service";
-import {Injectable} from "@nestjs/common";
+import {
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import {Readable} from "stream";
 
 @Injectable()
@@ -35,9 +39,7 @@ export class StorageService {
     async deleteServerFile(serverFileId: string): Promise<void> {
         const serverFile: ServerFiles | null =
             await this.getServerFileFromId(serverFileId);
-        if (!serverFile) {
-            throw new Error("Server file not found");
-        }
+        if (!serverFile) throw new NotFoundException("Server file not found");
         const remoteFile: Bun.S3File = this.s3Client.file(serverFile.s3_key);
         try {
             await this.prismaService.serverFiles.delete({
@@ -45,7 +47,9 @@ export class StorageService {
             });
             await remoteFile.delete();
         } catch (e: any) {
-            throw new Error(`Failed to delete file: ${e.message}`);
+            throw new InternalServerErrorException(
+                `Failed to delete file: ${e.message}`,
+            );
         }
     }
 
@@ -110,9 +114,11 @@ export class StorageService {
             wrappingKey,
             "AES-GCM",
         );
-        const remoteFile: Bun.S3File = this.s3Client.file(serverFile.s3_key);
-        const reader: ReadableStream = remoteFile.stream();
         try {
+            const remoteFile: Bun.S3File = this.s3Client.file(
+                serverFile.s3_key,
+            );
+            const reader: ReadableStream = remoteFile.stream();
             const readable: Readable = Readable.fromWeb(reader as any);
             return await this.kmsUtilsService.decryptWithAesGcmStream(
                 readable,
@@ -121,7 +127,9 @@ export class StorageService {
                 Buffer.from(serverFile.auth_tag),
             );
         } catch (e: any) {
-            throw new Error(`Failed to download file: ${e.message}`);
+            throw new NotFoundException(
+                `Failed to download file: ${e.message}`,
+            );
         }
     }
 
@@ -129,14 +137,18 @@ export class StorageService {
         serverFile: ServerFiles,
         wrappingKey: CryptoKey,
     ): Promise<Buffer> {
-        const readable: Readable = await this.downloadFileStream(
-            serverFile,
-            wrappingKey,
-        );
-        const chunks: Buffer[] = [];
-        for await (const chunk of readable) {
-            chunks.push(chunk);
+        try {
+            const readable: Readable = await this.downloadFileStream(
+                serverFile,
+                wrappingKey,
+            );
+            const chunks: Buffer[] = [];
+            for await (const chunk of readable) chunks.push(chunk);
+            return Buffer.concat(chunks);
+        } catch (e) {
+            throw new NotFoundException(
+                `Failed to download file buffer: ${e.message}`,
+            );
         }
-        return Buffer.concat(chunks);
     }
 }

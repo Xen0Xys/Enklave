@@ -151,11 +151,11 @@ export class UsersController {
         if (!avatarFile) throw new NotFoundException("Avatar not found");
         const appKey: CryptoKey = await this.kmsService.getAppKey();
         // Set mimeType
-        res.header("Content-Type", "image/webp");
         const buffer: Buffer = await this.storageService.downloadFileBuffer(
             avatarFile,
             appKey,
         );
+        res.header("Content-Type", "image/webp");
         res.send(buffer);
     }
 }

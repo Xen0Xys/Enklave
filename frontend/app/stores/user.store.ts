@@ -46,6 +46,7 @@ export const useUserStore = defineStore("user", {
                 // oxlint-disable-next-line no-unused-vars
             } catch (_: any) {
                 this.user = undefined;
+                tokenCookie.value = undefined;
                 toast.error("Failed to fetch user data. Please log in again.", {
                     description: "Your session may have expired.",
                 });
