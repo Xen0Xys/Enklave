@@ -1,10 +1,11 @@
-import {Controller} from "@nestjs/common";
-import {AuthService} from "./auth.service";
-import {Body, Post} from "@nestjs/common/decorators";
-import {RegisterDto} from "./dto/register.dto";
+import {HttpStatus} from "@nestjs/common/enums/http-status.enum";
+import {Body, HttpCode, Post} from "@nestjs/common/decorators";
 import {LoginEntity} from "./entities/login.entity";
-import {LoginDto} from "./dto/login.dto";
+import {RegisterDto} from "./dto/register.dto";
+import {AuthService} from "./auth.service";
 import {VerifyDto} from "./dto/verify.dto";
+import {Controller} from "@nestjs/common";
+import {LoginDto} from "./dto/login.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -17,6 +18,7 @@ export class AuthController {
     }
 
     @Post("register/verify")
+    @HttpCode(HttpStatus.NO_CONTENT)
     async verifyUser(@Body() body: VerifyDto): Promise<void> {
         return await this.authService.verifyEmail(body.token);
     }

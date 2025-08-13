@@ -12,15 +12,15 @@
         "postinstall": "bun nuxt prepare"
     },
     "dependencies": {
-        "@nuxt/icon": "^1.15.0",
+        "@nuxt/icon": "^2.0.0",
         "@nuxtjs/color-mode": "^3.5.2",
         "@pinia/nuxt": "0.11.2",
         "@tailwindcss/vite": "^4.1.11",
         "@vueuse/core": "^13.6.0",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
-        "lucide-vue-next": "^0.536.0",
-        "nuxt": "^4.0.2",
+        "lucide-vue-next": "^0.539.0",
+        "nuxt": "^4.0.3",
         "pinia": "^3.0.3",
         "reka-ui": "^2.4.1",
         "shadcn-nuxt": "2.2.0",

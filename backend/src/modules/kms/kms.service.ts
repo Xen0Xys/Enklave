@@ -116,9 +116,10 @@ export class KmsService {
                 this.appKey,
                 "X25519",
             );
+        // Import the public key from the wrapped public key
         const publicKey: CryptoKey = await crypto.subtle.importKey(
             "raw",
-            wrappedKeyPair.wrappedPublicKey,
+            new Uint8Array(wrappedKeyPair.wrappedPublicKey),
             {
                 name: "X25519",
             },
