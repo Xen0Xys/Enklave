@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "tailwindcss" important;
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -179,5 +179,8 @@
     }
     small {
         @apply text-sm leading-none font-medium;
+    }
+    span.iconify {
+        @apply size-4;
     }
 }
