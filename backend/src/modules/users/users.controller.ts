@@ -23,7 +23,7 @@ import {ImagesService} from "../storage/images.service";
 import {User} from "../auth/decorators/users.decorator";
 import {PrismaService} from "../helper/prisma.service";
 import {FastifyReply, FastifyRequest} from "fastify";
-import {Body, Post} from "@nestjs/common/decorators";
+import {Body, Delete, Post} from "@nestjs/common/decorators";
 import {UserEntity} from "./entities/user.entity";
 import {UsersService} from "./users.service";
 import {Readable} from "stream";
@@ -156,5 +156,13 @@ export class UsersController {
         );
         res.header("Content-Type", "image/webp");
         res.send(buffer);
+    }
+
+    @Delete("logout/all")
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    async logoutAll(@User() user: UserEntity): Promise<void> {
+        return await this.usersService.changeJwtId(user.id);
     }
 }

@@ -21,17 +21,17 @@ export type CompletePrismaUser = UsersGetPayload<{
 @Injectable()
 export class UsersService {
     constructor(
-        private readonly kmsService: SecurityService,
-        private readonly kmsUtilService: SecurityUtilsService,
+        private readonly securityService: SecurityService,
+        private readonly securityUtilsService: SecurityUtilsService,
         private readonly prismaService: PrismaService,
     ) {}
 
     async toUser(user: CompletePrismaUser): Promise<UserEntity> {
-        const masterKey: CryptoKey = await this.kmsService.unwrapMasterKey(
+        const masterKey: CryptoKey = await this.securityService.unwrapMasterKey(
             Buffer.from(user.master_key.material as Uint8Array),
         );
         const keyPair: CryptoKeyPair =
-            await this.kmsService.unwrapAsymmetricKeypair({
+            await this.securityService.unwrapAsymmetricKeypair({
                 wrappedPublicKey: Buffer.from(
                     user.asymmetric_master_key.public_material as Uint8Array,
                 ),
@@ -75,14 +75,14 @@ export class UsersService {
         newPassword: string,
     ): Promise<void> {
         if (
-            !(await this.kmsUtilService.verifyPassword(
+            !(await this.securityUtilsService.verifyPassword(
                 oldPassword,
                 user.password,
             ))
         )
             throw new UnauthorizedException("Old password is incorrect");
         const hashedNewPassword: string =
-            await this.kmsUtilService.hashPassword(newPassword);
+            await this.securityUtilsService.hashPassword(newPassword);
         await this.prismaService.users.update({
             where: {id: user.id},
             data: {
@@ -98,6 +98,16 @@ export class UsersService {
             data: {
                 username,
                 updated_at: new Date(),
+            },
+        });
+    }
+
+    async changeJwtId(userId: string): Promise<void> {
+        const newJwtId: Buffer = this.securityUtilsService.randomBytes(32);
+        await this.prismaService.users.update({
+            where: {id: userId},
+            data: {
+                jwt_id: newJwtId,
             },
         });
     }
