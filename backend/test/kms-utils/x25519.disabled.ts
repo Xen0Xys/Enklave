@@ -1,11 +1,11 @@
 import {beforeAll, describe, expect, test} from "bun:test";
-import {KmsUtilsService} from "../../src/modules/kms/kms-utils.service";
+import {SecurityUtilsService} from "../../src/modules/security/security-utils.service";
 
 describe("generateKeysX25519 (Génération de paire de clés ECDH)", () => {
-    let kmsUtilsService: KmsUtilsService;
+    let kmsUtilsService: SecurityUtilsService;
 
     beforeAll(async () => {
-        kmsUtilsService = new KmsUtilsService();
+        kmsUtilsService = new SecurityUtilsService();
     });
 
     test("devrait générer une CryptoKeyPair valide pour X25519", async () => {
@@ -40,12 +40,12 @@ describe("generateKeysX25519 (Génération de paire de clés ECDH)", () => {
 });
 
 describe("Chiffrement asymétrique (ECDH-ES + AES-GCM)", () => {
-    let kmsUtilsService: KmsUtilsService;
+    let kmsUtilsService: SecurityUtilsService;
     let recipientKeyPair: CryptoKeyPair;
     let anotherKeyPair: CryptoKeyPair;
 
     beforeAll(async () => {
-        kmsUtilsService = new KmsUtilsService();
+        kmsUtilsService = new SecurityUtilsService();
         recipientKeyPair = await kmsUtilsService.generateKeysX25519();
         anotherKeyPair = await kmsUtilsService.generateKeysX25519();
     });

@@ -14,6 +14,7 @@ import {Avatars, ServerFiles} from "../../../prisma/generated/client";
 import {ApiBearerAuth, ApiBody, ApiConsumes} from "@nestjs/swagger";
 import {CryptoKey} from "@simplewebauthn/server/script/types/dom";
 import {HttpStatus} from "@nestjs/common/enums/http-status.enum";
+import {SecurityService} from "../security/security.service";
 import {ChangePasswordDto} from "./dto/change-password.dto";
 import {ChangeUsernameDto} from "./dto/change-username.dto";
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
@@ -24,7 +25,6 @@ import {PrismaService} from "../helper/prisma.service";
 import {FastifyReply, FastifyRequest} from "fastify";
 import {Body, Post} from "@nestjs/common/decorators";
 import {UserEntity} from "./entities/user.entity";
-import {KmsService} from "../kms/kms.service";
 import {UsersService} from "./users.service";
 import {Readable} from "stream";
 
@@ -34,7 +34,7 @@ export class UsersController {
         private readonly usersService: UsersService,
         private readonly prismaService: PrismaService,
         private readonly storageService: StorageService,
-        private readonly kmsService: KmsService,
+        private readonly kmsService: SecurityService,
         private readonly imagesService: ImagesService,
     ) {}
 
@@ -143,6 +143,7 @@ export class UsersController {
             },
             include: {
                 avatar: true,
+                file_key: true,
             },
         });
         if (!avatarFile || !avatarFile.avatar)

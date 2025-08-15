@@ -1,11 +1,11 @@
-import {KmsUtilsService} from "../../src/modules/kms/kms-utils.service";
+import {SecurityUtilsService} from "../../src/modules/security/security-utils.service";
 import {beforeAll, describe, expect, test} from "bun:test";
 
 describe("KmsUtilsService - Hash Functions", () => {
-    let service: KmsUtilsService;
+    let service: SecurityUtilsService;
 
     beforeAll(() => {
-        service = new KmsUtilsService();
+        service = new SecurityUtilsService();
     });
 
     describe("hashPassword", () => {

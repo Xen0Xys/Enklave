@@ -4,17 +4,17 @@ import {
     NotFoundException,
     UnauthorizedException,
 } from "@nestjs/common";
-import {WrappedKeyPair} from "../kms/entities/wrapped-key-pair";
 import {FoldersService} from "../storage/folders.service";
-import {KmsUtilsService} from "../kms/kms-utils.service";
+import {SecurityUtilsService} from "../security/security-utils.service";
 import {UserEntity} from "../users/entities/user.entity";
 import {PrismaService} from "../helper/prisma.service";
 import {MailerService} from "../mailer/mailer.service";
 import {Users} from "../../../prisma/generated/client";
 import {UsersService} from "../users/users.service";
 import {LoginEntity} from "./entities/login.entity";
-import {KmsService} from "../kms/kms.service";
+import {SecurityService} from "../security/security.service";
 import {JwtService} from "@nestjs/jwt";
+import {AesKeyData, KmsService, X25519KeyData} from "../security/kms.service";
 
 @Injectable()
 export class AuthService {
@@ -26,12 +26,13 @@ export class AuthService {
 
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly kmsUtilsService: KmsUtilsService,
-        private readonly kmsService: KmsService,
+        private readonly kmsUtilsService: SecurityUtilsService,
+        private readonly securityService: SecurityService,
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService,
         private readonly storageService: FoldersService,
         private readonly mailerService: MailerService,
+        private readonly kmsService: KmsService,
     ) {}
 
     private async resendVerificationEmail(user: Users, oldTokenId: string) {
@@ -78,14 +79,10 @@ export class AuthService {
         // Create the user
         const hashedPassword: string =
             await this.kmsUtilsService.hashPassword(password);
-        const masterKey: CryptoKey =
-            await this.kmsService.generateRandomSymmetricKey();
-        const wrappedMasterKey: Buffer =
-            await this.kmsService.wrapMasterKey(masterKey);
-        const keyPair: CryptoKeyPair =
-            await this.kmsService.generateAsymmetricKeyPair();
-        const wrappedKeyPair: WrappedKeyPair =
-            await this.kmsService.wrapAsymmetricKeypair(keyPair);
+        const aesKeyData: AesKeyData =
+            await this.kmsService.generateRandomAesKey();
+        const x25519KeyData: X25519KeyData =
+            await this.kmsService.generateRandomX25519KeyPair();
 
         await this.prismaService.$transaction(
             async (tx) => {
@@ -97,9 +94,16 @@ export class AuthService {
                             email,
                             password: hashedPassword,
                             jwt_id: this.kmsUtilsService.randomBytes(32),
-                            master_key: wrappedMasterKey,
-                            public_key: wrappedKeyPair.wrappedPublicKey,
-                            private_key: wrappedKeyPair.wrappedPrivateKey,
+                            master_key: {
+                                connect: {
+                                    id: aesKeyData.keyId,
+                                },
+                            },
+                            asymmetric_master_key: {
+                                connect: {
+                                    id: x25519KeyData.keyId,
+                                },
+                            },
                             email_verifications: {
                                 create: {
                                     expires_at: new Date(
@@ -112,6 +116,8 @@ export class AuthService {
                         include: {
                             avatars: true,
                             email_verifications: true,
+                            master_key: true,
+                            asymmetric_master_key: true,
                         },
                     });
 
@@ -186,6 +192,8 @@ export class AuthService {
             include: {
                 avatars: true,
                 email_verifications: true,
+                master_key: true,
+                asymmetric_master_key: true,
             },
         });
         if (!prismaUser) throw new NotFoundException("User not found.");

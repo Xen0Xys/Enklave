@@ -4,7 +4,7 @@ import * as crypto from "crypto";
 import {pipeline, Readable, Transform} from "stream";
 
 @Injectable()
-export class KmsUtilsService {
+export class SecurityUtilsService {
     generateUuid(version: 4 | 7 = 7): string {
         if (version === 4) return crypto.randomUUID();
         else if (version === 7) return Bun.randomUUIDv7();

@@ -1,6 +1,6 @@
 import {NewsletterSubscribeDto} from "./dto/newsletter-subscribe.dto";
 import {HttpStatus} from "@nestjs/common/enums/http-status.enum";
-import {KmsUtilsService} from "../kms/kms-utils.service";
+import {SecurityUtilsService} from "../security/security-utils.service";
 import {PrismaService} from "../helper/prisma.service";
 import {Body, Delete, Post} from "@nestjs/common/decorators";
 import {Controller, HttpCode} from "@nestjs/common";
@@ -10,7 +10,7 @@ import {NewsLetterSubscriptions} from "../../../prisma/generated/client";
 export class NewsletterController {
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly kmsUtilsService: KmsUtilsService,
+        private readonly kmsUtilsService: SecurityUtilsService,
     ) {}
 
     @Post("subscribe")

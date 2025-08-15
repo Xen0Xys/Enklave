@@ -1,15 +1,15 @@
 import {WrappedKeyPair} from "./entities/wrapped-key-pair";
-import {KmsUtilsService} from "./kms-utils.service";
+import {SecurityUtilsService} from "./security-utils.service";
 import {Injectable, Logger} from "@nestjs/common";
 import {UserEntity} from "../users/entities/user.entity";
 
 @Injectable()
-export class KmsService {
-    private logger: Logger = new Logger(KmsService.name);
+export class SecurityService {
+    private logger: Logger = new Logger(SecurityService.name);
     private appKeyGenerationPromise: Promise<void> | undefined;
     private appKey: CryptoKey;
 
-    constructor(private readonly kmsUtilsService: KmsUtilsService) {
+    constructor(private readonly kmsUtilsService: SecurityUtilsService) {
         this.appKeyGenerationPromise = this.generateAppKey()
             .then(() => {
                 this.logger.log("App key generated successfully.");

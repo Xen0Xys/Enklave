@@ -1,14 +1,22 @@
 import {CryptoKey} from "@simplewebauthn/server/script/types/dom";
 import {ServerFiles} from "../../../prisma/generated/client";
-import {KmsUtilsService} from "../kms/kms-utils.service";
+import {SecurityUtilsService} from "../security/security-utils.service";
 import {PrismaService} from "../helper/prisma.service";
-import {KmsService} from "../kms/kms.service";
+import {SecurityService} from "../security/security.service";
 import {
     Injectable,
     InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
 import {Readable} from "stream";
+import {ServerFilesGetPayload} from "../../../prisma/generated/models/ServerFiles";
+import {AesKeyData, KmsService} from "../security/kms.service";
+
+export type ExtendedServerFile = ServerFilesGetPayload<{
+    include: {
+        file_key: true;
+    };
+}>;
 
 @Injectable()
 export class StorageService {
@@ -16,7 +24,8 @@ export class StorageService {
 
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly kmsUtilsService: KmsUtilsService,
+        private readonly securityUtilsService: SecurityUtilsService,
+        private readonly securityService: SecurityService,
         private readonly kmsService: KmsService,
     ) {
         this.s3Client = new Bun.S3Client({
@@ -58,9 +67,9 @@ export class StorageService {
         wrappingKey: CryptoKey,
         mimeType?: string,
     ): Promise<ServerFiles> {
-        const fileUuid: string = this.kmsUtilsService.generateUuid(4);
-        const fileKey: CryptoKey =
-            await this.kmsService.generateRandomSymmetricKey();
+        const fileUuid: string = this.securityUtilsService.generateUuid(4);
+        const fileKeyData: AesKeyData =
+            await this.kmsService.generateRandomAesKey(wrappingKey);
         const remoteFile: Bun.S3File = this.s3Client.file(fileUuid);
         const writer: Bun.NetworkSink = remoteFile.writer();
         try {
@@ -71,9 +80,9 @@ export class StorageService {
                 getEncryptedSize,
                 getAuthTag,
                 getSha256,
-            } = await this.kmsUtilsService.encryptWithAesGcmStream(
+            } = await this.securityUtilsService.encryptWithAesGcmStream(
                 stream,
-                fileKey,
+                fileKeyData.key,
             );
             // Write the encrypted stream to the writer
             for await (const chunk of encryptedStream) writer.write(chunk);
@@ -89,10 +98,11 @@ export class StorageService {
                     s3_key: fileUuid,
                     checksum: sha256,
                     mime_type: mimeType,
-                    file_key: await this.kmsUtilsService.wrapCryptoKey(
-                        fileKey,
-                        wrappingKey,
-                    ),
+                    file_key: {
+                        connect: {
+                            id: fileKeyData.keyId,
+                        },
+                    },
                     iv,
                     auth_tag: authTag,
                     size: encryptedSize,
@@ -106,21 +116,22 @@ export class StorageService {
     }
 
     async downloadFileStream(
-        serverFile: ServerFiles,
+        serverFile: ExtendedServerFile,
         wrappingKey: CryptoKey,
     ): Promise<Readable> {
-        const fileKey: CryptoKey = await this.kmsUtilsService.unwrapCryptoKey(
-            Buffer.from(serverFile.file_key),
-            wrappingKey,
-            "AES-GCM",
-        );
+        const fileKey: CryptoKey =
+            await this.securityUtilsService.unwrapCryptoKey(
+                Buffer.from(serverFile.file_key.material as Uint8Array),
+                wrappingKey,
+                "AES-GCM",
+            );
         try {
             const remoteFile: Bun.S3File = this.s3Client.file(
                 serverFile.s3_key,
             );
             const reader: ReadableStream = remoteFile.stream();
             const readable: Readable = Readable.fromWeb(reader as any);
-            return await this.kmsUtilsService.decryptWithAesGcmStream(
+            return await this.securityUtilsService.decryptWithAesGcmStream(
                 readable,
                 fileKey,
                 Buffer.from(serverFile.iv),
@@ -134,7 +145,7 @@ export class StorageService {
     }
 
     async downloadFileBuffer(
-        serverFile: ServerFiles,
+        serverFile: ExtendedServerFile,
         wrappingKey: CryptoKey,
     ): Promise<Buffer> {
         try {

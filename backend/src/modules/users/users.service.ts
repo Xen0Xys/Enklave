@@ -1,37 +1,43 @@
 import {UserEntity} from "./entities/user.entity";
-import {KmsService} from "../kms/kms.service";
+import {SecurityService} from "../security/security.service";
 import {
     Injectable,
     NotFoundException,
     UnauthorizedException,
 } from "@nestjs/common";
 import {PrismaService} from "../helper/prisma.service";
-import {KmsUtilsService} from "../kms/kms-utils.service";
+import {SecurityUtilsService} from "../security/security-utils.service";
 import {UsersGetPayload} from "../../../prisma/generated/models/Users";
 
 export type CompletePrismaUser = UsersGetPayload<{
     include: {
         avatars: true;
         email_verifications: true;
+        master_key: true;
+        asymmetric_master_key: true;
     };
 }>;
 
 @Injectable()
 export class UsersService {
     constructor(
-        private readonly kmsService: KmsService,
-        private readonly kmsUtilService: KmsUtilsService,
+        private readonly kmsService: SecurityService,
+        private readonly kmsUtilService: SecurityUtilsService,
         private readonly prismaService: PrismaService,
     ) {}
 
     async toUser(user: CompletePrismaUser): Promise<UserEntity> {
         const masterKey: CryptoKey = await this.kmsService.unwrapMasterKey(
-            Buffer.from(user.master_key),
+            Buffer.from(user.master_key.material as Uint8Array),
         );
         const keyPair: CryptoKeyPair =
             await this.kmsService.unwrapAsymmetricKeypair({
-                wrappedPublicKey: Buffer.from(user.public_key),
-                wrappedPrivateKey: Buffer.from(user.private_key),
+                wrappedPublicKey: Buffer.from(
+                    user.asymmetric_master_key.public_material as Uint8Array,
+                ),
+                wrappedPrivateKey: Buffer.from(
+                    user.asymmetric_master_key.private_material as Uint8Array,
+                ),
             });
         return new UserEntity({
             id: user.id,
@@ -55,6 +61,8 @@ export class UsersService {
             include: {
                 avatars: true,
                 email_verifications: true,
+                master_key: true,
+                asymmetric_master_key: true,
             },
         });
         if (!user) throw new NotFoundException("User not found");

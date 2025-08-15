@@ -1,13 +1,13 @@
-import {KmsUtilsService} from "../../../src/modules/kms/kms-utils.service";
+import {SecurityUtilsService} from "../../../src/modules/security/security-utils.service";
 import {beforeAll, describe, expect, test} from "bun:test";
 import crypto from "crypto";
 
 describe("generateAesKey (PBKDF2 Key Derivation)", () => {
-    let kmsUtilsService: KmsUtilsService;
+    let kmsUtilsService: SecurityUtilsService;
     const salt: string = "super-long-salt";
 
     beforeAll(() => {
-        kmsUtilsService = new KmsUtilsService();
+        kmsUtilsService = new SecurityUtilsService();
     });
 
     test("should generate a valid and extractable AES-GCM CryptoKey", async () => {

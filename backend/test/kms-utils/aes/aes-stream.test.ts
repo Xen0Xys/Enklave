@@ -1,4 +1,4 @@
-import {KmsUtilsService} from "../../../src/modules/kms/kms-utils.service";
+import {SecurityUtilsService} from "../../../src/modules/security/security-utils.service";
 import {beforeAll, describe, expect, test} from "bun:test";
 // @ts-ignore
 import wycheproofVectors from "./aes.test.json";
@@ -16,11 +16,11 @@ function streamToBuffer(stream: Readable): Promise<Buffer> {
 }
 
 describe("AES-GCM Stream Encryption/Decryption", () => {
-    let kmsUtilsService: KmsUtilsService;
+    let kmsUtilsService: SecurityUtilsService;
     let aesKey: CryptoKey;
 
     beforeAll(async () => {
-        kmsUtilsService = new KmsUtilsService();
+        kmsUtilsService = new SecurityUtilsService();
         aesKey = await kmsUtilsService.generateAesKey(
             "stream-secret",
             "stream-salt",
@@ -219,10 +219,10 @@ describe("AES-GCM Stream Encryption/Decryption", () => {
  * These tests verify the IV and tag size, as the implementation only supports 256-bit keys, 96-bit IVs, and 128-bit tags.
  */
 describe("Wycheproof AES-GCM Stream Vectors", () => {
-    let kmsUtilsService: KmsUtilsService;
+    let kmsUtilsService: SecurityUtilsService;
 
     beforeAll(() => {
-        kmsUtilsService = new KmsUtilsService();
+        kmsUtilsService = new SecurityUtilsService();
     });
 
     wycheproofVectors.testGroups.forEach((group) => {

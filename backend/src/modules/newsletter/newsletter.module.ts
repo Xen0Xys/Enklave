@@ -1,10 +1,10 @@
 import {NewsletterController} from "./newsletter.controller";
 import HelperModule from "../helper/helper.module";
-import {KmsModule} from "../kms/kms.module";
+import {SecurityModule} from "../security/security.module";
 import {Module} from "@nestjs/common";
 
 @Module({
-    imports: [HelperModule, KmsModule],
+    imports: [HelperModule, SecurityModule],
     controllers: [NewsletterController],
     providers: [],
     exports: [],
