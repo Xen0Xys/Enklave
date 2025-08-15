@@ -9,15 +9,21 @@ import {FoldersService} from "../storage/folders.service";
 import {KmsUtilsService} from "../kms/kms-utils.service";
 import {UserEntity} from "../users/entities/user.entity";
 import {PrismaService} from "../helper/prisma.service";
+import {MailerService} from "../mailer/mailer.service";
 import {Users} from "../../../prisma/generated/client";
 import {UsersService} from "../users/users.service";
 import {LoginEntity} from "./entities/login.entity";
 import {KmsService} from "../kms/kms.service";
 import {JwtService} from "@nestjs/jwt";
-import {MailerService} from "../mailer/mailer.service";
 
 @Injectable()
 export class AuthService {
+    private readonly emailVerificationExpiration: number = parseInt(
+        process.env.EMAIL_VERIFICATION_EXPIRATION_MS ||
+            (30 * 60 * 1000).toString(), // 30 minutes by default
+        10,
+    );
+
     constructor(
         private readonly prismaService: PrismaService,
         private readonly kmsUtilsService: KmsUtilsService,
@@ -38,7 +44,7 @@ export class AuthService {
                     data: {
                         user: {connect: {id: user.id}},
                         expires_at: new Date(
-                            Date.now() + 30 * 60 * 1000, // 7 days
+                            Date.now() + this.emailVerificationExpiration,
                         ),
                     },
                 });
@@ -97,7 +103,8 @@ export class AuthService {
                             email_verifications: {
                                 create: {
                                     expires_at: new Date(
-                                        Date.now() + 30 * 60 * 1000, // 30 minutes
+                                        Date.now() +
+                                            this.emailVerificationExpiration,
                                     ),
                                 },
                             },

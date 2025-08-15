@@ -20,6 +20,7 @@ export class KmsUtilsService {
             timeCost: 3,
             memoryCost: 65536,
             parallelism: 4,
+            type: argon2.argon2id,
         });
     }
 
@@ -141,29 +142,20 @@ export class KmsUtilsService {
         salt: string,
         extractable: boolean = true,
     ): Promise<CryptoKey> {
-        const encoder: TextEncoder = new TextEncoder();
-        const importedKey: CryptoKey = await crypto.subtle.importKey(
-            "raw",
-            encoder.encode(secret),
-            {name: "PBKDF2"},
-            false,
-            ["deriveBits"],
-        );
-
-        const derivedBits: ArrayBuffer = await crypto.subtle.deriveBits(
-            {
-                name: "PBKDF2",
-                salt: encoder.encode(salt),
-                iterations: 400_000,
-                hash: "SHA-512",
-            },
-            importedKey,
-            256,
-        );
-
+        // Encode salt
+        const saltBuffer: Buffer = Buffer.from(salt, "utf-8");
+        const derivedKey: Buffer = await argon2.hash(secret, {
+            timeCost: 3,
+            memoryCost: 65536,
+            parallelism: 4,
+            raw: true,
+            type: argon2.argon2id,
+            hashLength: 32, // 256 bits
+            salt: saltBuffer,
+        });
         return await crypto.subtle.importKey(
             "raw",
-            derivedBits,
+            derivedKey,
             {
                 name: "AES-GCM",
                 length: 256,

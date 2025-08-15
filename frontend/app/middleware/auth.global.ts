@@ -13,10 +13,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const isLoggedIn: boolean = !!userStore.user;
     const isAllowedPage: boolean = allowedPaths.includes(to.path);
 
-    if (!isLoggedIn && !isAllowedPage) {
-        return navigateTo("/auth/login");
-    }
-    if (isLoggedIn && isAllowedPage) {
-        return navigateTo("/");
-    }
+    if (!isLoggedIn && !isAllowedPage) return navigateTo("/auth/login");
+    if (isLoggedIn && isAllowedPage) return navigateTo("/");
 });

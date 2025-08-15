@@ -107,7 +107,7 @@ describe("AES-GCM Stream Encryption/Decryption", () => {
         const sourceStream = Readable.from(originalData);
         const wrongKey = await kmsUtilsService.generateAesKey(
             "wrong-key-for-stream",
-            "salt",
+            "super-long-salt",
             true,
         );
 

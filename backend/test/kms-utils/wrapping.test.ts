@@ -133,7 +133,7 @@ describe("Key Wrapping", () => {
     test("should fail to wrap a non-extractable key", async () => {
         const nonExtractableKey = await kmsUtilsService.generateAesKey(
             "secret",
-            "salt",
+            "super-long-salt",
             false, // Key material cannot be read
         );
 
