@@ -35,7 +35,7 @@ describe("generateAesKey (PBKDF2 Key Derivation)", () => {
 
     test("should generate an extractable key by default", async () => {
         const key = await kmsUtilsService.generateAesKey("secret", salt);
-        expect(key.extractable).toBe(true); // Le défaut est 'true'
+        expect(key.extractable).toBe(true); // default is true
     });
 
     test("should be deterministic and produce the same key for the same inputs", async () => {

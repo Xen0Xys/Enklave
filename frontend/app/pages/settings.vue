@@ -2,17 +2,17 @@
 import {ref} from "vue";
 import {useUserStore} from "~/stores/user.store";
 import {toast} from "vue-sonner";
-import {Button} from "@/components/ui/button";
+import {Button} from "~/components/ui/button";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Avatar, AvatarImage} from "@/components/ui/avatar";
+} from "~/components/ui/card";
+import {Input} from "~/components/ui/input";
+import {Label} from "~/components/ui/label";
+import {Avatar, AvatarImage} from "~/components/ui/avatar";
 
 definePageMeta({
     layout: "navigation",
@@ -31,7 +31,7 @@ const isUpdatingPassword = ref(false);
 const isUploadingAvatar = ref(false);
 
 const avatarUrl = computed(() => {
-    return userStore.user.avatarId
+    return userStore.user?.avatarId
         ? `${runtimeConfig.public.apiBase}/users/avatar/${userStore.user.avatarId}`
         : "";
 });

@@ -10,23 +10,23 @@ import {
     Res,
     UseGuards,
 } from "@nestjs/common";
-import {ChangePasswordDto} from "./dto/change-password.dto";
-import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
-import {User} from "../auth/decorators/users.decorator";
-import {UserEntity} from "./entities/user.entity";
-import {Body, Post} from "@nestjs/common/decorators";
-import {ApiBearerAuth, ApiBody, ApiConsumes} from "@nestjs/swagger";
-import {UsersService} from "./users.service";
-import {HttpStatus} from "@nestjs/common/enums/http-status.enum";
-import {ChangeUsernameDto} from "./dto/change-username.dto";
-import {FastifyReply, FastifyRequest} from "fastify";
-import {StorageService} from "../storage/storage.service";
-import {KmsService} from "../kms/kms.service";
-import {PrismaService} from "../helper/prisma.service";
-import {CryptoKey} from "@simplewebauthn/server/script/types/dom";
 import {Avatars, ServerFiles} from "../../../prisma/generated/client";
-import {Readable} from "stream";
+import {ApiBearerAuth, ApiBody, ApiConsumes} from "@nestjs/swagger";
+import {CryptoKey} from "@simplewebauthn/server/script/types/dom";
+import {HttpStatus} from "@nestjs/common/enums/http-status.enum";
+import {ChangePasswordDto} from "./dto/change-password.dto";
+import {ChangeUsernameDto} from "./dto/change-username.dto";
+import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
+import {StorageService} from "../storage/storage.service";
 import {ImagesService} from "../storage/images.service";
+import {User} from "../auth/decorators/users.decorator";
+import {PrismaService} from "../helper/prisma.service";
+import {FastifyReply, FastifyRequest} from "fastify";
+import {Body, Post} from "@nestjs/common/decorators";
+import {UserEntity} from "./entities/user.entity";
+import {KmsService} from "../kms/kms.service";
+import {UsersService} from "./users.service";
+import {Readable} from "stream";
 
 @Controller("users")
 export class UsersController {
@@ -77,8 +77,7 @@ export class UsersController {
     @ApiBearerAuth()
     @ApiConsumes("multipart/form-data")
     @ApiBody({
-        description:
-            "Fichier avatar à uploader. Seules les images sont autorisées.",
+        description: "Avatar file to upload. Only images are allowed.",
         schema: {
             type: "object",
             properties: {
@@ -147,8 +146,7 @@ export class UsersController {
             },
         });
         if (!avatarFile || !avatarFile.avatar)
-            throw new BadRequestException("No avatar found for user");
-        if (!avatarFile) throw new NotFoundException("Avatar not found");
+            throw new NotFoundException("No avatar found for user");
         const appKey: CryptoKey = await this.kmsService.getAppKey();
         // Set mimeType
         const buffer: Buffer = await this.storageService.downloadFileBuffer(

@@ -276,6 +276,7 @@ export class KmsUtilsService {
 
         pipeline(encryptedStream, hashAndVerifyTransform, decipher, (err) => {
             if (err) {
+                decipher.destroy(err);
             }
         });
 
