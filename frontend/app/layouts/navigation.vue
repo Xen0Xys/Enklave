@@ -3,6 +3,8 @@ import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import Default from "~/layouts/default.vue";
 import EnklaveSidebar from "~/components/sidebar/EnklaveSidebar.vue";
 import {Separator} from "~/components/ui/separator";
+import ThemeToggle from "~/components/ThemeToggle.vue";
+import SidebarWatcher from "~/components/sidebar/SidebarWatcher.vue";
 
 const defaultOpen = useCookie<boolean>("sidebar_state");
 </script>
@@ -10,16 +12,24 @@ const defaultOpen = useCookie<boolean>("sidebar_state");
 <template>
     <default>
         <SidebarProvider :defaultOpen="defaultOpen">
+            <SidebarWatcher />
             <EnklaveSidebar />
             <SidebarInset>
-                <header
-                    class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-                    <SidebarTrigger class="-ml-1" />
-                    <Separator orientation="vertical" class="mr-2 max-h-6" />
-                    <h3>Enklave</h3>
-                </header>
-                <div class="flex w-full grow flex-col p-2">
-                    <slot />
+                <div class="flex h-full flex-col">
+                    <header
+                        class="bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                        <SidebarTrigger class="-ml-1" />
+                        <Separator
+                            orientation="vertical"
+                            class="mr-2 max-h-6" />
+                        <h3>Enklave</h3>
+                        <div class="ml-auto flex items-center gap-2">
+                            <ThemeToggle />
+                        </div>
+                    </header>
+                    <div class="flex flex-1 flex-col overflow-y-auto p-4">
+                        <slot />
+                    </div>
                 </div>
             </SidebarInset>
         </SidebarProvider>

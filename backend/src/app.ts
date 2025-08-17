@@ -9,8 +9,11 @@ import fastifyHelmet from "@fastify/helmet";
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
 import {Logger} from "@nestjs/common";
+import * as fs from "fs";
 
 const logger: Logger = new Logger("App");
+
+const pkg = JSON.parse(fs.readFileSync("../package.json", "utf-8"));
 
 process.env.APP_NAME = process.env.npm_package_name
     ?.split("-")
@@ -39,11 +42,16 @@ async function loadServer(server: NestFastifyApplication) {
     server.setGlobalPrefix(process.env.PREFIX || "");
     server.enableCors({
         origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     });
 
     // Middlewares
     server.use(new LoggerMiddleware().use);
-    await server.register(fastifyMultipart as any);
+    await server.register(fastifyMultipart as any, {
+        limits: {
+            fileSize: 500 * 1024 * 1024, // 500MB
+        },
+    });
     await server.register(
         fastifyHelmet as any,
         {
@@ -58,7 +66,7 @@ async function loadServer(server: NestFastifyApplication) {
     const config = new DocumentBuilder()
         .setTitle(process.env.APP_NAME || "NestJS Application")
         .setDescription(`Documentation for ${process.env.APP_NAME}`)
-        .setVersion(process.env.npm_package_version || "Unknown")
+        .setVersion(pkg.version)
         .addBearerAuth()
         .build();
 

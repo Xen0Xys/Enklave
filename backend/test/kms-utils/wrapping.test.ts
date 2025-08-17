@@ -1,14 +1,14 @@
 import {beforeAll, describe, expect, test} from "bun:test";
-import {KmsUtilsService} from "../../src/modules/kms/kms-utils.service";
+import {SecurityUtilsService} from "../../src/modules/security/security-utils.service";
 
 describe("Key Wrapping", () => {
-    let kmsUtilsService: KmsUtilsService;
+    let kmsUtilsService: SecurityUtilsService;
     let wrappingKey: CryptoKey; // The master key used to wrap other keys
     let aesKeyToWrap: CryptoKey; // A secret key to be wrapped
     let x25519KeyPairToWrap: CryptoKeyPair; // An asymmetric key pair to be wrapped
 
     beforeAll(async () => {
-        kmsUtilsService = new KmsUtilsService();
+        kmsUtilsService = new SecurityUtilsService();
 
         // This is the main key, sometimes called a Key Encryption Key (KEK)
         wrappingKey = await kmsUtilsService.generateAesKey(
@@ -133,7 +133,7 @@ describe("Key Wrapping", () => {
     test("should fail to wrap a non-extractable key", async () => {
         const nonExtractableKey = await kmsUtilsService.generateAesKey(
             "secret",
-            "salt",
+            "super-long-salt",
             false, // Key material cannot be read
         );
 

@@ -5,7 +5,7 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import HelperModule from "./modules/helper/helper.module";
 import {UsersModule} from "./modules/users/users.module";
 import {AuthModule} from "./modules/auth/auth.module";
-import {KmsModule} from "./modules/kms/kms.module";
+import {SecurityModule} from "./modules/security/security.module";
 import {ThrottlerModule} from "@nestjs/throttler";
 import {ScheduleModule} from "@nestjs/schedule";
 import {APP_INTERCEPTOR} from "@nestjs/core";
@@ -40,7 +40,7 @@ import {Module} from "@nestjs/common";
         ]),
         HelperModule,
         NewsletterModule,
-        KmsModule,
+        SecurityModule,
         StorageModule,
         UsersModule,
         AuthModule,

@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import {Sidebar, SidebarContent} from "~/components/ui/sidebar";
+
+const route = useRoute();
+const isActiveFunction = (path: string) => {
+    return route.path === path;
+};
+
+const config = useRuntimeConfig();
+const version = computed(() => {
+    return config.public.appVersion;
+});
 </script>
 
 <template>
@@ -15,7 +25,7 @@ import {Sidebar, SidebarContent} from "~/components/ui/sidebar";
                             </div>
                             <div class="flex flex-col gap-0.5 leading-none">
                                 <span class="font-semibold">Enklave</span>
-                                <span>v1.0.0</span>
+                                <span>{{ version }}</span>
                             </div>
                         </div>
                     </SidebarMenuButton>
@@ -24,12 +34,17 @@ import {Sidebar, SidebarContent} from "~/components/ui/sidebar";
         </SidebarHeader>
         <SidebarContent>
             <SidebarGroup>
-                <SidebarGroupLabel>Test 1</SidebarGroupLabel>
+                <SidebarGroupLabel>Menu</SidebarGroupLabel>
                 <SidebarGroupContent>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton as-child :is-active="false">
-                                <a :href="'/'">Item 1</a>
+                            <SidebarMenuButton
+                                as-child
+                                :is-active="isActiveFunction('/')">
+                                <NuxtLink to="/">
+                                    <Icon name="iconoir:home"></Icon>
+                                    <span>Dashboard</span>
+                                </NuxtLink>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>

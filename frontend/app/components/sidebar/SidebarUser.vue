@@ -12,7 +12,14 @@ import {Avatar, AvatarFallback, AvatarImage} from "~/components/ui/avatar";
 import {useSidebar} from "~/components/ui/sidebar";
 
 const userStore = useUserStore();
-const user = userStore.user;
+const user = computed(() => userStore.user);
+const runtimeConfig = useRuntimeConfig();
+
+const avatarUrl = computed(() => {
+    return user.value?.avatarId
+        ? `${runtimeConfig.public.apiBase}/users/avatar/${user.value.avatarId}`
+        : "";
+});
 
 const {isMobile} = useSidebar();
 </script>
@@ -27,11 +34,11 @@ const {isMobile} = useSidebar();
                         class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                         <Avatar class="h-8 w-8 rounded-lg">
                             <AvatarImage
-                                v-if="user?.avatar"
-                                :src="user?.avatar"
+                                v-if="avatarUrl"
+                                :src="avatarUrl"
                                 :alt="user?.username" />
                             <AvatarFallback class="rounded-lg">
-                                CN
+                                {{ user?.username?.charAt(0).toUpperCase() }}
                             </AvatarFallback>
                         </Avatar>
                         <div
@@ -58,11 +65,13 @@ const {isMobile} = useSidebar();
                             class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                             <Avatar class="h-8 w-8 rounded-lg">
                                 <AvatarImage
-                                    v-if="user?.avatar"
-                                    :src="user?.avatar"
+                                    v-if="avatarUrl"
+                                    :src="avatarUrl"
                                     :alt="user?.username" />
                                 <AvatarFallback class="rounded-lg">
-                                    CN
+                                    {{
+                                        user?.username?.charAt(0).toUpperCase()
+                                    }}
                                 </AvatarFallback>
                             </Avatar>
                             <div
@@ -85,10 +94,12 @@ const {isMobile} = useSidebar();
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                            <Icon name="iconoir:settings" />
-                            Account
-                        </DropdownMenuItem>
+                        <NuxtLink to="/settings">
+                            <DropdownMenuItem>
+                                <Icon name="iconoir:settings" />
+                                Settings
+                            </DropdownMenuItem>
+                        </NuxtLink>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem @click="userStore.logout()">

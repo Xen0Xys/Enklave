@@ -9,7 +9,7 @@ export const useUserStore = defineStore("user", {
     actions: {
         async login(email: string, password: string) {
             try {
-                const response = await useEnklaveApi("auth/login", "POST", {
+                const response = await useEnklaveApi("/auth/login", "POST", {
                     body: {
                         email,
                         password,
@@ -38,7 +38,7 @@ export const useUserStore = defineStore("user", {
                 return;
             }
             try {
-                this.user = await useEnklaveApi("users/me", "GET", {
+                this.user = await useEnklaveApi("/users/me", "GET", {
                     headers: {
                         Authorization: `Bearer ${tokenCookie.value}`,
                     },
@@ -46,6 +46,7 @@ export const useUserStore = defineStore("user", {
                 // oxlint-disable-next-line no-unused-vars
             } catch (_: any) {
                 this.user = undefined;
+                tokenCookie.value = undefined;
                 toast.error("Failed to fetch user data. Please log in again.", {
                     description: "Your session may have expired.",
                 });
@@ -53,18 +54,16 @@ export const useUserStore = defineStore("user", {
         },
         async register(username: string, email: string, password: string) {
             try {
-                const response = await useEnklaveApi("auth/register", "POST", {
+                await useEnklaveApi("auth/register", "POST", {
                     body: {
                         username,
                         email,
                         password,
                     },
                 });
-                const tokenCookie = useCookie("token");
-                tokenCookie.value = response.token;
-                this.user = response.user;
                 toast.success("Registration successful!", {
-                    description: "Welcome! Your account has been created.",
+                    description:
+                        "Welcome! Your account has been created, please verify your email.",
                 });
                 await useRouter().push("/");
             } catch (e: any) {
@@ -76,6 +75,25 @@ export const useUserStore = defineStore("user", {
                 });
             }
         },
+        async verifyEmail(token: string): Promise<boolean> {
+            try {
+                await useEnklaveApi("/auth/register/verify", "POST", {
+                    body: {token},
+                });
+                toast.success("Email verification successful!", {
+                    description: "Your email has been verified.",
+                });
+                return true;
+            } catch (e: any) {
+                toast.error("Email verification failed.", {
+                    description:
+                        e.data?.message ||
+                        e.message ||
+                        "An error occurred during email verification.",
+                });
+            }
+            return false;
+        },
         async logout() {
             const tokenCookie = useCookie("token");
             tokenCookie.value = undefined;
@@ -84,6 +102,55 @@ export const useUserStore = defineStore("user", {
                 description: "You have been logged out.",
             });
             await useRouter().push("/auth/login");
+        },
+        async updateUsername(newUsername: string) {
+            const tokenCookie = useCookie("token");
+            try {
+                await useEnklaveApi("/users/username", "PATCH", {
+                    body: {username: newUsername},
+                    headers: {
+                        Authorization: `Bearer ${tokenCookie.value}`,
+                    },
+                });
+                await this.fetchCurrentUser();
+                toast.success("Username updated successfully.");
+            } catch {
+                toast.error("Failed to update username.");
+            }
+        },
+        async updatePassword(currentPassword: string, newPassword: string) {
+            const tokenCookie = useCookie("token");
+            try {
+                await useEnklaveApi("/users/password", "PATCH", {
+                    body: {
+                        oldPassword: currentPassword,
+                        newPassword: newPassword,
+                    },
+                    headers: {
+                        Authorization: `Bearer ${tokenCookie.value}`,
+                    },
+                });
+                toast.success("Password updated successfully.");
+            } catch {
+                toast.error(
+                    "Failed to update password. Check your current password.",
+                );
+            }
+        },
+        async uploadAvatar(formData: FormData) {
+            const tokenCookie = useCookie("token");
+            try {
+                await useEnklaveApi("/users/avatar", "POST", {
+                    body: formData,
+                    headers: {
+                        Authorization: `Bearer ${tokenCookie.value}`,
+                    },
+                });
+                await this.fetchCurrentUser();
+                toast.success("Avatar updated successfully.");
+            } catch {
+                toast.error("Failed to update avatar.");
+            }
         },
     },
 });

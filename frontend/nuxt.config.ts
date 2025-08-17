@@ -1,11 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from "@tailwindcss/vite";
+import * as fs from "fs";
+
+const pkg = JSON.parse(fs.readFileSync("../package.json", "utf-8"));
 
 // noinspection TypeScriptValidateTypes
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: {enabled: true},
-    modules: ["@nuxt/icon", "shadcn-nuxt", "@pinia/nuxt"],
+    modules: ["@nuxt/icon", "shadcn-nuxt", "@pinia/nuxt", "@nuxtjs/color-mode"],
     vite: {
         plugins: [tailwindcss() as unknown as any],
         clearScreen: false,
@@ -27,6 +30,10 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiBase: "",
+            appVersion: pkg.version,
         },
+    },
+    colorMode: {
+        classSuffix: "",
     },
 });
