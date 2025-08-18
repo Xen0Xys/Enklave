@@ -1,11 +1,10 @@
-<script setup lang="ts">
-definePageMeta({
-    layout: "navigation",
-});
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <p>Couscous</p>
+    <div class="flex w-full flex-col">
+        <LandingHero />
+        <LandingFeatures />
+        <LandingPricing />
+        <LandingNewsletter />
+    </div>
 </template>
-
-<style scoped></style>
