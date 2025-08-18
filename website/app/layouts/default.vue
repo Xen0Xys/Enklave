@@ -23,9 +23,9 @@
         <main class="flex-1">
             <slot />
         </main>
-        <footer class="border-t px-10 py-6 md:py-0">
+        <footer class="border-t py-6 md:py-0">
             <div
-                class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+                class="container flex flex-col items-center justify-between gap-4 px-10 md:h-24 md:flex-row">
                 <p class="text-muted-foreground text-sm">
                     © {{ new Date().getFullYear() }} Enklave. All rights
                     reserved.

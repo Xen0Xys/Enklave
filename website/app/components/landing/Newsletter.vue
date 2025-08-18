@@ -1,20 +1,24 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Button from "@/components/ui/button/Button.vue";
+import Input from "@/components/ui/input/Input.vue";
+import {landingConfig} from "~/config/landing";
+</script>
 
 <template>
     <section id="newsletter" class="bg-secondary py-20">
-        <div
-            class="flex w-full flex-col items-center justify-center px-10 text-center">
-            <h2 class="text-3xl font-bold">Stay informed</h2>
+        <div class="container mx-auto max-w-2xl text-center">
+            <h2 class="text-3xl font-bold">
+                {{ landingConfig.newsletter.title }}
+            </h2>
             <p class="text-muted-foreground mt-2">
-                Sign up for our newsletter to receive the latest news and
-                updates.
+                {{ landingConfig.newsletter.description }}
             </p>
-            <div class="mt-6 flex w-xl">
+            <div class="mt-6 flex w-lg">
                 <Input
                     type="email"
-                    placeholder="Your email address"
+                    :placeholder="landingConfig.newsletter.placeholder"
                     class="flex-1" />
-                <Button class="ml-2">Subscribe</Button>
+                <Button class="ml-2">{{ landingConfig.newsletter.cta }}</Button>
             </div>
         </div>
     </section>
