@@ -16,7 +16,7 @@ import {landingConfig} from "~/config/landing";
             <p class="text-muted-foreground mt-2">
                 {{ landingConfig.newsletter.description }}
             </p>
-            <div class="mt-6 flex w-lg">
+            <div class="mt-6 flex w-sm md:w-lg">
                 <Input
                     type="email"
                     :placeholder="landingConfig.newsletter.placeholder"
