@@ -20,7 +20,7 @@ import {landingConfig} from "~/config/landing";
                     class="bg-background flex flex-col items-center rounded-lg border p-6 text-center">
                     <Icon
                         :name="feature.icon"
-                        class="text-primary mb-4 !size-16" />
+                        class="text-primary mb-4 size-8" />
                     <h3 class="text-xl font-semibold">{{ feature.title }}</h3>
                     <p class="text-muted-foreground mt-2">
                         {{ feature.description }}
