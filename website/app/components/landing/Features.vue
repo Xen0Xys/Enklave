@@ -3,7 +3,9 @@ import {landingConfig} from "~/config/landing";
 </script>
 
 <template>
-    <section id="features" class="bg-secondary py-20">
+    <section
+        id="features"
+        class="bg-secondary flex flex-col items-center px-10 py-20">
         <div class="container">
             <h2 class="text-center text-3xl font-bold">
                 {{ landingConfig.features.title }}
@@ -18,7 +20,7 @@ import {landingConfig} from "~/config/landing";
                     class="bg-background flex flex-col items-center rounded-lg border p-6 text-center">
                     <Icon
                         :name="feature.icon"
-                        class="text-primary mb-4 h-32 w-32" />
+                        class="text-primary mb-4 !size-16" />
                     <h3 class="text-xl font-semibold">{{ feature.title }}</h3>
                     <p class="text-muted-foreground mt-2">
                         {{ feature.description }}

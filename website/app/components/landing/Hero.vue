@@ -4,7 +4,7 @@ import {landingConfig} from "~/config/landing";
 </script>
 
 <template>
-    <section class="py-20 text-center">
+    <section class="flex flex-col items-center px-10 py-20 text-center">
         <div class="container">
             <h1 class="text-4xl font-bold tracking-tight lg:text-5xl">
                 {{ landingConfig.hero.title }}

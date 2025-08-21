@@ -22,7 +22,7 @@ const features = landingConfig.pricing.comparison.features;
 </script>
 
 <template>
-    <section id="pricing" class="py-20">
+    <section id="pricing" class="flex flex-col items-center px-10 py-20">
         <div class="container">
             <h2 class="text-center text-3xl font-bold">
                 {{ landingConfig.pricing.title }}
