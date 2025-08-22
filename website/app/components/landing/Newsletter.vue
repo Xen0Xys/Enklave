@@ -6,23 +6,21 @@ import {ref} from "vue";
 
 const email = ref("");
 const isLoading = ref(false);
-const isSubscribed = ref(false);
-const error = ref("");
+const { success, error: showError } = useToast();
 
 const subscribe = async () => {
     if (!email.value) return;
     
     isLoading.value = true;
-    error.value = "";
     
     try {
         await useEnklaveApi("/newsletter/subscribe", "POST", {
             body: { email: email.value }
         });
-        isSubscribed.value = true;
+        success("Successfully subscribed!", "Thank you for subscribing to our newsletter.");
         email.value = "";
     } catch (err: any) {
-        error.value = err.message || "Failed to subscribe. Please try again.";
+        showError("Subscription failed", err.message || "Failed to subscribe. Please try again.");
     } finally {
         isLoading.value = false;
     }
@@ -42,12 +40,7 @@ const subscribe = async () => {
                 {{ landingConfig.newsletter.description }}
             </p>
             
-            <div v-if="isSubscribed" class="mt-6 rounded-lg border border-green-200 bg-green-50 p-4 text-green-800">
-                <p class="font-medium">✓ Successfully subscribed!</p>
-                <p class="text-sm">Thank you for subscribing to our newsletter.</p>
-            </div>
-            
-            <div v-else class="mt-6 w-full max-w-md">
+            <div class="mt-6 w-full max-w-md">
                 <div class="flex">
                     <Input
                         v-model="email"
@@ -63,10 +56,6 @@ const subscribe = async () => {
                         {{ isLoading ? "..." : landingConfig.newsletter.cta }}
                     </Button>
                 </div>
-                
-                <p v-if="error" class="mt-2 text-sm text-red-600">
-                    {{ error }}
-                </p>
             </div>
         </div>
     </section>

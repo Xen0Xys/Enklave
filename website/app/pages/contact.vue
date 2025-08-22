@@ -16,18 +16,16 @@ const form = ref({
 });
 
 const isLoading = ref(false);
-const isSubmitted = ref(false);
-const error = ref("");
+const { success, error: showError } = useToast();
 
 const submitForm = async () => {
     isLoading.value = true;
-    error.value = "";
     
     try {
         await useEnklaveApi("/contact", "POST", {
             body: form.value
         });
-        isSubmitted.value = true;
+        success("Message sent successfully!", "Thank you for contacting us. We'll get back to you as soon as possible.");
         form.value = {
             name: "",
             email: "",
@@ -35,7 +33,7 @@ const submitForm = async () => {
             message: "",
         };
     } catch (err: any) {
-        error.value = err.message || "Failed to send message. Please try again.";
+        showError("Failed to send message", err.message || "Please try again later.");
     } finally {
         isLoading.value = false;
     }
@@ -51,12 +49,7 @@ const submitForm = async () => {
             </p>
         </div>
 
-        <div v-if="isSubmitted" class="rounded-lg border border-green-200 bg-green-50 p-6 text-green-800 mb-8">
-            <h2 class="font-semibold text-lg mb-2">✓ Message Sent Successfully!</h2>
-            <p>Thank you for contacting us. We'll get back to you as soon as possible.</p>
-        </div>
-
-        <form v-else @submit.prevent="submitForm" class="space-y-6">
+        <form @submit.prevent="submitForm" class="space-y-6">
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
                     <label for="name" class="block text-sm font-medium mb-2">
@@ -110,12 +103,8 @@ const submitForm = async () => {
                     required
                     :disabled="isLoading"
                     placeholder="Tell us more about your inquiry..."
-                    rows="6"
+                    :rows="6"
                     class="w-full" />
-            </div>
-
-            <div v-if="error" class="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
-                <p class="text-sm">{{ error }}</p>
             </div>
 
             <div class="flex justify-end">

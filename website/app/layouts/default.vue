@@ -93,6 +93,9 @@
                 </p>
             </div>
         </footer>
+        <ClientOnly>
+            <Toaster />
+        </ClientOnly>
     </div>
 </template>
 
