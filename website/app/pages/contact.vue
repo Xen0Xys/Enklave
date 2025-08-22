@@ -3,10 +3,28 @@ import {ref} from "vue";
 import Button from "@/components/ui/button/Button.vue";
 import Input from "@/components/ui/input/Input.vue";
 import {Textarea} from "@/components/ui/textarea";
+import {Breadcrumb} from "@/components/ui/breadcrumb";
 
 definePageMeta({
     layout: "default",
 });
+
+useSeoMeta({
+    title: "Contact Enklave - Get in Touch",
+    description: "Contact the Enklave team for support, questions, or partnership opportunities. We're here to help with your password management and digital security needs.",
+    ogTitle: "Contact Enklave - Get in Touch",
+    ogDescription: "Contact the Enklave team for support, questions, or partnership opportunities. We're here to help with your password management and digital security needs.",
+    ogUrl: "https://enklave.cloud/contact",
+    twitterTitle: "Contact Enklave - Get in Touch", 
+    twitterDescription: "Contact the Enklave team for support, questions, or partnership opportunities. We're here to help with your password management and digital security needs.",
+});
+
+useSchemaOrg([
+    defineContactPage({
+        name: "Contact Enklave",
+        description: "Contact the Enklave team for support, questions, or partnership opportunities",
+    }),
+]);
 
 const form = ref({
     name: "",
@@ -42,6 +60,11 @@ const submitForm = async () => {
 
 <template>
     <div class="container mx-auto max-w-2xl px-4 py-16">
+        <Breadcrumb :items="[
+            { label: 'Home', href: '/' },
+            { label: 'Contact' }
+        ]" />
+        
         <div class="text-center mb-12">
             <h1 class="text-4xl font-bold tracking-tight mb-4">Contact Us</h1>
             <p class="text-muted-foreground text-lg">

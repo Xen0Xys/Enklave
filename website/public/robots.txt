@@ -1,2 +1,17 @@
 User-Agent: *
-Disallow:
+Allow: /
+
+# Sitemap
+Sitemap: https://enklave.cloud/sitemap.xml
+
+# Block admin and private areas (if any exist in the future)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.env
+Disallow: /.git/
+
+# Allow specific pages
+Allow: /
+Allow: /contact
+Allow: /whats-new
+Allow: /unsubscribe

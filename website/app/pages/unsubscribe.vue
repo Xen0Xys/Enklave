@@ -7,6 +7,15 @@ definePageMeta({
     layout: "default",
 });
 
+useSeoMeta({
+    title: "Unsubscribe from Newsletter - Enklave",
+    description: "Unsubscribe from Enklave newsletter updates. We're sorry to see you go, but you can easily unsubscribe from our mailing list here.",
+    ogTitle: "Unsubscribe from Newsletter - Enklave",
+    ogDescription: "Unsubscribe from Enklave newsletter updates. We're sorry to see you go, but you can easily unsubscribe from our mailing list here.",
+    ogUrl: "https://enklave.cloud/unsubscribe",
+    robots: "noindex, nofollow", // Don't index unsubscribe pages
+});
+
 const route = useRoute();
 const email = ref("");
 const isLoading = ref(false);

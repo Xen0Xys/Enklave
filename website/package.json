@@ -12,6 +12,7 @@
     "dependencies": {
         "@nuxt/icon": "^2.0.0",
         "@nuxtjs/google-fonts": "^3.2.0",
+        "@nuxtjs/seo": "^3.1.0",
         "@tailwindcss/vite": "^4.1.12",
         "@tanstack/vue-table": "^8.21.3",
         "@vueuse/core": "^13.7.0",

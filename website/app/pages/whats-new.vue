@@ -1,7 +1,27 @@
 <script setup lang="ts">
+import {Breadcrumb} from "@/components/ui/breadcrumb";
+
 definePageMeta({
     layout: "default",
 });
+
+useSeoMeta({
+    title: "What's New - Enklave Changelog",
+    description: "Stay up to date with the latest Enklave features, improvements, and security updates. See what's new in our password manager and digital vault platform.",
+    ogTitle: "What's New - Enklave Changelog",
+    ogDescription: "Stay up to date with the latest Enklave features, improvements, and security updates. See what's new in our password manager and digital vault platform.",
+    ogUrl: "https://enklave.cloud/whats-new",
+    twitterTitle: "What's New - Enklave Changelog",
+    twitterDescription: "Stay up to date with the latest Enklave features, improvements, and security updates. See what's new in our password manager and digital vault platform.",
+});
+
+useSchemaOrg([
+    defineWebPage({
+        "@type": "AboutPage",
+        name: "What's New - Enklave Changelog",
+        description: "Latest updates and changes to the Enklave platform",
+    }),
+]);
 
 // Static changelog data
 const posts = [
@@ -116,6 +136,11 @@ const renderMarkdown = (content: string) => {
 
 <template>
     <div class="container mx-auto max-w-4xl px-4 py-16">
+        <Breadcrumb :items="[
+            { label: 'Home', href: '/' },
+            { label: 'What\'s New' }
+        ]" />
+        
         <div class="text-center mb-12">
             <h1 class="text-4xl font-bold tracking-tight mb-4">What's New</h1>
             <p class="text-muted-foreground text-lg">
