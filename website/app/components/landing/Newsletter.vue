@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import Button from "@/components/ui/button/Button.vue";
-import Input from "@/components/ui/input/Input.vue";
 import {landingConfig} from "~/config/landing";
-import {ref} from "vue";
+import {toast} from "vue-sonner";
 
 const email = ref("");
 const isLoading = ref(false);
-const { success, error: showError } = useToast();
 
 const subscribe = async () => {
     if (!email.value) return;
-    
+
     isLoading.value = true;
-    
+
     try {
         await useEnklaveApi("/newsletter/subscribe", "POST", {
-            body: { email: email.value }
+            body: {email: email.value},
         });
-        success("Successfully subscribed!", "Thank you for subscribing to our newsletter.");
+        toast.success("Successfully subscribed!", {
+            description: "Thank you for subscribing to our newsletter.",
+        });
         email.value = "";
     } catch (err: any) {
-        showError("Subscription failed", err.message || "Failed to subscribe. Please try again.");
+        toast.error("Subscription failed", {
+            description:
+                err.message || "Failed to subscribe. Please try again.",
+        });
     } finally {
         isLoading.value = false;
     }
@@ -39,7 +41,7 @@ const subscribe = async () => {
             <p class="text-muted-foreground mt-2">
                 {{ landingConfig.newsletter.description }}
             </p>
-            
+
             <div class="mt-6 w-full max-w-md">
                 <div class="flex">
                     <Input
@@ -49,7 +51,7 @@ const subscribe = async () => {
                         class="flex-1"
                         :disabled="isLoading"
                         @keyup.enter="subscribe" />
-                    <Button 
+                    <Button
                         class="ml-2"
                         :disabled="isLoading || !email"
                         @click="subscribe">

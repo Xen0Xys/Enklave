@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import Button from "@/components/ui/button/Button.vue";
-import Input from "@/components/ui/input/Input.vue";
-import {Textarea} from "@/components/ui/textarea";
-import {Breadcrumb} from "@/components/ui/breadcrumb";
+import {toast} from "vue-sonner";
 
 definePageMeta({
     layout: "default",
@@ -11,19 +7,26 @@ definePageMeta({
 
 useSeoMeta({
     title: "Contact Enklave - Get in Touch",
-    description: "Contact the Enklave team for support, questions, or partnership opportunities. We're here to help with your password management and digital security needs.",
+    description:
+        "Contact the Enklave team for support, questions, or partnership opportunities. We're here to help with your password management and digital security needs.",
     ogTitle: "Contact Enklave - Get in Touch",
-    ogDescription: "Contact the Enklave team for support, questions, or partnership opportunities. We're here to help with your password management and digital security needs.",
+    ogDescription:
+        "Contact the Enklave team for support, questions, or partnership opportunities. We're here to help with your password management and digital security needs.",
     ogUrl: "https://enklave.cloud/contact",
-    twitterTitle: "Contact Enklave - Get in Touch", 
-    twitterDescription: "Contact the Enklave team for support, questions, or partnership opportunities. We're here to help with your password management and digital security needs.",
+    twitterTitle: "Contact Enklave - Get in Touch",
+    twitterDescription:
+        "Contact the Enklave team for support, questions, or partnership opportunities. We're here to help with your password management and digital security needs.",
 });
 
 useSchemaOrg([
-    defineContactPage({
+    {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
         name: "Contact Enklave",
-        description: "Contact the Enklave team for support, questions, or partnership opportunities",
-    }),
+        description:
+            "Get in touch with the Enklave team for support, questions, or partnership opportunities.",
+        url: "https://enklave.cloud/contact",
+    },
 ]);
 
 const form = ref({
@@ -34,16 +37,18 @@ const form = ref({
 });
 
 const isLoading = ref(false);
-const { success, error: showError } = useToast();
 
 const submitForm = async () => {
     isLoading.value = true;
-    
+
     try {
         await useEnklaveApi("/contact", "POST", {
-            body: form.value
+            body: form.value,
         });
-        success("Message sent successfully!", "Thank you for contacting us. We'll get back to you as soon as possible.");
+        toast.success("Message sent successfully!", {
+            description:
+                "Thank you for contacting us. We'll get back to you as soon as possible.",
+        });
         form.value = {
             name: "",
             email: "",
@@ -51,7 +56,9 @@ const submitForm = async () => {
             message: "",
         };
     } catch (err: any) {
-        showError("Failed to send message", err.message || "Please try again later.");
+        toast.error("Failed to send message", {
+            description: err.message || "Please try again later.",
+        });
     } finally {
         isLoading.value = false;
     }
@@ -60,13 +67,8 @@ const submitForm = async () => {
 
 <template>
     <div class="container mx-auto max-w-2xl px-4 py-16">
-        <Breadcrumb :items="[
-            { label: 'Home', href: '/' },
-            { label: 'Contact' }
-        ]" />
-        
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold tracking-tight mb-4">Contact Us</h1>
+        <div class="mb-12 text-center">
+            <h1 class="mb-4 text-4xl font-bold tracking-tight">Contact Us</h1>
             <p class="text-muted-foreground text-lg">
                 Have a question or need support? We'd love to hear from you.
             </p>
@@ -75,7 +77,7 @@ const submitForm = async () => {
         <form @submit.prevent="submitForm" class="space-y-6">
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                    <label for="name" class="block text-sm font-medium mb-2">
+                    <label for="name" class="mb-2 block text-sm font-medium">
                         Name *
                     </label>
                     <Input
@@ -88,7 +90,7 @@ const submitForm = async () => {
                         class="w-full" />
                 </div>
                 <div>
-                    <label for="email" class="block text-sm font-medium mb-2">
+                    <label for="email" class="mb-2 block text-sm font-medium">
                         Email *
                     </label>
                     <Input
@@ -103,7 +105,7 @@ const submitForm = async () => {
             </div>
 
             <div>
-                <label for="subject" class="block text-sm font-medium mb-2">
+                <label for="subject" class="mb-2 block text-sm font-medium">
                     Subject *
                 </label>
                 <Input
@@ -117,7 +119,7 @@ const submitForm = async () => {
             </div>
 
             <div>
-                <label for="message" class="block text-sm font-medium mb-2">
+                <label for="message" class="mb-2 block text-sm font-medium">
                     Message *
                 </label>
                 <Textarea
@@ -131,10 +133,7 @@ const submitForm = async () => {
             </div>
 
             <div class="flex justify-end">
-                <Button
-                    type="submit"
-                    :disabled="isLoading"
-                    class="px-8">
+                <Button type="submit" :disabled="isLoading" class="px-8">
                     {{ isLoading ? "Sending..." : "Send Message" }}
                 </Button>
             </div>

@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import {Breadcrumb} from "@/components/ui/breadcrumb";
-
 definePageMeta({
     layout: "default",
 });
 
 useSeoMeta({
     title: "What's New - Enklave Changelog",
-    description: "Stay up to date with the latest Enklave features, improvements, and security updates. See what's new in our password manager and digital vault platform.",
+    description:
+        "Stay up to date with the latest Enklave features, improvements, and security updates. See what's new in our password manager and digital vault platform.",
     ogTitle: "What's New - Enklave Changelog",
-    ogDescription: "Stay up to date with the latest Enklave features, improvements, and security updates. See what's new in our password manager and digital vault platform.",
+    ogDescription:
+        "Stay up to date with the latest Enklave features, improvements, and security updates. See what's new in our password manager and digital vault platform.",
     ogUrl: "https://enklave.cloud/whats-new",
     twitterTitle: "What's New - Enklave Changelog",
-    twitterDescription: "Stay up to date with the latest Enklave features, improvements, and security updates. See what's new in our password manager and digital vault platform.",
+    twitterDescription:
+        "Stay up to date with the latest Enklave features, improvements, and security updates. See what's new in our password manager and digital vault platform.",
 });
 
 useSchemaOrg([
@@ -60,7 +61,7 @@ Have questions or need support? Visit our [contact page](/contact) to:
 - Provide feedback
 
 We're committed to providing excellent support and building features that matter to our users.
-        `
+        `,
     },
     {
         title: "Version 1.0.0 Alpha - Initial Release",
@@ -93,58 +94,63 @@ We're committed to providing excellent support and building features that matter
 4. Explore team features and secure sharing options
 
 This is just the beginning! We have many exciting features planned for future releases.
-        `
-    }
+        `,
+    },
 ];
 
 const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
     });
 };
 
 const getTypeColor = (type: string) => {
     switch (type) {
-        case 'major':
-            return 'bg-red-100 text-red-800 border-red-200';
-        case 'minor':
-            return 'bg-blue-100 text-blue-800 border-blue-200';
-        case 'patch':
-            return 'bg-green-100 text-green-800 border-green-200';
+        case "major":
+            return "bg-red-100 text-red-800 border-red-200";
+        case "minor":
+            return "bg-blue-100 text-blue-800 border-blue-200";
+        case "patch":
+            return "bg-green-100 text-green-800 border-green-200";
         default:
-            return 'bg-gray-100 text-gray-800 border-gray-200';
+            return "bg-gray-100 text-gray-800 border-gray-200";
     }
 };
 
 const renderMarkdown = (content: string) => {
     // Simple markdown rendering for headers, lists, and links
     return content
-        .replace(/^## (.+)$/gm, '<h2 class="text-xl font-semibold mt-6 mb-3">$1</h2>')
+        .replace(
+            /^## (.+)$/gm,
+            '<h2 class="text-xl font-semibold mt-6 mb-3">$1</h2>',
+        )
         .replace(/^- (.+)$/gm, '<li class="ml-4">$1</li>')
         .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold">$1</strong>')
-        .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-blue-600 underline hover:no-underline">$1</a>')
+        .replace(
+            /\[(.+?)\]\((.+?)\)/g,
+            '<a href="$2" class="text-blue-600 underline hover:no-underline">$1</a>',
+        )
         .replace(/\n\n/g, '</p><p class="mb-4">')
         .replace(/^(.+)$/gm, '<p class="mb-4">$1</p>')
-        .replace(/<\/p><p class="mb-4"><h2/g, '</p><h2')
-        .replace(/<\/h2><p class="mb-4">/g, '</h2>')
-        .replace(/<\/p><p class="mb-4"><li/g, '<ul class="list-disc pl-6 space-y-1"><li')
-        .replace(/<\/li><p class="mb-4">/g, '</li></ul>');
+        .replace(/<\/p><p class="mb-4"><h2/g, "</p><h2")
+        .replace(/<\/h2><p class="mb-4">/g, "</h2>")
+        .replace(
+            /<\/p><p class="mb-4"><li/g,
+            '<ul class="list-disc pl-6 space-y-1"><li',
+        )
+        .replace(/<\/li><p class="mb-4">/g, "</li></ul>");
 };
 </script>
 
 <template>
     <div class="container mx-auto max-w-4xl px-4 py-16">
-        <Breadcrumb :items="[
-            { label: 'Home', href: '/' },
-            { label: 'What\'s New' }
-        ]" />
-        
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold tracking-tight mb-4">What's New</h1>
+        <div class="mb-12 text-center">
+            <h1 class="mb-4 text-4xl font-bold tracking-tight">What's New</h1>
             <p class="text-muted-foreground text-lg">
-                Stay up to date with the latest features, improvements, and changes to Enklave.
+                Stay up to date with the latest features, improvements, and
+                changes to Enklave.
             </p>
         </div>
 
@@ -152,18 +158,19 @@ const renderMarkdown = (content: string) => {
             <article
                 v-for="post in posts"
                 :key="post.title"
-                class="border rounded-lg p-6 bg-card">
+                class="bg-card rounded-lg border p-6">
                 <header class="mb-4">
-                    <div class="flex items-center gap-3 mb-2">
+                    <div class="mb-2 flex items-center gap-3">
                         <h2 class="text-2xl font-semibold">{{ post.title }}</h2>
                         <span
                             v-if="post.type"
                             :class="getTypeColor(post.type)"
-                            class="px-2 py-1 text-xs font-medium rounded-full border">
+                            class="rounded-full border px-2 py-1 text-xs font-medium">
                             {{ post.type }}
                         </span>
                     </div>
-                    <div class="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div
+                        class="text-muted-foreground flex items-center gap-4 text-sm">
                         <time :datetime="post.date">
                             {{ formatDate(post.date) }}
                         </time>
@@ -172,8 +179,10 @@ const renderMarkdown = (content: string) => {
                         </span>
                     </div>
                 </header>
-                
-                <div class="max-w-none" v-html="renderMarkdown(post.content)"></div>
+
+                <div
+                    class="max-w-none"
+                    v-html="renderMarkdown(post.content)"></div>
             </article>
         </div>
     </div>

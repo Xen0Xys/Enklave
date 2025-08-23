@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import "vue-sonner/style.css";
+</script>
 
 <template>
     <div class="flex min-h-screen flex-col">

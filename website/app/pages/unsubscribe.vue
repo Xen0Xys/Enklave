@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import {ref, onMounted} from "vue";
-import Button from "@/components/ui/button/Button.vue";
-import Input from "@/components/ui/input/Input.vue";
+import {toast} from "vue-sonner";
 
 definePageMeta({
     layout: "default",
@@ -9,9 +7,11 @@ definePageMeta({
 
 useSeoMeta({
     title: "Unsubscribe from Newsletter - Enklave",
-    description: "Unsubscribe from Enklave newsletter updates. We're sorry to see you go, but you can easily unsubscribe from our mailing list here.",
+    description:
+        "Unsubscribe from Enklave newsletter updates. We're sorry to see you go, but you can easily unsubscribe from our mailing list here.",
     ogTitle: "Unsubscribe from Newsletter - Enklave",
-    ogDescription: "Unsubscribe from Enklave newsletter updates. We're sorry to see you go, but you can easily unsubscribe from our mailing list here.",
+    ogDescription:
+        "Unsubscribe from Enklave newsletter updates. We're sorry to see you go, but you can easily unsubscribe from our mailing list here.",
     ogUrl: "https://enklave.cloud/unsubscribe",
     robots: "noindex, nofollow", // Don't index unsubscribe pages
 });
@@ -20,32 +20,39 @@ const route = useRoute();
 const email = ref("");
 const isLoading = ref(false);
 const isUnsubscribed = ref(false);
-const { success, error: showError } = useToast();
 
 // Get email from query parameter if provided
 onMounted(() => {
-    if (route.query.email && typeof route.query.email === 'string') {
+    if (route.query.email && typeof route.query.email === "string") {
         email.value = decodeURIComponent(route.query.email);
     }
 });
 
 const unsubscribe = async () => {
     if (!email.value) {
-        showError("Email required", "Please enter your email address to unsubscribe.");
+        toast.error("Email required", {
+            description: "Please enter your email address to unsubscribe.",
+        });
         return;
     }
-    
+
     isLoading.value = true;
-    
+
     try {
         await useEnklaveApi("/newsletter/unsubscribe", "DELETE", {
-            body: { email: email.value }
+            body: {email: email.value},
         });
-        success("Successfully unsubscribed!", "You have been removed from our newsletter list.");
+        toast.success("Successfully unsubscribed!", {
+            description: "You have been removed from our newsletter list.",
+        });
         isUnsubscribed.value = true;
         email.value = "";
     } catch (err: any) {
-        showError("Unsubscribe failed", err.message || "Failed to unsubscribe. Please try again or contact support.");
+        toast.error("Unsubscribe failed", {
+            description:
+                err.message ||
+                "Failed to unsubscribe. Please try again or contact support.",
+        });
     } finally {
         isLoading.value = false;
     }
@@ -54,17 +61,26 @@ const unsubscribe = async () => {
 
 <template>
     <div class="container mx-auto max-w-2xl px-4 py-16">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold tracking-tight mb-4">Unsubscribe from Newsletter</h1>
+        <div class="mb-12 text-center">
+            <h1 class="mb-4 text-4xl font-bold tracking-tight">
+                Unsubscribe from Newsletter
+            </h1>
             <p class="text-muted-foreground text-lg">
-                We're sorry to see you go. Enter your email address below to unsubscribe from our newsletter.
+                We're sorry to see you go. Enter your email address below to
+                unsubscribe from our newsletter.
             </p>
         </div>
 
         <div v-if="isUnsubscribed" class="text-center">
-            <div class="rounded-lg border border-green-200 bg-green-50 p-6 text-green-800 mb-8">
-                <h2 class="font-semibold text-lg mb-2">✓ Unsubscribed Successfully</h2>
-                <p>You have been removed from our newsletter list. You will no longer receive updates from us.</p>
+            <div
+                class="mb-8 rounded-lg border border-green-200 bg-green-50 p-6 text-green-800">
+                <h2 class="mb-2 text-lg font-semibold">
+                    ✓ Unsubscribed Successfully
+                </h2>
+                <p>
+                    You have been removed from our newsletter list. You will no
+                    longer receive updates from us.
+                </p>
             </div>
             <Button as-child>
                 <NuxtLink to="/">Return to Homepage</NuxtLink>
@@ -73,7 +89,7 @@ const unsubscribe = async () => {
 
         <form v-else @submit.prevent="unsubscribe" class="space-y-6">
             <div>
-                <label for="email" class="block text-sm font-medium mb-2">
+                <label for="email" class="mb-2 block text-sm font-medium">
                     Email Address *
                 </label>
                 <Input
@@ -100,8 +116,13 @@ const unsubscribe = async () => {
             </div>
         </form>
 
-        <div class="mt-8 text-center text-sm text-muted-foreground">
-            <p>If you have any issues unsubscribing, please <NuxtLink to="/contact" class="text-primary hover:underline">contact our support team</NuxtLink>.</p>
+        <div class="text-muted-foreground mt-8 text-center text-sm">
+            <p>
+                If you have any issues unsubscribing, please
+                <NuxtLink to="/contact" class="text-primary hover:underline"
+                    >contact our support team</NuxtLink
+                >.
+            </p>
         </div>
     </div>
 </template>
