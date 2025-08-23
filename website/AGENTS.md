@@ -24,12 +24,11 @@ bun build --filter website
 
 ## Structure du code
 
--   `pages/`: Les pages du site web. Le routage est basé sur la structure de ce répertoire.
--   `components/`: Contient les composants Vue, avec une sous-catégorie `landing/` pour les composants spécifiques à la page d'accueil.
--   `composables/`: Fonctions réutilisables (hooks) de Vue Composition API.
--   `config/`: Fichiers de configuration spécifiques à l'application, comme `landing.ts`.
+- `pages/`: Les pages du site web. Le routage est basé sur la structure de ce répertoire.
+- `components/`: Contient les composants Vue, avec une sous-catégorie `landing/` pour les composants spécifiques à la page d'accueil.
+- `composables/`: Fonctions réutilisables (hooks) de Vue Composition API.
+- `config/`: Fichiers de configuration spécifiques à l'application, comme `landing.ts`.
 
 ## Style
 
 Le projet utilise [shadcn-vue](https://www.shadcn-vue.com/) pour les composants d'interface utilisateur et [Tailwind CSS](https://tailwindcss.com/) pour le style. Les composants personnalisés se trouvent dans `components/ui`.
-
