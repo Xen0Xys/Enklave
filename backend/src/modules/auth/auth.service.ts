@@ -60,6 +60,7 @@ export class AuthService {
                 username: user.username,
                 email: user.email,
                 verification_link: `${process.env.FRONTEND_URL}/callbacks/verify-email?token=${newEmailVerification.id}`,
+                unsubscribe_link: `${process.env.FRONTEND_URL}/unsubscribe?email=${encodeURIComponent(user.email)}`,
             },
         );
     }
@@ -135,6 +136,7 @@ export class AuthService {
                         username: user.username,
                         email: user.email,
                         verification_link: `${process.env.FRONTEND_URL}/callbacks/verify-email?token=${prismaUser.email_verifications?.id}`,
+                        unsubscribe_link: `${process.env.FRONTEND_URL}/unsubscribe?email=${encodeURIComponent(user.email)}`,
                     },
                 );
 

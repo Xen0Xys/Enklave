@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import "vue-sonner/style.css";
+</script>
 
 <template>
     <div class="flex min-h-screen flex-col">
@@ -41,6 +43,16 @@
                                 ><span>Newsletter</span></SheetClose
                             ></NuxtLink
                         >
+                        <NuxtLink to="/whats-new"
+                            ><SheetClose as-child
+                                ><span>What's New</span></SheetClose
+                            ></NuxtLink
+                        >
+                        <NuxtLink to="/contact"
+                            ><SheetClose as-child
+                                ><span>Contact</span></SheetClose
+                            ></NuxtLink
+                        >
                         <SheetClose as-child>
                             <Button as-child class="mt-4 w-full">
                                 <a
@@ -57,6 +69,8 @@
                     <NuxtLink to="/#features">Features</NuxtLink>
                     <NuxtLink to="/#pricing">Pricing</NuxtLink>
                     <NuxtLink to="/#newsletter">Newsletter</NuxtLink>
+                    <NuxtLink to="/whats-new">What's New</NuxtLink>
+                    <NuxtLink to="/contact">Contact</NuxtLink>
                 </nav>
                 <div class="flex flex-1 items-center justify-end space-x-4">
                     <Button as-child>
@@ -81,6 +95,9 @@
                 </p>
             </div>
         </footer>
+        <ClientOnly>
+            <Toaster />
+        </ClientOnly>
     </div>
 </template>
 
