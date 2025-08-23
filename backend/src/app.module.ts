@@ -6,6 +6,7 @@ import HelperModule from "./modules/helper/helper.module";
 import {UsersModule} from "./modules/users/users.module";
 import {AuthModule} from "./modules/auth/auth.module";
 import {SecurityModule} from "./modules/security/security.module";
+import {ContactModule} from "./modules/contact/contact.module";
 import {ThrottlerModule} from "@nestjs/throttler";
 import {ScheduleModule} from "@nestjs/schedule";
 import {APP_INTERCEPTOR} from "@nestjs/core";
@@ -40,6 +41,7 @@ import {Module} from "@nestjs/common";
         ]),
         HelperModule,
         NewsletterModule,
+        ContactModule,
         SecurityModule,
         StorageModule,
         UsersModule,

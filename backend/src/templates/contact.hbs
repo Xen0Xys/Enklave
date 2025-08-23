@@ -3,16 +3,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="x-apple-disable-message-reformatting" />
-        <title>Confirm your email address on Enclave</title>
-        <!--[if mso]>
-    <noscript>
-        <xml>
-            <o:OfficeDocumentSettings>
-                <o:PixelsPerInch>96</o:PixelsPerInch>
-            </o:OfficeDocumentSettings>
-        </xml>
-    </noscript>
-    <![endif]-->
+        <title>New Contact Form Submission</title>
         <style>
             table,
             td,
@@ -37,12 +28,6 @@
             lang="en"
             style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#f9fafb;"
         >
-            <div
-                style="display:none;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;"
-            >
-                Confirm your registration to Enclave to start securing your
-                data.
-            </div>
             <table
                 role="presentation"
                 style="width:100%;border-collapse:collapse;border:0;border-spacing:0;"
@@ -65,7 +50,7 @@
                                             >
                                                 <h1
                                                     style="font-size:24px;margin:0;font-family:Arial,sans-serif;font-weight:bold;"
-                                                >Verify your email address</h1>
+                                                >New Contact Form Submission</h1>
                                             </td>
                                         </tr>
                                         <tr>
@@ -74,39 +59,39 @@
                                             >
                                                 <p
                                                     style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"
-                                                >Hello {{username}},</p>
-                                                <p
-                                                    style="margin:0 0 24px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"
-                                                >Thank you for registering on
-                                                    Enclave. Click the button
-                                                    below to verify your email
-                                                    address ({{email}}).</p>
-                                                <p
-                                                    style="text-align:center;margin:20px 0;"
+                                                >You have received a new contact
+                                                    form submission from your
+                                                    website:</p>
+
+                                                <div
+                                                    style="background-color:#f9fafb;padding:20px;border-radius:8px;margin:20px 0;"
                                                 >
-                                                    <a
-                                                        href="{{verification_link}}"
-                                                        style="background-color:#111827;color:#fafafa;text-decoration:none;padding:12px 20px;border-radius:0.5rem;display:inline-block;font-size:14px;font-weight:500;"
-                                                    >Verify email</a>
-                                                </p>
+                                                    <p
+                                                        style="margin:0 0 8px 0;font-size:14px;line-height:20px;font-family:Arial,sans-serif;"
+                                                    ><strong>Name:</strong>
+                                                        {{name}}</p>
+                                                    <p
+                                                        style="margin:0 0 8px 0;font-size:14px;line-height:20px;font-family:Arial,sans-serif;"
+                                                    ><strong>Email:</strong>
+                                                        {{email}}</p>
+                                                    <p
+                                                        style="margin:0 0 8px 0;font-size:14px;line-height:20px;font-family:Arial,sans-serif;"
+                                                    ><strong>Subject:</strong>
+                                                        {{subject}}</p>
+                                                    <p
+                                                        style="margin:0;font-size:14px;line-height:20px;font-family:Arial,sans-serif;"
+                                                    ><strong
+                                                        >Message:</strong></p>
+                                                    <p
+                                                        style="margin:8px 0 0 0;font-size:14px;line-height:20px;font-family:Arial,sans-serif;white-space:pre-line;"
+                                                    >{{message}}</p>
+                                                </div>
+
                                                 <p
                                                     style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"
-                                                >If you did not create an
-                                                    account, no further action
-                                                    is required.</p>
-                                                <hr
-                                                    style="border:0;border-top:1px solid #e5e7eb;margin:24px 0;"
-                                                />
-                                                <p
-                                                    style="margin:0;font-size:12px;line-height:18px;font-family:Arial,sans-serif;color:#6b7280;text-align:center;"
-                                                >
-                                                    If you no longer wish to
-                                                    receive emails from us,
-                                                    <a
-                                                        href="{{unsubscribe_link}}"
-                                                        style="color:#6b7280;text-decoration:underline;"
-                                                    >unsubscribe here</a>.
-                                                </p>
+                                                >Please respond to this inquiry
+                                                    at your earliest
+                                                    convenience.</p>
                                             </td>
                                         </tr>
                                     </table>
@@ -126,10 +111,9 @@
                                                 align="left"
                                             >
                                                 <p
-                                                    style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#6b7280;"
+                                                    style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#374151;"
                                                 >
-                                                    &copy; 2025 Enclave. All
-                                                    rights reserved.
+                                                    Enklave Team
                                                 </p>
                                             </td>
                                             <td
@@ -137,9 +121,9 @@
                                                 align="right"
                                             >
                                                 <p
-                                                    style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#6b7280;"
+                                                    style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#374151;"
                                                 >
-                                                    Enclave, Inc.
+                                                    Contact Form Notification
                                                 </p>
                                             </td>
                                         </tr>
