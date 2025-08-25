@@ -11,37 +11,37 @@ export const landingConfig = {
             "Discover the features that make Enklave the ideal solution for secure data management.",
         items: [
             {
-                icon: "lucide:lock",
+                icon: "iconoir:lock-key",
                 title: "End-to-end encryption",
                 description:
                     "Your data is encrypted on your device before it's even sent to our servers. No one but you can access it.",
             },
             {
-                icon: "lucide:share-2",
+                icon: "iconoir:share",
                 title: "Secure sharing",
                 description:
                     "Share files and folders with confidence using secure links, passwords, and expiration dates.",
             },
             {
-                icon: "lucide:laptop",
+                icon: "iconoir:laptop",
                 title: "Cross-platform access",
                 description:
                     "Securely access your files from any device, whether it's a computer, tablet, or smartphone.",
             },
             {
-                icon: "lucide:git-branch",
+                icon: "iconoir:git-merge",
                 title: "Version control",
                 description:
                     "Easily restore previous versions of your files so you never lose your important work.",
             },
             {
-                icon: "lucide:users",
+                icon: "iconoir:group",
                 title: "Team management",
                 description:
                     "Collaborate effectively by creating teams, managing members, and assigning granular permissions.",
             },
             {
-                icon: "lucide:code",
+                icon: "iconoir:code",
                 title: "Open Source and Transparent",
                 description:
                     "Our code is open to everyone. See for yourself how we protect your data, with no black box.",
