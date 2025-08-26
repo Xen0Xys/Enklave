@@ -4,65 +4,111 @@ import {landingConfig} from "~/config/landing";
 </script>
 
 <template>
-    <section class="relative min-h-screen flex flex-col items-center justify-center px-6 py-20 text-center overflow-hidden">
+    <section
+        class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-20 text-center">
         <!-- Background gradient -->
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20"></div>
-        
+        <div
+            class="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20"></div>
+
         <!-- Animated background elements -->
         <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style="animation-delay: 2s;"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style="animation-delay: 4s;"></div>
+            <div
+                class="absolute -top-40 -right-40 h-80 w-80 animate-pulse rounded-full bg-purple-300 opacity-20 mix-blend-multiply blur-xl filter"></div>
+            <div
+                class="absolute -bottom-40 -left-40 h-80 w-80 animate-pulse rounded-full bg-blue-300 opacity-20 mix-blend-multiply blur-xl filter"
+                style="animation-delay: 2s"></div>
+            <div
+                class="absolute top-1/2 left-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 transform animate-pulse rounded-full bg-pink-300 opacity-20 mix-blend-multiply blur-xl filter"
+                style="animation-delay: 4s"></div>
         </div>
 
-        <div class="container relative z-10 max-w-4xl">
+        <div class="relative z-10 container max-w-4xl">
+            <!-- Badge -->
+            <div
+                class="animate-fade-in mb-8 inline-flex items-center rounded-full bg-purple-100 px-4 py-2 text-sm font-semibold text-purple-800 dark:bg-purple-900/30 dark:text-purple-200">
+                <Icon name="iconoir:code" class="mr-2 size-4" />
+                {{ landingConfig.hero.badge }}
+            </div>
+
             <!-- Main headline with gradient text -->
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 animate-fade-in">
-                <span class="bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 bg-clip-text text-transparent">
-                    {{ landingConfig.hero.title.split('.')[0] }}.
+            <h1
+                class="animate-fade-in mb-6 text-5xl font-extrabold tracking-tight md:text-6xl lg:text-7xl">
+                <span
+                    class="bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 bg-clip-text text-transparent">
+                    {{ landingConfig.hero.title.split(".")[0] }}.
                 </span>
-                <br>
+                <br />
                 <span class="text-gray-900 dark:text-white">
-                    {{ landingConfig.hero.title.split('.')[1] }}.
+                    {{ landingConfig.hero.title.split(".")[1] }}.
                 </span>
             </h1>
-            
+
             <!-- Enhanced description -->
-            <p class="text-muted-foreground mt-6 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed animate-fade-in-delay-1">
+            <p
+                class="text-muted-foreground animate-fade-in-delay-1 mx-auto mt-6 max-w-3xl text-xl leading-relaxed md:text-2xl">
                 {{ landingConfig.hero.description }}
             </p>
-            
+
             <!-- Enhanced CTA section -->
-            <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-2">
-                <Button size="lg" class="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg shadow-purple-500/25 transform hover:scale-105 transition-all duration-200" as-child>
+            <div
+                class="animate-fade-in-delay-2 mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Button
+                    size="lg"
+                    class="transform bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 text-lg font-semibold shadow-lg shadow-purple-500/25 transition-all duration-200 hover:scale-105 hover:from-purple-700 hover:to-blue-700"
+                    as-child>
                     <NuxtLink to="/#pricing">{{
                         landingConfig.hero.cta
                     }}</NuxtLink>
                 </Button>
-                
-                        <Button variant="outline" size="lg" class="px-8 py-4 text-lg font-semibold border-2 hover:bg-gray-50 dark:hover:bg-gray-800 transform hover:scale-105 transition-all duration-200" as-child>
-                    <a href="https://github.com/Xen0Xys/Enklave" target="_blank" rel="noopener">
+
+                <Button
+                    variant="outline"
+                    size="lg"
+                    class="transform border-2 px-8 py-4 text-lg font-semibold transition-all duration-200 hover:scale-105 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    as-child>
+                    <a
+                        :href="landingConfig.hero.githubUrl"
+                        target="_blank"
+                        rel="noopener">
                         <Icon name="iconoir:github" class="mr-2 size-5" />
                         View on GitHub
                     </a>
                 </Button>
             </div>
-            
-            <!-- Trust indicators -->
-            <div class="mt-16 animate-fade-in-delay-3">
-                <p class="text-sm text-muted-foreground mb-6">Trusted by developers and security professionals</p>
-                <div class="flex justify-center items-center gap-8 opacity-60">
-                    <div class="flex items-center gap-2">
-                        <Icon name="iconoir:shield-check" class="size-5 text-green-600" />
-                        <span class="text-sm font-medium">End-to-End Encrypted</span>
+
+            <!-- GitHub stats and trust indicators -->
+            <div class="animate-fade-in-delay-3 mt-16">
+                <p class="text-muted-foreground mb-6 text-sm">
+                    Trusted by developers and security professionals
+                </p>
+                <div class="flex flex-wrap items-center justify-center gap-6">
+                    <div
+                        class="flex items-center space-x-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm dark:bg-gray-800/50">
+                        <Icon
+                            name="iconoir:star"
+                            class="size-4 text-yellow-500" />
+                        <span class="text-sm font-medium"
+                            >{{ landingConfig.hero.githubStars }} GitHub
+                            Stars</span
+                        >
                     </div>
-                    <div class="flex items-center gap-2">
-                        <Icon name="iconoir:code" class="size-5 text-blue-600" />
-                        <span class="text-sm font-medium">Open Source</span>
+                    <div
+                        class="flex items-center space-x-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm dark:bg-gray-800/50">
+                        <Icon
+                            name="iconoir:shield-check"
+                            class="size-4 text-green-500" />
+                        <span class="text-sm font-medium"
+                            >Zero Trust Security</span
+                        >
                     </div>
-                    <div class="flex items-center gap-2">
-                        <Icon name="iconoir:flash" class="size-5 text-purple-600" />
-                        <span class="text-sm font-medium">Lightning Fast</span>
+                    <div
+                        class="flex items-center space-x-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm dark:bg-gray-800/50">
+                        <Icon
+                            name="iconoir:code"
+                            class="size-4 text-blue-500" />
+                        <span class="text-sm font-medium"
+                            >100% Open Source</span
+                        >
                     </div>
                 </div>
             </div>
