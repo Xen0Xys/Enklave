@@ -45,6 +45,28 @@ export const landingConfig = {
         ],
         cta: "Try the Demo",
         demoUrl: "#demo",
+        mockup: {
+            title: "The Smith Family",
+            sections: {
+                recentFiles: "Recent Files",
+                shoppingList: "Shopping List",
+            },
+            files: [
+                "Family_Budget_2025.pdf",
+                "Kids School Documents",
+            ],
+            timestamps: [
+                "2 min ago",
+                "1 hour ago",
+            ],
+            shoppingItems: [
+                "Organic milk",
+                "Fresh bread",
+                "Kids snacks",
+            ],
+            status: "✓ All family members connected",
+            statusText: "Secure",
+        },
     },
     features: {
         title: "Everything your family needs, in one place",
@@ -281,7 +303,15 @@ export const landingConfig = {
         ],
         stats: {
             subscribers: "5,200+",
+            subscribersLabel: "families",
             frequency: "Monthly updates",
+        },
+        additionalStats: {
+            stat1Label: "Family subscribers",
+            stat2Value: "Monthly",
+            stat2Label: "Organization tips",
+            stat3Value: "Early",
+            stat3Label: "Feature access",
         },
     },
 };
