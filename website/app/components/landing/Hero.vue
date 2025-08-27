@@ -93,22 +93,15 @@ import {landingConfig} from "~/config/landing";
                         >
                     </div>
                     <div
+                        v-for="indicator in landingConfig.hero.trustIndicators"
+                        :key="indicator.text"
                         class="flex items-center space-x-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm dark:bg-gray-800/50">
                         <Icon
-                            name="iconoir:shield-check"
-                            class="size-4 text-green-500" />
-                        <span class="text-sm font-medium"
-                            >Zero Trust Security</span
-                        >
-                    </div>
-                    <div
-                        class="flex items-center space-x-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm dark:bg-gray-800/50">
-                        <Icon
-                            name="iconoir:code"
-                            class="size-4 text-blue-500" />
-                        <span class="text-sm font-medium"
-                            >100% Open Source</span
-                        >
+                            :name="indicator.icon"
+                            :class="`size-4 ${indicator.color}`" />
+                        <span class="text-sm font-medium">{{
+                            indicator.text
+                        }}</span>
                     </div>
                 </div>
             </div>

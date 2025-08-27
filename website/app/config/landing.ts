@@ -7,6 +7,18 @@ export const landingConfig = {
         githubUrl: "https://github.com/Xen0Xys/Enklave",
         githubStars: "2.1k",
         badge: "Open Source & Self-Hosted",
+        trustIndicators: [
+            {
+                icon: "iconoir:shield-check",
+                text: "Zero Trust Security",
+                color: "text-green-500",
+            },
+            {
+                icon: "iconoir:code",
+                text: "100% Open Source",
+                color: "text-blue-500",
+            },
+        ],
     },
     problem: {
         title: "Family coordination is getting harder",
@@ -43,8 +55,8 @@ export const landingConfig = {
             "Family notes and organization",
             "Cross-platform access",
         ],
-        cta: "Try the Demo",
-        demoUrl: "#demo",
+        cta: "Start for Free",
+        demoUrl: "https://app.enklave.cloud",
         mockup: {
             title: "The Smith Family",
             sections: {

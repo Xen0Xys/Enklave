@@ -21,33 +21,43 @@ const formatDate = (dateString: string) => {
 
 <template>
     <div
-        class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        class="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20">
         <!-- Hero Section -->
-        <section class="relative px-6 py-24 text-white">
+        <section class="relative px-6 py-24">
             <div class="container mx-auto max-w-4xl text-center">
-                <!-- App icon placeholder -->
-                <div
-                    class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm">
-                    <Icon
-                        name="iconoir:settings"
-                        class="h-10 w-10 text-white" />
+                <!-- Background decoration -->
+                <div class="absolute inset-0 overflow-hidden">
+                    <div
+                        class="absolute -top-40 -right-40 h-80 w-80 animate-pulse rounded-full bg-purple-300 opacity-20 mix-blend-multiply blur-xl filter dark:bg-purple-600"></div>
+                    <div
+                        class="absolute -bottom-40 -left-40 h-80 w-80 animate-pulse rounded-full bg-blue-300 opacity-20 mix-blend-multiply blur-xl filter dark:bg-blue-600"
+                        style="animation-delay: 2s"></div>
+                    <div
+                        class="absolute top-1/2 left-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 transform animate-pulse rounded-full bg-pink-300 opacity-20 mix-blend-multiply blur-xl filter dark:bg-pink-600"
+                        style="animation-delay: 4s"></div>
                 </div>
 
-                <h1 class="mb-6 text-5xl font-bold md:text-6xl">What's New</h1>
-                <p
-                    class="mx-auto max-w-2xl text-xl leading-relaxed text-purple-100">
-                    Stay up to date with the latest features, improvements, and
-                    changes to Enklave. See how we're making family
-                    collaboration better every day.
-                </p>
-            </div>
+                <!-- Content -->
+                <div class="relative z-10">
+                    <!-- App icon placeholder -->
+                    <div
+                        class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm dark:bg-gray-800/50">
+                        <Icon
+                            name="iconoir:settings"
+                            class="h-10 w-10 text-purple-600 dark:text-purple-400" />
+                    </div>
 
-            <!-- Background decoration -->
-            <div class="absolute inset-0 bg-gray-900 opacity-20"></div>
-            <div
-                class="absolute top-10 left-10 h-20 w-20 animate-pulse rounded-full bg-white/10 blur-xl"></div>
-            <div
-                class="absolute right-10 bottom-10 h-32 w-32 animate-pulse rounded-full bg-purple-500/20 blur-xl"></div>
+                    <h1 class="mb-6 text-5xl font-bold md:text-6xl">
+                        What's New
+                    </h1>
+                    <p
+                        class="text-muted-foreground mx-auto max-w-2xl text-xl leading-relaxed">
+                        Stay up to date with the latest features, improvements,
+                        and changes to Enklave. See how we're making family
+                        collaboration better every day.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <!-- Newsletter Articles Section -->
@@ -59,27 +69,27 @@ const formatDate = (dateString: string) => {
                         v-if="articles && articles.length > 0"
                         v-for="article in articles"
                         :key="article.path"
-                        class="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm">
+                        class="bg-card text-card-foreground rounded-2xl border p-8 shadow-lg">
                         <div class="mb-6 flex items-center justify-between">
                             <span
-                                class="rounded-full bg-purple-500/30 px-4 py-2 text-sm font-medium text-purple-100">
+                                class="bg-primary/10 text-primary rounded-full px-4 py-2 text-sm font-medium">
                                 📰 {{ article.category }}
                             </span>
-                            <time class="text-purple-200">
+                            <time class="text-muted-foreground">
                                 {{ formatDate(article.meta.date as string) }}
                             </time>
                         </div>
 
-                        <h2 class="mb-4 text-3xl font-bold text-white">
+                        <h2 class="mb-4 text-3xl font-bold">
                             {{ article.title }}
                         </h2>
 
-                        <p class="mb-6 text-lg text-purple-100">
+                        <p class="text-muted-foreground mb-6 text-lg">
                             {{ article.description }}
                         </p>
 
                         <div
-                            class="mb-6 flex items-center gap-6 text-sm text-purple-300">
+                            class="text-muted-foreground mb-6 flex items-center gap-6 text-sm">
                             <div class="flex items-center gap-2">
                                 <Icon name="iconoir:user" class="h-4 w-4" />
                                 <span
@@ -99,7 +109,7 @@ const formatDate = (dateString: string) => {
                                 <span
                                     v-for="tag in article.tags"
                                     :key="tag"
-                                    class="rounded-full bg-blue-500/20 px-2 py-1 text-xs font-medium text-blue-200">
+                                    class="bg-secondary text-secondary-foreground rounded-full px-2 py-1 text-xs font-medium">
                                     #{{ tag }}
                                 </span>
                             </div>
@@ -107,7 +117,7 @@ const formatDate = (dateString: string) => {
 
                         <!-- Full Article Content -->
                         <article
-                            class="prose prose-lg prose-invert prose-headings:text-white prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-p:text-purple-100 prose-p:leading-relaxed prose-a:text-purple-300 prose-a:underline hover:prose-a:text-purple-200 prose-strong:text-white prose-ul:text-purple-100 prose-ol:text-purple-100 prose-li:marker:text-purple-300 prose-blockquote:border-purple-500 prose-blockquote:text-purple-200 prose-code:text-purple-200 prose-code:bg-purple-500/20 prose-code:px-2 prose-code:py-1 prose-code:rounded max-w-none">
+                            class="prose dark:prose-invert prose-lg max-w-none">
                             <ContentRenderer :value="article" />
                         </article>
                     </div>
@@ -115,14 +125,12 @@ const formatDate = (dateString: string) => {
                     <!-- No articles message -->
                     <div
                         v-else
-                        class="rounded-2xl border border-white/20 bg-white/10 p-8 text-center backdrop-blur-sm">
+                        class="bg-card text-card-foreground rounded-2xl border p-8 text-center shadow-lg">
                         <Icon
                             name="iconoir:journal-page"
-                            class="mx-auto mb-4 h-12 w-12 text-purple-300" />
-                        <h2 class="mb-4 text-2xl font-bold text-white">
-                            No Updates Yet
-                        </h2>
-                        <p class="text-purple-200">
+                            class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+                        <h2 class="mb-4 text-2xl font-bold">No Updates Yet</h2>
+                        <p class="text-muted-foreground">
                             We're working on exciting updates for Enklave.
                             Subscribe to our newsletter to be the first to know
                             when new content is available!
@@ -133,15 +141,15 @@ const formatDate = (dateString: string) => {
         </section>
 
         <!-- Newsletter Signup CTA -->
-        <section class="relative px-6 py-16 text-white">
+        <section class="relative px-6 py-16">
             <div class="container mx-auto max-w-2xl text-center">
                 <div
-                    class="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm">
+                    class="bg-card text-card-foreground rounded-2xl border p-8 shadow-lg">
                     <Icon
                         name="iconoir:community"
-                        class="mx-auto mb-4 h-12 w-12 text-purple-300" />
+                        class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
                     <h2 class="mb-4 text-2xl font-bold">Stay in the loop</h2>
-                    <p class="mb-6 text-purple-100">
+                    <p class="text-muted-foreground mb-6">
                         Subscribe to our newsletter to get notified about new
                         features and updates as soon as they're released.
                     </p>
@@ -159,6 +167,17 @@ const formatDate = (dateString: string) => {
 </template>
 
 <style scoped>
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes pulse {
     0%,
     100% {
