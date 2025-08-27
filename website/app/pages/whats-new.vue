@@ -191,4 +191,46 @@ const formatDate = (dateString: string) => {
 .animate-pulse {
     animation: pulse 3s ease-in-out infinite;
 }
+
+/* Custom prose styling for what's-new page */
+.prose :deep(h1),
+.prose :deep(h2),
+.prose :deep(h3),
+.prose :deep(h4),
+.prose :deep(h5),
+.prose :deep(h6) {
+    margin-top: 1rem;
+}
+
+.prose :deep(h1:first-child),
+.prose :deep(h2:first-child),
+.prose :deep(h3:first-child),
+.prose :deep(h4:first-child),
+.prose :deep(h5:first-child),
+.prose :deep(h6:first-child) {
+    margin-top: 0;
+}
+
+.prose :deep(h1) {
+    margin-top: 1.5rem;
+}
+
+.prose :deep(h1:first-child) {
+    margin-top: 0;
+}
+
+.prose :deep(li) {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.prose :deep(ul),
+.prose :deep(ol) {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.prose :deep(li::marker) {
+    color: hsl(var(--muted-foreground));
+}
 </style>
