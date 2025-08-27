@@ -23,6 +23,8 @@
         "@scarf/scarf",
         "@swc/core",
         "@tailwindcss/oxide",
+        "argon2",
+        "better-sqlite3",
         "enklave",
         "enklave-website",
         "esbuild",

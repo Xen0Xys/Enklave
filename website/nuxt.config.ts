@@ -10,6 +10,7 @@ export default defineNuxtConfig({
         "shadcn-nuxt",
         "@nuxtjs/google-fonts",
         "@nuxtjs/seo",
+        "@nuxt/content",
     ],
     css: ["./app/assets/css/tailwind.css"],
     vite: {
@@ -31,7 +32,7 @@ export default defineNuxtConfig({
         url: "https://enklave.cloud",
         name: "Enklave",
         description:
-            "Secure password manager and digital vault for teams and individuals",
+            "Collaborative family and couple management software with secure file storage, shopping lists, and organization tools",
         defaultLocale: "en",
     },
     seo: {
@@ -39,7 +40,6 @@ export default defineNuxtConfig({
     },
     sitemap: {
         enabled: true,
-        strictNuxtContentPaths: true,
         urls: [
             {
                 loc: "/",
@@ -56,12 +56,22 @@ export default defineNuxtConfig({
                 changefreq: "weekly",
                 priority: 0.9,
             },
+            {
+                loc: "/newsletter/getting-started",
+                changefreq: "monthly",
+                priority: 0.7,
+            },
+            {
+                loc: "/newsletter/family-security-tips",
+                changefreq: "monthly",
+                priority: 0.7,
+            },
         ],
     },
     robots: {
         enabled: true,
         disallow: ["/admin", "/api", "/.env", "/.git"],
-        allow: ["/", "/contact", "/whats-new", "/unsubscribe"],
+        allow: ["/", "/contact", "/whats-new", "/unsubscribe", "/newsletter/*"],
         sitemap: "https://enklave.cloud/sitemap.xml",
     },
     schemaOrg: {

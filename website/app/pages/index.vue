@@ -38,7 +38,10 @@ useSchemaOrg([
 <template>
     <div class="flex w-full flex-col">
         <LandingHero />
+        <LandingProblem />
+        <LandingDemo />
         <LandingFeatures />
+        <LandingSocialProof />
         <LandingPricing />
         <LandingNewsletter />
     </div>
