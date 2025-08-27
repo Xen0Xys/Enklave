@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     modules: [
         "@nuxt/icon",
         "shadcn-nuxt",
-        // "@nuxtjs/google-fonts", // Temporarily disabled due to network restrictions
+        "@nuxtjs/google-fonts",
         "@nuxtjs/seo",
         "@nuxt/content",
     ],
@@ -20,14 +20,14 @@ export default defineNuxtConfig({
         prefix: "",
         componentDir: "./app/components/ui",
     },
-    // googleFonts: {
-    //     families: {
-    //         Sora: true,
-    //         Inter: true,
-    //         "JetBrains Mono": true,
-    //     },
-    //     display: "swap",
-    // },
+    googleFonts: {
+        families: {
+            Sora: true,
+            Inter: true,
+            "JetBrains Mono": true,
+        },
+        display: "swap",
+    },
     site: {
         url: "https://enklave.cloud",
         name: "Enklave",

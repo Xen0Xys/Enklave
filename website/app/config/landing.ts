@@ -20,7 +20,7 @@ export const landingConfig = {
                     "Photos, documents, and notes spread across different apps and devices",
             },
             {
-                icon: "iconoir:shopping-cart",
+                icon: "iconoir:cart",
                 title: "Forgotten Tasks",
                 description:
                     "Shopping lists, appointments, and family tasks get lost in messaging apps",
@@ -51,19 +51,9 @@ export const landingConfig = {
                 recentFiles: "Recent Files",
                 shoppingList: "Shopping List",
             },
-            files: [
-                "Family_Budget_2025.pdf",
-                "Kids School Documents",
-            ],
-            timestamps: [
-                "2 min ago",
-                "1 hour ago",
-            ],
-            shoppingItems: [
-                "Organic milk",
-                "Fresh bread",
-                "Kids snacks",
-            ],
+            files: ["Family_Budget_2025.pdf", "Kids School Documents"],
+            timestamps: ["2 min ago", "1 hour ago"],
+            shoppingItems: ["Organic milk", "Fresh bread", "Kids snacks"],
             status: "✓ All family members connected",
             statusText: "Secure",
         },
@@ -163,13 +153,15 @@ export const landingConfig = {
     },
     pricing: {
         title: "Flexible pricing for every family",
-        description: "Choose the plan that's right for your family, start for free.",
+        description:
+            "Choose the plan that's right for your family, start for free.",
         freePlanCta: "Looking for the Free plan?",
         freePlanButton: "Create an account now",
         plans: [
             {
                 title: "Family",
-                description: "Perfect for families and couples getting started.",
+                description:
+                    "Perfect for families and couples getting started.",
                 price: "$4.99",
                 pricePeriod: "/ month",
                 isPrimary: true,
