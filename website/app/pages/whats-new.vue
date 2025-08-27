@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Fetch all newsletter articles
-const {data: articles} = await useAsyncData("whats-new", () =>
-    queryCollection("content").all(),
+const {data: articles} = await useAsyncData("whats-new", async () =>
+    (await queryCollection("newsletter").all()).reverse(),
 );
 
 useSeoMeta({
@@ -66,22 +66,26 @@ const formatDate = (dateString: string) => {
                                 📰 {{ article.category }}
                             </span>
                             <time class="text-purple-200">
-                                {{ formatDate(article.date) }}
+                                {{ formatDate(article.meta.date as string) }}
                             </time>
                         </div>
 
                         <h2 class="mb-4 text-3xl font-bold text-white">
                             {{ article.title }}
                         </h2>
-                        
+
                         <p class="mb-6 text-lg text-purple-100">
                             {{ article.description }}
                         </p>
 
-                        <div class="mb-6 flex items-center gap-6 text-sm text-purple-300">
+                        <div
+                            class="mb-6 flex items-center gap-6 text-sm text-purple-300">
                             <div class="flex items-center gap-2">
                                 <Icon name="iconoir:user" class="h-4 w-4" />
-                                <span>By {{ article.author }}</span>
+                                <span
+                                    >By
+                                    {{ article.meta.author as string }}</span
+                                >
                             </div>
                             <div
                                 v-if="article.readTime"
@@ -111,7 +115,7 @@ const formatDate = (dateString: string) => {
                     <!-- No articles message -->
                     <div
                         v-else
-                        class="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm text-center">
+                        class="rounded-2xl border border-white/20 bg-white/10 p-8 text-center backdrop-blur-sm">
                         <Icon
                             name="iconoir:journal-page"
                             class="mx-auto mb-4 h-12 w-12 text-purple-300" />
@@ -119,8 +123,9 @@ const formatDate = (dateString: string) => {
                             No Updates Yet
                         </h2>
                         <p class="text-purple-200">
-                            We're working on exciting updates for Enklave. 
-                            Subscribe to our newsletter to be the first to know when new content is available!
+                            We're working on exciting updates for Enklave.
+                            Subscribe to our newsletter to be the first to know
+                            when new content is available!
                         </p>
                     </div>
                 </div>
