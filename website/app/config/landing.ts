@@ -1,98 +1,98 @@
 export const landingConfig = {
     hero: {
-        title: "Secure your data. Take back control.",
+        title: "Simplify your family's digital life",
         description:
-            "Enklave is the open-source solution to protect your digital life. Simple, transparent and completely under your control.",
+            "Enklave is the collaborative family and couple management software that helps you organize, share, and manage your daily life together.",
         cta: "Get started for free",
         githubUrl: "https://github.com/Xen0Xys/Enklave",
         githubStars: "2.1k",
         badge: "Open Source & Self-Hosted",
     },
     problem: {
-        title: "Data breaches are happening every day",
+        title: "Family coordination is getting harder",
         description:
-            "Your sensitive data shouldn't be locked away in proprietary systems you can't trust or control.",
+            "Managing family life across multiple apps and platforms creates chaos. Important documents get lost, shopping lists are forgotten, and communication breaks down.",
         painPoints: [
             {
-                icon: "iconoir:warning-triangle",
-                title: "Data Breaches",
+                icon: "iconoir:multiple-pages",
+                title: "Scattered Information",
                 description:
-                    "Corporate password managers get hacked, exposing millions of credentials",
+                    "Photos, documents, and notes spread across different apps and devices",
             },
             {
-                icon: "iconoir:eye-off",
-                title: "No Transparency",
+                icon: "iconoir:shopping-cart",
+                title: "Forgotten Tasks",
                 description:
-                    "Closed-source solutions hide how they handle your most sensitive data",
+                    "Shopping lists, appointments, and family tasks get lost in messaging apps",
             },
             {
-                icon: "iconoir:lock",
-                title: "Vendor Lock-in",
+                icon: "iconoir:privacy-policy",
+                title: "Privacy Concerns",
                 description:
-                    "Your data trapped in proprietary formats with expensive migration costs",
+                    "Your family's personal data stored on servers you don't control",
             },
         ],
     },
     demo: {
         title: "See Enklave in action",
         description:
-            "Experience end-to-end encryption that puts you in control",
+            "Experience how Enklave brings your family together in one secure platform",
         features: [
-            "Zero-knowledge architecture",
-            "Self-hosted deployment",
-            "Open source transparency",
-            "Enterprise-grade security",
+            "Secure file storage and sharing",
+            "Collaborative shopping lists",
+            "Family notes and organization",
+            "Cross-platform access",
         ],
         cta: "Try the Demo",
         demoUrl: "#demo",
     },
     features: {
-        title: "Everything you need, and more",
+        title: "Everything your family needs, in one place",
         description:
-            "Discover the features that make Enklave the ideal solution for secure data management.",
+            "Discover the features that make Enklave the perfect solution for family collaboration and organization.",
         items: [
             {
-                icon: "iconoir:lock-key",
-                title: "End-to-end encryption",
+                icon: "iconoir:folder",
+                title: "Secure file storage",
                 description:
-                    "AES-256-GCM encryption with client-side key derivation. Your data is encrypted before it leaves your device.",
+                    "Store and organize important family documents, photos, and media with end-to-end encryption and organized folder structures.",
+            },
+            {
+                icon: "iconoir:list",
+                title: "Shared shopping lists",
+                description:
+                    "Create and share shopping lists with family members. Real-time updates ensure everyone stays in sync.",
+            },
+            {
+                icon: "iconoir:notes",
+                title: "Family notes",
+                description:
+                    "Keep track of important information, schedules, and reminders that everyone in the family can access.",
             },
             {
                 icon: "iconoir:share-android",
-                title: "Secure sharing",
+                title: "Smart sharing",
                 description:
-                    "Share encrypted data with granular permissions, expiration dates, and audit trails. Perfect for team workflows.",
+                    "Share files and information with specific family members with granular permissions and access controls.",
             },
             {
                 icon: "iconoir:laptop",
-                title: "Cross-platform SDKs",
+                title: "Cross-platform access",
                 description:
-                    "Native libraries for JavaScript, Python, Go, and REST APIs. Integrate security into your existing stack.",
+                    "Access your family's information from any device - web browser, desktop app, or mobile (coming soon).",
             },
             {
-                icon: "iconoir:git-merge",
-                title: "Version control",
+                icon: "iconoir:home-secure",
+                title: "Privacy & Security",
                 description:
-                    "Git-like versioning for encrypted data with atomic operations and conflict resolution for teams.",
-            },
-            {
-                icon: "iconoir:group",
-                title: "Team management",
-                description:
-                    "RBAC with fine-grained permissions, SSO integration, and comprehensive audit logs for compliance.",
-            },
-            {
-                icon: "iconoir:code",
-                title: "Open Source & Self-Hosted",
-                description:
-                    "Deploy on your infrastructure with Docker/Kubernetes. Full source code transparency and security audits.",
+                    "Self-host on your own infrastructure with full source code transparency. Your family data stays private.",
             },
         ],
     },
     socialProof: {
-        title: "Trusted by developers worldwide",
+        title: "Trusted by families worldwide",
         description:
-            "Join thousands of developers who trust Enklave with their most sensitive data",
+            "Join families who have simplified their digital life with Enklave",
         stats: [
             {
                 value: "2.1k+",
@@ -100,9 +100,9 @@ export const landingConfig = {
                 icon: "iconoir:star",
             },
             {
-                value: "50+",
-                label: "Contributors",
-                icon: "iconoir:group",
+                value: "500+",
+                label: "Families",
+                icon: "iconoir:home",
             },
             {
                 value: "10k+",
@@ -117,76 +117,76 @@ export const landingConfig = {
         ],
         testimonials: [
             {
-                quote: "Finally, a password manager I can trust. Being open-source means I can verify the security claims myself.",
+                quote: "Finally, a place to keep all our family documents organized and secure. No more searching through dozens of apps.",
                 author: "Sarah Chen",
-                role: "Senior Developer",
-                company: "TechCorp",
+                role: "Mother of 3",
+                company: "Toronto, Canada",
                 avatar: "/avatars/sarah.jpg",
             },
             {
-                quote: "The self-hosting option gives us complete control over our sensitive data. Perfect for our security requirements.",
+                quote: "The shopping lists feature has revolutionized our grocery shopping. Everyone can add items and we never forget anything.",
                 author: "Miguel Rodriguez",
-                role: "DevOps Engineer",
-                company: "SecureStart",
+                role: "Father",
+                company: "Barcelona, Spain",
                 avatar: "/avatars/miguel.jpg",
             },
             {
-                quote: "Clean API, excellent documentation, and the peace of mind that comes with open source. Enklave checks all boxes.",
+                quote: "Being able to self-host gives us peace of mind that our family's private information stays private.",
                 author: "Alex Thompson",
-                role: "CTO",
-                company: "DataFlow",
+                role: "Family",
+                company: "Austin, Texas",
                 avatar: "/avatars/alex.jpg",
             },
         ],
     },
     pricing: {
-        title: "Flexible pricing for everyone",
-        description: "Choose the plan that's right for you, start for free.",
+        title: "Flexible pricing for every family",
+        description: "Choose the plan that's right for your family, start for free.",
         freePlanCta: "Looking for the Free plan?",
         freePlanButton: "Create an account now",
         plans: [
             {
                 title: "Family",
-                description: "For advanced users and small teams.",
+                description: "Perfect for families and couples getting started.",
                 price: "$4.99",
                 pricePeriod: "/ month",
                 isPrimary: true,
                 features: [
                     "Secure storage (500 GB)",
-                    "Advanced sharing with permissions",
+                    "Unlimited shopping lists & notes",
                     "Access on 10 devices",
-                    "Priority support",
+                    "Email support",
                 ],
                 cta: "Choose Family",
             },
             {
                 title: "Pro",
                 description:
-                    "For organizations that need security and control at scale.",
+                    "For larger families that need more storage and features.",
                 price: "$9.99",
                 pricePeriod: "/ month",
                 isPrimary: false,
                 features: [
                     "Unlimited storage",
-                    "Team management & SSO",
-                    "Audit logs",
-                    "Dedicated 24/7 support",
+                    "Advanced sharing controls",
+                    "Priority support",
+                    "Custom backup schedules",
                 ],
                 cta: "Choose Pro",
             },
             {
-                title: "Enterprise",
+                title: "Self-Hosted",
                 description:
-                    "For organizations that need security and control at scale.",
-                price: "Contact Us",
+                    "Deploy Enklave on your own infrastructure for complete control.",
+                price: "Free",
                 isPrimary: false,
                 features: [
+                    "Full source code access",
                     "Unlimited storage",
-                    "Team management & SSO",
-                    "Audit logs",
-                    "Dedicated 24/7 support",
+                    "Complete privacy control",
+                    "Community support",
                 ],
-                cta: "Contact Us",
+                cta: "Get Started",
             },
         ],
         comparison: {
@@ -197,8 +197,8 @@ export const landingConfig = {
                     plans: {
                         free: "1 GB",
                         family: "500 GB",
-                        pro: "1 TB",
-                        enterprise: "Unlimited",
+                        pro: "Unlimited",
+                        selfhosted: "Unlimited",
                     },
                 },
                 {
@@ -207,16 +207,16 @@ export const landingConfig = {
                         free: true,
                         family: true,
                         pro: true,
-                        enterprise: true,
+                        selfhosted: true,
                     },
                 },
                 {
-                    name: "Version control",
+                    name: "Shopping lists & notes",
                     plans: {
-                        free: false,
-                        family: true,
-                        pro: true,
-                        enterprise: true,
+                        free: "Limited",
+                        family: "Unlimited",
+                        pro: "Unlimited",
+                        selfhosted: "Unlimited",
                     },
                 },
                 {
@@ -225,58 +225,58 @@ export const landingConfig = {
                         free: false,
                         family: true,
                         pro: true,
-                        enterprise: true,
+                        selfhosted: true,
                     },
                 },
                 {
                     name: "Cross-device access",
                     plans: {
-                        free: "1 device",
+                        free: "3 devices",
                         family: "10 devices",
                         pro: "Unlimited",
-                        enterprise: "Unlimited",
+                        selfhosted: "Unlimited",
                     },
                 },
                 {
-                    name: "Team management & SSO",
+                    name: "Custom backup schedules",
                     plans: {
                         free: false,
                         family: false,
                         pro: true,
-                        enterprise: true,
+                        selfhosted: true,
                     },
                 },
                 {
-                    name: "Audit logs",
+                    name: "Self-hosting",
                     plans: {
                         free: false,
                         family: false,
-                        pro: true,
-                        enterprise: true,
+                        pro: false,
+                        selfhosted: true,
                     },
                 },
                 {
                     name: "Customer support",
                     plans: {
                         free: "Community",
-                        family: "Priority",
-                        pro: "Dedicated 24/7",
-                        enterprise: "Dedicated 24/7",
+                        family: "Email",
+                        pro: "Priority",
+                        selfhosted: "Community",
                     },
                 },
             ],
         },
     },
     newsletter: {
-        title: "Stay ahead of the curve",
+        title: "Stay connected with your family",
         description:
-            "Get security insights, technical deep-dives, and early access to new features. Join our developer community.",
-        placeholder: "developer@company.com",
+            "Get family organization tips, product updates, and early access to new features. Join our community of organized families.",
+        placeholder: "family@example.com",
         cta: "Join the community",
         features: [
-            "Monthly security insights and best practices",
-            "Early access to beta features and APIs",
-            "Technical deep-dives and implementation guides",
+            "Monthly family organization tips and best practices",
+            "Early access to new features and updates",
+            "Family-friendly tutorials and guides",
             "No spam, unsubscribe anytime",
         ],
         stats: {
