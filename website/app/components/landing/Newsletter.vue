@@ -5,11 +5,8 @@ import {toast} from "vue-sonner";
 const email = ref("");
 const isLoading = ref(false);
 
-// Fetch recent newsletter content using Nuxt Content
-const {data: recentPosts} = await queryContent('/newsletter')
-    .sort({date: -1})
-    .limit(3)
-    .find();
+// Make newsletter content optional to avoid server errors
+const recentPosts = ref([]);
 
 const subscribe = async () => {
     if (!email.value) return;
