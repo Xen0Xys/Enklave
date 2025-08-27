@@ -66,7 +66,8 @@ const submitForm = async () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <div
+        class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <!-- Hero Section -->
         <section class="relative px-6 py-24 text-white">
             <div class="container mx-auto max-w-2xl text-center">
@@ -74,30 +75,41 @@ const submitForm = async () => {
                 <div class="mb-8">
                     <div
                         class="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
-                        <Icon name="iconoir:chat-bubble" class="size-8 text-white" />
+                        <Icon
+                            name="iconoir:chat-bubble"
+                            class="size-8 text-white" />
                     </div>
                 </div>
 
-                <h1 class="mb-6 text-4xl font-bold tracking-tight md:text-5xl">Contact Us</h1>
-                <p class="mx-auto max-w-2xl text-xl leading-relaxed text-purple-100">
-                    Have a question or need support? We'd love to hear from you and help your family get the most out of Enklave.
+                <h1 class="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
+                    Contact Us
+                </h1>
+                <p
+                    class="mx-auto max-w-2xl text-xl leading-relaxed text-purple-100">
+                    Have a question or need support? We'd love to hear from you
+                    and help your family get the most out of Enklave.
                 </p>
             </div>
 
             <!-- Background decoration -->
             <div class="absolute inset-0 bg-gray-900 opacity-20"></div>
-            <div class="absolute top-10 left-10 h-20 w-20 animate-pulse rounded-full bg-white/10 blur-xl"></div>
-            <div class="absolute right-10 bottom-10 h-32 w-32 animate-pulse rounded-full bg-purple-500/20 blur-xl"></div>
+            <div
+                class="absolute top-10 left-10 h-20 w-20 animate-pulse rounded-full bg-white/10 blur-xl"></div>
+            <div
+                class="absolute right-10 bottom-10 h-32 w-32 animate-pulse rounded-full bg-purple-500/20 blur-xl"></div>
         </section>
 
         <!-- Contact Form Section -->
         <section class="relative px-6 py-16">
             <div class="container mx-auto max-w-2xl">
-                <div class="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm md:p-12">
+                <div
+                    class="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm md:p-12">
                     <form @submit.prevent="submitForm" class="space-y-6">
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div>
-                                <label for="name" class="mb-2 block text-sm font-medium text-purple-100">
+                                <label
+                                    for="name"
+                                    class="mb-2 block text-sm font-medium text-purple-100">
                                     Name *
                                 </label>
                                 <Input
@@ -110,7 +122,9 @@ const submitForm = async () => {
                                     class="w-full bg-white/90 text-gray-900 placeholder:text-gray-500 focus:bg-white" />
                             </div>
                             <div>
-                                <label for="email" class="mb-2 block text-sm font-medium text-purple-100">
+                                <label
+                                    for="email"
+                                    class="mb-2 block text-sm font-medium text-purple-100">
                                     Email *
                                 </label>
                                 <Input
@@ -125,7 +139,9 @@ const submitForm = async () => {
                         </div>
 
                         <div>
-                            <label for="subject" class="mb-2 block text-sm font-medium text-purple-100">
+                            <label
+                                for="subject"
+                                class="mb-2 block text-sm font-medium text-purple-100">
                                 Subject *
                             </label>
                             <Input
@@ -139,7 +155,9 @@ const submitForm = async () => {
                         </div>
 
                         <div>
-                            <label for="message" class="mb-2 block text-sm font-medium text-purple-100">
+                            <label
+                                for="message"
+                                class="mb-2 block text-sm font-medium text-purple-100">
                                 Message *
                             </label>
                             <Textarea
@@ -153,9 +171,9 @@ const submitForm = async () => {
                         </div>
 
                         <div class="flex justify-end">
-                            <Button 
-                                type="submit" 
-                                :disabled="isLoading" 
+                            <Button
+                                type="submit"
+                                :disabled="isLoading"
                                 class="transform bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-3 font-semibold text-white shadow-lg transition-all duration-200 hover:scale-105 hover:from-purple-700 hover:to-blue-700">
                                 <Icon
                                     v-if="isLoading"
@@ -176,58 +194,87 @@ const submitForm = async () => {
         <!-- Support Options Section -->
         <section class="relative px-6 py-16 text-white">
             <div class="container mx-auto max-w-4xl">
-                <div class="text-center mb-12">
-                    <h2 class="mb-4 text-3xl font-bold">Other ways to reach us</h2>
-                    <p class="text-purple-100">Choose the option that works best for you</p>
+                <div class="mb-12 text-center">
+                    <h2 class="mb-4 text-3xl font-bold">
+                        Other ways to reach us
+                    </h2>
+                    <p class="text-purple-100">
+                        Choose the option that works best for you
+                    </p>
                 </div>
 
                 <div class="grid gap-6 md:grid-cols-3">
                     <!-- GitHub Issues -->
-                    <div class="rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm text-center">
-                        <Icon name="iconoir:github" class="mx-auto mb-4 size-12 text-purple-300" />
-                        <h3 class="mb-2 text-lg font-semibold">GitHub Issues</h3>
+                    <div
+                        class="rounded-2xl border border-white/20 bg-white/10 p-6 text-center backdrop-blur-sm">
+                        <Icon
+                            name="iconoir:github"
+                            class="mx-auto mb-4 size-12 text-purple-300" />
+                        <h3 class="mb-2 text-lg font-semibold">
+                            GitHub Issues
+                        </h3>
                         <p class="mb-4 text-sm text-purple-100">
-                            Report bugs or request features directly on our GitHub repository
+                            Report bugs or request features directly on our
+                            GitHub repository
                         </p>
-                        <Button 
+                        <Button
                             as-child
                             variant="outline"
                             class="border-white/20 text-purple-200 hover:bg-white/10">
-                            <a href="https://github.com/Xen0Xys/Enklave/issues" target="_blank" rel="noopener noreferrer">
+                            <a
+                                href="https://github.com/Xen0Xys/Enklave/issues"
+                                target="_blank"
+                                rel="noopener noreferrer">
                                 Open Issue
                             </a>
                         </Button>
                     </div>
 
                     <!-- Community -->
-                    <div class="rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm text-center">
-                        <Icon name="iconoir:community" class="mx-auto mb-4 size-12 text-purple-300" />
+                    <div
+                        class="rounded-2xl border border-white/20 bg-white/10 p-6 text-center backdrop-blur-sm">
+                        <Icon
+                            name="iconoir:community"
+                            class="mx-auto mb-4 size-12 text-purple-300" />
                         <h3 class="mb-2 text-lg font-semibold">Community</h3>
                         <p class="mb-4 text-sm text-purple-100">
-                            Join our community discussions and get help from other families
+                            Join our community discussions and get help from
+                            other families
                         </p>
-                        <Button 
+                        <Button
                             as-child
                             variant="outline"
                             class="border-white/20 text-purple-200 hover:bg-white/10">
-                            <a href="https://github.com/Xen0Xys/Enklave/discussions" target="_blank" rel="noopener noreferrer">
+                            <a
+                                href="https://github.com/Xen0Xys/Enklave/discussions"
+                                target="_blank"
+                                rel="noopener noreferrer">
                                 Join Discussion
                             </a>
                         </Button>
                     </div>
 
                     <!-- Documentation -->
-                    <div class="rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm text-center">
-                        <Icon name="iconoir:book" class="mx-auto mb-4 size-12 text-purple-300" />
-                        <h3 class="mb-2 text-lg font-semibold">Documentation</h3>
+                    <div
+                        class="rounded-2xl border border-white/20 bg-white/10 p-6 text-center backdrop-blur-sm">
+                        <Icon
+                            name="iconoir:book"
+                            class="mx-auto mb-4 size-12 text-purple-300" />
+                        <h3 class="mb-2 text-lg font-semibold">
+                            Documentation
+                        </h3>
                         <p class="mb-4 text-sm text-purple-100">
-                            Find answers in our comprehensive documentation and guides
+                            Find answers in our comprehensive documentation and
+                            guides
                         </p>
-                        <Button 
+                        <Button
                             as-child
                             variant="outline"
                             class="border-white/20 text-purple-200 hover:bg-white/10">
-                            <a href="https://github.com/Xen0Xys/Enklave#readme" target="_blank" rel="noopener noreferrer">
+                            <a
+                                href="https://github.com/Xen0Xys/Enklave#readme"
+                                target="_blank"
+                                rel="noopener noreferrer">
                                 Read Docs
                             </a>
                         </Button>
@@ -240,7 +287,8 @@ const submitForm = async () => {
 
 <style scoped>
 @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
         opacity: 0.4;
     }
     50% {

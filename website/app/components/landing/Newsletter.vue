@@ -81,28 +81,39 @@ const subscribe = async () => {
             </div>
 
             <!-- Recent newsletter content -->
-            <div v-if="recentPosts && recentPosts.length > 0" class="mx-auto mt-16 max-w-4xl">
-                <h3 class="mb-8 text-center text-2xl font-semibold text-white">Recent Newsletter Articles</h3>
+            <div
+                v-if="recentPosts && recentPosts.length > 0"
+                class="mx-auto mt-16 max-w-4xl">
+                <h3 class="mb-8 text-center text-2xl font-semibold text-white">
+                    Recent Newsletter Articles
+                </h3>
                 <div class="grid gap-6 md:grid-cols-3">
                     <div
                         v-for="post in recentPosts"
                         :key="post._path"
                         class="rounded-lg border border-white/20 bg-white/10 p-6 backdrop-blur-sm transition-all duration-200 hover:bg-white/20">
                         <div class="mb-3 flex items-center justify-between">
-                            <span class="rounded-full bg-purple-500/30 px-3 py-1 text-xs font-medium text-purple-100">
+                            <span
+                                class="rounded-full bg-purple-500/30 px-3 py-1 text-xs font-medium text-purple-100">
                                 {{ post.category }}
                             </span>
                             <time class="text-xs text-blue-200">
                                 {{ new Date(post.date).toLocaleDateString() }}
                             </time>
                         </div>
-                        <h4 class="mb-2 font-semibold text-white">{{ post.title }}</h4>
-                        <p class="text-sm text-blue-100">{{ post.description }}</p>
-                        <NuxtLink 
+                        <h4 class="mb-2 font-semibold text-white">
+                            {{ post.title }}
+                        </h4>
+                        <p class="text-sm text-blue-100">
+                            {{ post.description }}
+                        </p>
+                        <NuxtLink
                             :to="`/newsletter${post._path}`"
                             class="mt-4 inline-flex items-center text-sm font-medium text-purple-300 hover:text-purple-200">
                             Read more
-                            <Icon name="iconoir:arrow-right" class="ml-1 size-3" />
+                            <Icon
+                                name="iconoir:arrow-right"
+                                class="ml-1 size-3" />
                         </NuxtLink>
                     </div>
                 </div>
@@ -147,10 +158,11 @@ const subscribe = async () => {
                     <div class="flex items-center gap-2">
                         <Icon name="iconoir:group" class="size-4" />
                         <span
-                            >{{
-                                landingConfig.newsletter.stats.subscribers
-                            }}
-                            {{ landingConfig.newsletter.stats.subscribersLabel || 'families' }}</span
+                            >{{ landingConfig.newsletter.stats.subscribers }}
+                            {{
+                                landingConfig.newsletter.stats
+                                    .subscribersLabel || "families"
+                            }}</span
                         >
                     </div>
                     <div class="flex items-center gap-2">
@@ -174,15 +186,40 @@ const subscribe = async () => {
                             )
                         }}+
                     </div>
-                    <div class="text-blue-200">{{ landingConfig.newsletter.additionalStats?.stat1Label || 'Family subscribers' }}</div>
+                    <div class="text-blue-200">
+                        {{
+                            landingConfig.newsletter.additionalStats
+                                ?.stat1Label || "Family subscribers"
+                        }}
+                    </div>
                 </div>
                 <div class="space-y-2">
-                    <div class="text-3xl font-bold text-purple-300">{{ landingConfig.newsletter.additionalStats?.stat2Value || 'Monthly' }}</div>
-                    <div class="text-blue-200">{{ landingConfig.newsletter.additionalStats?.stat2Label || 'Organization tips' }}</div>
+                    <div class="text-3xl font-bold text-purple-300">
+                        {{
+                            landingConfig.newsletter.additionalStats
+                                ?.stat2Value || "Monthly"
+                        }}
+                    </div>
+                    <div class="text-blue-200">
+                        {{
+                            landingConfig.newsletter.additionalStats
+                                ?.stat2Label || "Organization tips"
+                        }}
+                    </div>
                 </div>
                 <div class="space-y-2">
-                    <div class="text-3xl font-bold text-teal-300">{{ landingConfig.newsletter.additionalStats?.stat3Value || 'Early' }}</div>
-                    <div class="text-blue-200">{{ landingConfig.newsletter.additionalStats?.stat3Label || 'Feature access' }}</div>
+                    <div class="text-3xl font-bold text-teal-300">
+                        {{
+                            landingConfig.newsletter.additionalStats
+                                ?.stat3Value || "Early"
+                        }}
+                    </div>
+                    <div class="text-blue-200">
+                        {{
+                            landingConfig.newsletter.additionalStats
+                                ?.stat3Label || "Feature access"
+                        }}
+                    </div>
                 </div>
             </div>
         </div>

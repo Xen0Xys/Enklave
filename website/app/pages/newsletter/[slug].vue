@@ -67,14 +67,24 @@ const formatDate = (dateString: string) => {
 
                 <!-- Article Header -->
                 <div v-if="article" class="text-center">
-                    <div class="mb-4 flex items-center justify-center gap-4">
+                    <div
+                        class="mb-6 flex flex-wrap items-center justify-center gap-4">
                         <span
                             class="rounded-full bg-purple-500/30 px-4 py-2 text-sm font-medium text-purple-100">
                             {{ article.category }}
                         </span>
-                        <time class="text-purple-200">
-                            {{ formatDate(article.date) }}
-                        </time>
+                        <div class="flex items-center gap-2 text-purple-200">
+                            <Icon name="iconoir:calendar" class="h-4 w-4" />
+                            <time>
+                                {{ formatDate(article.date) }}
+                            </time>
+                        </div>
+                        <div
+                            v-if="article.readTime"
+                            class="flex items-center gap-2 text-purple-200">
+                            <Icon name="iconoir:clock" class="h-4 w-4" />
+                            <span>{{ article.readTime }}</span>
+                        </div>
                     </div>
                     <h1 class="mb-6 text-4xl font-bold md:text-5xl">
                         {{ article.title }}
@@ -83,8 +93,23 @@ const formatDate = (dateString: string) => {
                         class="mx-auto max-w-2xl text-xl leading-relaxed text-purple-100">
                         {{ article.description }}
                     </p>
-                    <div class="mt-6 text-sm text-purple-200">
-                        By {{ article.author }}
+                    <div class="mt-6 flex items-center justify-center gap-2">
+                        <Icon
+                            name="iconoir:user"
+                            class="h-4 w-4 text-purple-300" />
+                        <span class="text-sm text-purple-200"
+                            >By {{ article.author }}</span
+                        >
+                    </div>
+                    <div
+                        v-if="article.tags && article.tags.length"
+                        class="mt-4 flex flex-wrap justify-center gap-2">
+                        <span
+                            v-for="tag in article.tags"
+                            :key="tag"
+                            class="rounded-full bg-blue-500/20 px-3 py-1 text-xs font-medium text-blue-200">
+                            #{{ tag }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -103,7 +128,7 @@ const formatDate = (dateString: string) => {
                 <div
                     class="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm md:p-12">
                     <article
-                        class="prose prose-lg prose-invert mx-auto max-w-none">
+                        class="prose prose-lg prose-invert prose-headings:text-white prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-purple-100 prose-p:leading-relaxed prose-a:text-purple-300 prose-a:underline hover:prose-a:text-purple-200 prose-strong:text-white prose-ul:text-purple-100 prose-ol:text-purple-100 prose-li:marker:text-purple-300 prose-blockquote:border-purple-500 prose-blockquote:text-purple-200 prose-code:text-purple-200 prose-code:bg-purple-500/20 prose-code:px-2 prose-code:py-1 prose-code:rounded mx-auto max-w-none">
                         <ContentRenderer v-if="article" :value="article" />
                     </article>
                 </div>
