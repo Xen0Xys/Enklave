@@ -400,78 +400,56 @@ const formatDate = (dateString: string) => {
 
                     <!-- Newsletter Articles -->
                     <div
+                        v-for="article in articles"
+                        :key="article.path"
                         v-if="articles && articles.length > 0"
                         class="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm">
-                        <h2 class="mb-6 text-2xl font-bold text-white">
-                            📰 Latest Newsletter Articles
+                        <div class="mb-6 flex items-center justify-between">
+                            <span
+                                class="rounded-full bg-purple-500/30 px-4 py-2 text-sm font-medium text-purple-100">
+                                📰 {{ article.category }}
+                            </span>
+                            <time class="text-purple-200">
+                                {{ formatDate(article.date) }}
+                            </time>
+                        </div>
+
+                        <h2 class="mb-4 text-3xl font-bold text-white">
+                            {{ article.title }}
                         </h2>
-                        <div class="grid gap-6 md:grid-cols-2">
+                        
+                        <p class="mb-6 text-lg text-purple-100">
+                            {{ article.description }}
+                        </p>
+
+                        <div class="mb-6 flex items-center gap-6 text-sm text-purple-300">
+                            <div class="flex items-center gap-2">
+                                <Icon name="iconoir:user" class="h-4 w-4" />
+                                <span>By {{ article.author }}</span>
+                            </div>
                             <div
-                                v-for="article in articles"
-                                :key="article.path"
-                                class="rounded-lg border border-white/10 bg-white/5 p-6 transition-all duration-200 hover:bg-white/10">
-                                <div
-                                    class="mb-3 flex items-center justify-between">
-                                    <span
-                                        class="rounded-full bg-purple-500/30 px-3 py-1 text-sm font-medium text-purple-100">
-                                        {{ article.category }}
-                                    </span>
-                                    <div
-                                        class="flex items-center gap-2 text-sm text-purple-300">
-                                        <Icon
-                                            name="iconoir:calendar"
-                                            class="h-3 w-3" />
-                                        <time>{{
-                                            formatDate(article.date)
-                                        }}</time>
-                                    </div>
-                                </div>
-                                <h3 class="mb-3 text-xl font-bold text-white">
-                                    {{ article.title }}
-                                </h3>
-                                <p class="mb-4 text-purple-200">
-                                    {{ article.description }}
-                                </p>
-                                <div
-                                    class="mb-4 flex items-center justify-between text-sm text-purple-300">
-                                    <div class="flex items-center gap-2">
-                                        <Icon
-                                            name="iconoir:user"
-                                            class="h-3 w-3" />
-                                        <span>By {{ article.author }}</span>
-                                    </div>
-                                    <div
-                                        v-if="article.readTime"
-                                        class="flex items-center gap-2">
-                                        <Icon
-                                            name="iconoir:clock"
-                                            class="h-3 w-3" />
-                                        <span>{{ article.readTime }}</span>
-                                    </div>
-                                </div>
-                                <div
-                                    v-if="article.tags && article.tags.length"
-                                    class="mb-4 flex flex-wrap gap-1">
-                                    <span
-                                        v-for="tag in article.tags"
-                                        :key="tag"
-                                        class="rounded-full bg-blue-500/20 px-2 py-1 text-xs font-medium text-blue-200">
-                                        #{{ tag }}
-                                    </span>
-                                </div>
-                                <Button
-                                    as-child
-                                    variant="outline"
-                                    class="border-purple-500/50 text-purple-200 hover:bg-purple-500/20 hover:text-white">
-                                    <NuxtLink :to="article.path">
-                                        Read Article
-                                        <Icon
-                                            name="iconoir:arrow-right"
-                                            class="ml-2 h-4 w-4" />
-                                    </NuxtLink>
-                                </Button>
+                                v-if="article.readTime"
+                                class="flex items-center gap-2">
+                                <Icon name="iconoir:clock" class="h-4 w-4" />
+                                <span>{{ article.readTime }}</span>
+                            </div>
+                            <div
+                                v-if="article.tags && article.tags.length"
+                                class="flex flex-wrap gap-1">
+                                <span
+                                    v-for="tag in article.tags"
+                                    :key="tag"
+                                    class="rounded-full bg-blue-500/20 px-2 py-1 text-xs font-medium text-blue-200">
+                                    #{{ tag }}
+                                </span>
                             </div>
                         </div>
+
+                        <!-- Full Article Content -->
+                        <article
+                            class="prose prose-lg prose-invert prose-headings:text-white prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-p:text-purple-100 prose-p:leading-relaxed prose-a:text-purple-300 prose-a:underline hover:prose-a:text-purple-200 prose-strong:text-white prose-ul:text-purple-100 prose-ol:text-purple-100 prose-li:marker:text-purple-300 prose-blockquote:border-purple-500 prose-blockquote:text-purple-200 prose-code:text-purple-200 prose-code:bg-purple-500/20 prose-code:px-2 prose-code:py-1 prose-code:rounded max-w-none">
+                            <ContentRenderer :value="article" />
+                        </article>
                     </div>
                 </div>
             </div>
