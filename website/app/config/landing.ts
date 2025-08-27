@@ -58,7 +58,7 @@ export const landingConfig = {
                     "AES-256-GCM encryption with client-side key derivation. Your data is encrypted before it leaves your device.",
             },
             {
-                icon: "iconoir:share",
+                icon: "iconoir:share-android",
                 title: "Secure sharing",
                 description:
                     "Share encrypted data with granular permissions, expiration dates, and audit trails. Perfect for team workflows.",
