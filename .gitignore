@@ -37,6 +37,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 website/.nuxt
 website/.output
 website/dist
+website/.data
 
 # Frontend
 frontend/.nuxt
