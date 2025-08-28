@@ -1,44 +1,44 @@
 # Frontend AGENTS.md
 
-Ce fichier fournit des conseils spécifiques au projet `frontend`.
+This file provides specific guidance for the `frontend` project.
 
-## Aperçu du projet
+## Project Overview
 
-Le `frontend` est une application [Nuxt](https://nuxt.com/) (utilisant Vue.js) qui sert de client web pour Enclave. Il est également encapsulé avec [Tauri](https://tauri.app/) pour créer une application de bureau multiplateforme.
+The `frontend` is a [Nuxt](https://nuxt.com/) application (using Vue.js) that serves as the web client for Enclave. It is also wrapped with [Tauri](https://tauri.app/) to create a cross-platform desktop application.
 
-## Démarrage
+## Getting Started
 
-- **Pour le développement web :** Exécutez la commande suivante depuis la racine du monorepo pour démarrer le serveur de développement Nuxt.
+- **For web development:** Run the following command from the monorepo root to start the Nuxt development server.
     ```bash
     bun dev --filter frontend
     ```
-- **Pour le développement de bureau (Tauri) :** Pour lancer l'application de bureau en mode développement.
+- **For desktop development (Tauri):** To launch the desktop application in development mode.
     ```bash
     bun tauri dev --filter frontend
     ```
 
-## Compilation
+## Building
 
-- **Pour le web :**
+- **For the web:**
     ```bash
     bun build --filter frontend
     ```
-- **Pour le bureau (Tauri) :**
+- **For desktop (Tauri):**
     ```bash
     bun tauri build --filter frontend
     ```
 
-## Structure du code
+## Code Structure
 
-- **Nuxt (Web) :**
-    - `pages/`: Les pages de l'application et le routage basé sur les fichiers.
-    - `components/`: Composants Vue réutilisables.
-    - `composables/`: Fonctions réutilisables (hooks) de Vue Composition API.
-    - `stores/`: Magasins d'états Pinia pour la gestion de l'état global.
-    - `layouts/`: Mises en page de l'application.
-- **Tauri (Bureau) :**
-    - `src-tauri/`: Contient le code Rust pour l'application de bureau. Les modifications ici nécessitent une reconstruction de l'application Tauri.
+- **Nuxt (Web):**
+    - `pages/`: The application's pages and file-based routing.
+    - `components/`: Reusable Vue components.
+    - `composables/`: Reusable functions (hooks) from the Vue Composition API.
+    - `stores/`: Pinia state stores for global state management.
+    - `layouts/`: Application layouts.
+- **Tauri (Desktop):**
+    - `src-tauri/`: Contains the Rust code for the desktop application. Changes here require a rebuild of the Tauri application.
 
-## Style
+## Styling
 
-Le projet utilise [shadcn-vue](https://www.shadcn-vue.com/) pour les composants d'interface utilisateur et [Tailwind CSS](https://tailwindcss.com/) pour le style. Les composants personnalisés se trouvent dans `components/ui`.
+The project uses [shadcn-vue](https://www.shadcn-vue.com/) for UI components and [Tailwind CSS](https://tailwindcss.com/) for styling. Custom components are located in `components/ui`.

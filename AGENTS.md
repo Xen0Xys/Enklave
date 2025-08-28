@@ -1,52 +1,52 @@
 # Enclave AGENTS.md
 
-Ce fichier fournit des conseils aux agents de codage IA travaillant sur le monorepo Enclave.
+This file provides guidance for AI coding agents working on the Enclave monorepo.
 
-## Aperçu du projet
+## Project Overview
 
-Enclave est une application de messagerie sécurisée. Le projet est un monorepo contenant :
+Enclave is a secure messaging application. The project is a monorepo containing:
 
-- `backend`: Une application NestJS fournissant l'API.
-- `frontend`: Une application Nuxt (Vue.js) pour le client web, encapsulée avec Tauri pour une version de bureau.
-- `website`: Une application Nuxt (Vue.js) pour le site web public.
+- `backend`: A NestJS application providing the API.
+- `frontend`: A Nuxt (Vue.js) application for the web client, wrapped with Tauri for a desktop version.
+- `website`: A Nuxt (Vue.js) application for the public website.
 
-Le projet utilise `bun` pour la gestion des paquets et `turborepo` pour la gestion du monorepo.
+The project uses `bun` for package management and `turborepo` for monorepo management.
 
-## Configuration de l'environnement de développement
+## Development Environment Setup
 
-1.  **Installer les dépendances :**
+1.  **Install dependencies:**
     ```bash
     bun install
     ```
-2.  **Démarrer toutes les applications en mode développement :**
+2.  **Start all applications in development mode:**
     ```bash
     bun dev
     ```
 
-## Compilation et tests
+## Building and Testing
 
-- **Compiler tous les paquets :**
+- **Build all packages:**
     ```bash
     bun build
     ```
-- **Exécuter les tests pour tous les paquets :**
+- **Run tests for all packages:**
     ```bash
     bun test
     ```
-- **Exécuter le linting pour tous les paquets :**
+- **Run linting for all packages:**
     ```bash
     bun lint
     ```
 
-## Gestion des paquets
+## Package Management
 
-- Pour ajouter une dépendance à un paquet spécifique, utilisez l'indicateur `--filter`. Par exemple, pour ajouter une dépendance au `backend`:
+- To add a dependency to a specific package, use the `--filter` flag. For example, to add a dependency to the `backend`:
     ```bash
-    bun add <nom-du-paquet> --filter backend
+    bun add <package-name> --filter backend
     ```
 
-## Instructions pour les Pull Requests
+## Pull Request Instructions
 
-- **Format du titre :** `[<nom-du-paquet>] <Titre>` (par exemple, `[frontend] Ajout d'une nouvelle page de connexion`)
-- Assurez-vous que tous les tests et le linting passent avant de soumettre une PR.
-- Mettez à jour ou ajoutez des tests pour toute modification de code.
+- **Title format:** `[<package-name>] <Title>` (e.g., `[frontend] Add new login page`)
+- Ensure all tests and linting pass before submitting a PR.
+- Update or add tests for any code changes.

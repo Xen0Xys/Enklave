@@ -1,45 +1,45 @@
 # Backend AGENTS.md
 
-Ce fichier fournit des conseils spécifiques au projet `backend`.
+This file provides specific guidance for the `backend` project.
 
-## Aperçu du projet
+## Project Overview
 
-Le `backend` est une application [NestJS](https://nestjs.com/) qui sert d'API pour l'application Enclave. Il utilise [Prisma](https://www.prisma.io/) comme ORM pour interagir avec la base de données.
+The `backend` is a [NestJS](https://nestjs.com/) application that serves as the API for the Enclave application. It uses [Prisma](https://www.prisma.io/) as its ORM to interact with the database.
 
-## Démarrage
+## Getting Started
 
-Pour démarrer le serveur de développement, exécutez la commande suivante depuis la racine du monorepo :
+To start the development server, run the following command from the monorepo root:
 
 ```bash
 bun dev --filter backend
 ```
 
-## Base de données
+## Database
 
-Le projet utilise Prisma pour la gestion de la base de données.
+The project uses Prisma for database management.
 
-- **Appliquer les migrations :** Pour appliquer les migrations de base de données, exécutez :
+- **Apply migrations:** To apply database migrations, run:
     ```bash
     bun prisma migrate dev --filter backend
     ```
-- **Générer le client Prisma :** Après avoir modifié le fichier `schema.prisma`, vous devez régénérer le client Prisma :
+- **Generate Prisma client:** After modifying the `schema.prisma` file, you need to regenerate the Prisma client:
     ```bash
     bun prisma generate --filter backend
     ```
-- **Lancer Prisma Studio :** Pour visualiser et modifier les données dans la base de données, utilisez Prisma Studio :
+- **Launch Prisma Studio:** To view and edit data in the database, use Prisma Studio:
     ```bash
     bun prisma studio --filter backend
     ```
 
-## Tests
+## Testing
 
-- Pour exécuter les tests unitaires et d'intégration pour le backend, utilisez la commande suivante depuis la racine du monorepo :
+- To run unit and integration tests for the backend, use the following command from the monorepo root:
     ```bash
     bun test --filter backend
     ```
 
-## Structure du code
+## Code Structure
 
-- Le code est organisé en modules NestJS dans le répertoire `src/modules`.
-- Suivez les conventions et les meilleures pratiques de NestJS lors de l'ajout de nouvelles fonctionnalités.
-- Les schémas de base de données se trouvent dans `prisma/schema.prisma`.
+- The code is organized into NestJS modules in the `src/modules` directory.
+- Follow NestJS conventions and best practices when adding new features.
+- Database schemas are located in `prisma/schema.prisma`.
