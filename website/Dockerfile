@@ -5,6 +5,8 @@ WORKDIR /usr/src/app
 # Build
 FROM base AS build
 
+RUN apk add --no-cache python3 make g++ sqlite-dev
+
 COPY package.json ./
 
 RUN bun install
@@ -19,7 +21,7 @@ FROM base AS run
 USER bun
 
 ENV NODE_ENV=PRODUCTION
-ENV HOST 0.0.0.0
+ENV HOST=0.0.0.0
 
 EXPOSE 3000
 
