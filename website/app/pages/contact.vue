@@ -206,17 +206,19 @@ const submitForm = async () => {
                 <div class="grid gap-6 md:grid-cols-3">
                     <!-- GitHub Issues -->
                     <div
-                        class="rounded-2xl border border-white/20 bg-white/10 p-6 text-center backdrop-blur-sm">
-                        <Icon
-                            name="iconoir:github"
-                            class="mx-auto mb-4 size-12 text-purple-300" />
-                        <h3 class="mb-2 text-lg font-semibold">
-                            GitHub Issues
-                        </h3>
-                        <p class="mb-4 text-sm text-purple-100">
-                            Report bugs or request features directly on our
-                            GitHub repository
-                        </p>
+                        class="flex flex-col justify-between rounded-2xl border border-white/20 bg-white/10 p-6 text-center backdrop-blur-sm">
+                        <div>
+                            <Icon
+                                name="iconoir:github"
+                                class="mx-auto mb-4 size-12 text-purple-300" />
+                            <h3 class="mb-2 text-lg font-semibold">
+                                GitHub Issues
+                            </h3>
+                            <p class="mb-4 text-sm text-purple-100">
+                                Report bugs or request features directly on our
+                                GitHub repository
+                            </p>
+                        </div>
                         <Button
                             as-child
                             variant="outline"
@@ -232,15 +234,19 @@ const submitForm = async () => {
 
                     <!-- Community -->
                     <div
-                        class="rounded-2xl border border-white/20 bg-white/10 p-6 text-center backdrop-blur-sm">
-                        <Icon
-                            name="iconoir:community"
-                            class="mx-auto mb-4 size-12 text-purple-300" />
-                        <h3 class="mb-2 text-lg font-semibold">Community</h3>
-                        <p class="mb-4 text-sm text-purple-100">
-                            Join our community discussions and get help from
-                            other families
-                        </p>
+                        class="flex flex-col justify-between rounded-2xl border border-white/20 bg-white/10 p-6 text-center backdrop-blur-sm">
+                        <div>
+                            <Icon
+                                name="iconoir:community"
+                                class="mx-auto mb-4 size-12 text-purple-300" />
+                            <h3 class="mb-2 text-lg font-semibold">
+                                Community
+                            </h3>
+                            <p class="mb-4 text-sm text-purple-100">
+                                Join our community discussions and get help from
+                                other families
+                            </p>
+                        </div>
                         <Button
                             as-child
                             variant="outline"
@@ -256,17 +262,19 @@ const submitForm = async () => {
 
                     <!-- Documentation -->
                     <div
-                        class="rounded-2xl border border-white/20 bg-white/10 p-6 text-center backdrop-blur-sm">
-                        <Icon
-                            name="iconoir:book"
-                            class="mx-auto mb-4 size-12 text-purple-300" />
-                        <h3 class="mb-2 text-lg font-semibold">
-                            Documentation
-                        </h3>
-                        <p class="mb-4 text-sm text-purple-100">
-                            Find answers in our comprehensive documentation and
-                            guides
-                        </p>
+                        class="flex flex-col justify-between rounded-2xl border border-white/20 bg-white/10 p-6 text-center backdrop-blur-sm">
+                        <div>
+                            <Icon
+                                name="iconoir:book"
+                                class="mx-auto mb-4 size-12 text-purple-300" />
+                            <h3 class="mb-2 text-lg font-semibold">
+                                Documentation
+                            </h3>
+                            <p class="mb-4 text-sm text-purple-100">
+                                Find answers in our comprehensive documentation
+                                and guides
+                            </p>
+                        </div>
                         <Button
                             as-child
                             variant="outline"

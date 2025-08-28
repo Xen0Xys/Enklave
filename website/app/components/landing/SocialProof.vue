@@ -44,7 +44,7 @@ import {landingConfig} from "~/config/landing";
                     v-for="(testimonial, index) in landingConfig.socialProof
                         .testimonials"
                     :key="testimonial.author"
-                    class="rounded-2xl border border-gray-200 bg-gray-50 p-8 transition-all duration-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-900"
+                    class="flex flex-col justify-between rounded-2xl border border-gray-200 bg-gray-50 p-8 transition-all duration-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-900"
                     :style="`animation-delay: ${index * 150}ms`">
                     <!-- Quote -->
                     <div class="mb-6">
@@ -60,7 +60,7 @@ import {landingConfig} from "~/config/landing";
                     <!-- Author -->
                     <div class="flex items-center">
                         <div
-                            class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-600">
+                            class="mr-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-600">
                             <span class="text-lg font-semibold text-white">
                                 {{
                                     testimonial.author
