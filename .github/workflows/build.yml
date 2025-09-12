@@ -1,0 +1,55 @@
+name: Build all projects
+
+permissions:
+    contents: read
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    build-website:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: website
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Bun
+              uses: oven-sh/setup-bun@v1
+            - name: Install dependencies
+              run: bun install
+            - name: Build website
+              run: bun run build
+
+    build-frontend:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: frontend
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Bun
+              uses: oven-sh/setup-bun@v1
+            - name: Install dependencies
+              run: bun install
+            - name: Build frontend
+              run: bun run build
+
+    build-backend:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: backend
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Bun
+              uses: oven-sh/setup-bun@v1
+            - name: Install dependencies
+              run: bun install
+            - name: Generate Prisma client
+              run: bunx prisma generate
+            - name: Build backend
+              run: bun run build
