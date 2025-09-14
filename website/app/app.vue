@@ -6,9 +6,9 @@ useSeoMeta({
     viewport: "width=device-width, initial-scale=1",
     charset: "utf-8",
     // Default meta tags that can be overridden by pages
-    title: "Enklave - Secure Password Manager & Digital Vault",
+    title: "Enklave - Collaborative family and couple management software.",
     description:
-        "Enklave is a secure password manager and digital vault designed for teams and individuals. Protect your sensitive data with advanced encryption and seamless collaboration features.",
+        "Enklave is a collaborative family and couple management software.",
     author: "Enklave Team",
     publisher: "Enklave",
     formatDetection: "telephone=no",
@@ -31,7 +31,7 @@ useSeoMeta({
 
 useHead({
     link: [
-        {rel: "icon", type: "image/x-icon", href: "/favicon.ico"},
+        {rel: "icon", type: "image/x-icon", href: "/icon.webp"},
         {rel: "canonical", href: "https://enklave.cloud"},
         {rel: "preconnect", href: "https://fonts.googleapis.com"},
         {rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: ""},
@@ -46,7 +46,7 @@ useHead({
             <meta
                 name="viewport"
                 content="width=device-width, initial-scale=1" />
-            <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+            <link rel="icon" type="image/x-icon" href="/icon.webp" />
         </Head>
         <Body>
             <NuxtLoadingIndicator />
