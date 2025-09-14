@@ -1,3 +1,5 @@
+name: Test all projects
+
 on:
     push:
         branches:
