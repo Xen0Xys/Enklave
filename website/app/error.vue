@@ -10,7 +10,7 @@ defineProps<{
 useSeoMeta({
     title: "Page Not Found - Enklave",
     description:
-        "The page you're looking for doesn't exist. Return to Enklave homepage to explore our secure password manager and digital vault features.",
+        "The page you're looking for doesn't exist. Return to Enklave homepage to explore our collaborative family and couple management features.",
     robots: "noindex, nofollow",
 });
 
