@@ -123,6 +123,7 @@ CREATE TABLE "public"."shopping_list_items" (
     "name" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "unit" TEXT,
+    "image_id" UUID,
     "is_purchased" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "shopping_list_items_pkey" PRIMARY KEY ("id")
@@ -132,6 +133,8 @@ CREATE TABLE "public"."shopping_list_items" (
 CREATE TABLE "public"."shopping_list_cards" (
     "id" UUID NOT NULL,
     "shopping_list_id" UUID NOT NULL,
+    "name" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
 
     CONSTRAINT "shopping_list_cards_pkey" PRIMARY KEY ("id")
 );
@@ -139,8 +142,8 @@ CREATE TABLE "public"."shopping_list_cards" (
 -- CreateTable
 CREATE TABLE "public"."shopping_list_shares" (
     "id" UUID NOT NULL,
-    "user_id" UUID NOT NULL,
     "shopping_list_id" UUID NOT NULL,
+    "user_id" UUID NOT NULL,
 
     CONSTRAINT "shopping_list_shares_pkey" PRIMARY KEY ("id")
 );
@@ -173,7 +176,13 @@ CREATE UNIQUE INDEX "folders_name_parent_id_key" ON "public"."folders"("name", "
 CREATE UNIQUE INDEX "folders_user_id_type_key" ON "public"."folders"("user_id", "type");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "files_file_id_key" ON "public"."files"("file_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "files_name_folder_id_key" ON "public"."files"("name", "folder_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "shopping_list_items_image_id_key" ON "public"."shopping_list_items"("image_id");
 
 -- AddForeignKey
 ALTER TABLE "public"."users" ADD CONSTRAINT "users_master_key_id_fkey" FOREIGN KEY ("master_key_id") REFERENCES "public"."keys"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -224,10 +233,13 @@ ALTER TABLE "public"."shopping_lists" ADD CONSTRAINT "shopping_lists_user_id_fke
 ALTER TABLE "public"."shopping_list_items" ADD CONSTRAINT "shopping_list_items_shopping_list_id_fkey" FOREIGN KEY ("shopping_list_id") REFERENCES "public"."shopping_lists"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "public"."shopping_list_items" ADD CONSTRAINT "shopping_list_items_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "public"."server_files"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "public"."shopping_list_cards" ADD CONSTRAINT "shopping_list_cards_shopping_list_id_fkey" FOREIGN KEY ("shopping_list_id") REFERENCES "public"."shopping_lists"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."shopping_list_shares" ADD CONSTRAINT "shopping_list_shares_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."shopping_list_shares" ADD CONSTRAINT "shopping_list_shares_shopping_list_id_fkey" FOREIGN KEY ("shopping_list_id") REFERENCES "public"."shopping_lists"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."shopping_list_shares" ADD CONSTRAINT "shopping_list_shares_shopping_list_id_fkey" FOREIGN KEY ("shopping_list_id") REFERENCES "public"."shopping_lists"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."shopping_list_shares" ADD CONSTRAINT "shopping_list_shares_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

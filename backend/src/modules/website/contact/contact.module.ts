@@ -1,5 +1,5 @@
 import {ContactController} from "./contact.controller";
-import {MailerModule} from "../mailer/mailer.module";
+import {MailerModule} from "../../mailer/mailer.module";
 import {Module} from "@nestjs/common";
 
 @Module({
