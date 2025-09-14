@@ -31,7 +31,7 @@ useSeoMeta({
 
 useHead({
     link: [
-        {rel: "icon", type: "image/x-icon", href: "/icon.webp"},
+        {rel: "icon", type: "image/webp", href: "/icon.webp"},
         {rel: "canonical", href: "https://enklave.cloud"},
         {rel: "preconnect", href: "https://fonts.googleapis.com"},
         {rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: ""},
@@ -46,7 +46,7 @@ useHead({
             <meta
                 name="viewport"
                 content="width=device-width, initial-scale=1" />
-            <link rel="icon" type="image/x-icon" href="/icon.webp" />
+            <link rel="icon" type="image/webp" href="/icon.webp" />
         </Head>
         <Body>
             <NuxtLoadingIndicator />
