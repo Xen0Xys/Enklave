@@ -56,16 +56,6 @@ export default defineNuxtConfig({
                 changefreq: "weekly",
                 priority: 0.9,
             },
-            {
-                loc: "/newsletter/getting-started",
-                changefreq: "monthly",
-                priority: 0.7,
-            },
-            {
-                loc: "/newsletter/family-security-tips",
-                changefreq: "monthly",
-                priority: 0.7,
-            },
         ],
     },
     robots: {
