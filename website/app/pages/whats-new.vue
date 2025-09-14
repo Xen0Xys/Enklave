@@ -73,7 +73,7 @@ const formatDate = (dateString: string) => {
                         <div class="mb-6 flex items-center justify-between">
                             <span
                                 class="bg-primary/10 text-primary rounded-full px-4 py-2 text-sm font-medium">
-                                📰 {{ article.category }}
+                                📰 {{ article.meta.category }}
                             </span>
                             <time class="text-muted-foreground">
                                 {{ formatDate(article.meta.date as string) }}
@@ -98,16 +98,19 @@ const formatDate = (dateString: string) => {
                                 >
                             </div>
                             <div
-                                v-if="article.readTime"
+                                v-if="article.meta.readTime"
                                 class="flex items-center gap-2">
                                 <Icon name="iconoir:clock" class="h-4 w-4" />
-                                <span>{{ article.readTime }}</span>
+                                <span>{{ article.meta.readTime }}</span>
                             </div>
                             <div
-                                v-if="article.tags && article.tags.length"
+                                v-if="
+                                    article.meta.tags &&
+                                    article.meta.tags.length
+                                "
                                 class="flex flex-wrap gap-1">
                                 <span
-                                    v-for="tag in article.tags"
+                                    v-for="tag in article.meta.tags"
                                     :key="tag"
                                     class="bg-secondary text-secondary-foreground rounded-full px-2 py-1 text-xs font-medium">
                                     #{{ tag }}
@@ -232,5 +235,10 @@ const formatDate = (dateString: string) => {
 
 .prose :deep(li::marker) {
     color: hsl(var(--muted-foreground));
+}
+
+.prose :deep(p) {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 </style>
