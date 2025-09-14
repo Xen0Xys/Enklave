@@ -1,5 +1,5 @@
 import {ContactFormDto} from "./dto/contact-form.dto";
-import {MailerService} from "../mailer/mailer.service";
+import {MailerService} from "../../mailer/mailer.service";
 import {HttpStatus} from "@nestjs/common/enums/http-status.enum";
 import {Body, Post} from "@nestjs/common/decorators";
 import {

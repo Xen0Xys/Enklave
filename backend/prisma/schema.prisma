@@ -1,7 +1,6 @@
 generator client {
-  provider        = "prisma-client"
-  output          = "../prisma/generated"
-  previewFeatures = ["queryCompiler", "driverAdapters"]
+  provider = "prisma-client"
+  output   = "../prisma/generated"
 }
 
 datasource db {
@@ -85,18 +84,19 @@ model EmailVerification {
 }
 
 model ServerFiles {
-  id          String   @id @default(uuid(7)) @db.Uuid
-  s3_key      String   @unique @db.Uuid
-  checksum    String   @db.VarChar(64) // SHA-256 checksum for file integrity
-  mime_type   String?  @db.VarChar(50) // Optional MIME type for the file
-  file_key_id String   @db.Uuid // Encrypted file key (from master key)
-  file_key    Keys     @relation(fields: [file_key_id], references: [id], onDelete: Cascade)
-  iv          Bytes // Initialization vector for encryption
-  auth_tag    Bytes // Authentication tag for encryption
-  size        Int // Size in bytes
-  avatar      Avatars?
-  files       Files[]
-  created_at  DateTime @default(now())
+  id                  String             @id @default(uuid(7)) @db.Uuid
+  s3_key              String             @unique @db.Uuid
+  checksum            String             @db.VarChar(64) // SHA-256 checksum for file integrity
+  mime_type           String?            @db.VarChar(50) // Optional MIME type for the file
+  file_key_id         String             @db.Uuid // Encrypted file key (from master key)
+  file_key            Keys               @relation(fields: [file_key_id], references: [id], onDelete: Cascade)
+  iv                  Bytes // Initialization vector for encryption
+  auth_tag            Bytes // Authentication tag for encryption
+  size                Int // Size in bytes
+  avatar              Avatars?
+  files               Files?
+  shopping_list_image ShoppingListItems?
+  created_at          DateTime           @default(now())
 
   @@map("server_files")
 }
@@ -141,7 +141,7 @@ model Files {
   id        String      @id @default(uuid(7)) @db.Uuid
   user_id   String      @db.Uuid
   user      Users       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  file_id   String      @db.Uuid
+  file_id   String      @unique @db.Uuid
   file      ServerFiles @relation(fields: [file_id], references: [id], onDelete: Cascade)
   name      String      @db.VarChar(100)
   folder_id String?     @db.Uuid // Null for root files
@@ -169,6 +169,8 @@ model ShoppingListItems {
   name             String
   quantity         Int
   unit             String?
+  image_id         String?       @unique @db.Uuid
+  image            ServerFiles?  @relation(fields: [image_id], references: [id], onDelete: SetNull)
   is_purchased     Boolean       @default(false)
 
   @@map("shopping_list_items")
@@ -178,16 +180,18 @@ model ShoppingListCards {
   id               String        @id @default(uuid(7)) @db.Uuid
   shopping_list_id String        @db.Uuid
   shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+  name             String
+  value            String
 
   @@map("shopping_list_cards")
 }
 
 model ShoppingListShares {
   id               String        @id @default(uuid(7)) @db.Uuid
-  user_id          String        @db.Uuid
-  user             Users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   shopping_list_id String        @db.Uuid
   shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+  user_id          String        @db.Uuid
+  user             Users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("shopping_list_shares")
 }
