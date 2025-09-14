@@ -23,6 +23,13 @@ import {landingConfig} from "~/config/landing";
         </div>
 
         <div class="relative z-10 container max-w-4xl">
+            <!-- Logo Enklave -->
+            <img
+                src="/icon.webp"
+                alt="Logo Enklave"
+                class="mx-auto mb-4"
+                style="max-width: 80px; height: auto" />
+
             <!-- Badge -->
             <div
                 class="animate-fade-in mb-8 inline-flex items-center rounded-full bg-purple-100 px-4 py-2 text-sm font-semibold text-purple-800 dark:bg-purple-900/30 dark:text-purple-200">
