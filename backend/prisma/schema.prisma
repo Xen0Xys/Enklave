@@ -1,7 +1,6 @@
 generator client {
-  provider        = "prisma-client"
-  output          = "../prisma/generated"
-  previewFeatures = ["queryCompiler", "driverAdapters"]
+  provider = "prisma-client"
+  output   = "../prisma/generated"
 }
 
 datasource db {
@@ -25,38 +24,55 @@ enum KeyTypes {
 }
 
 model Keys {
-  id                   String        @id @default(uuid(7)) @db.Uuid
+  id                   String               @id @default(uuid(7)) @db.Uuid
   material             Bytes? // Encrypted key material (from wrapper key)
   public_material      Bytes? // Public key material for asymmetric keys
   private_material     Bytes? // Encrypted private key material (from wrapper key)
   type                 KeyTypes
-  users_master_key     Users[]       @relation("master_key")
-  users_asymmetric_key Users[]       @relation("asymmetric_master_key")
+  users_master_key     Users[]              @relation("master_key")
+  users_asymmetric_key Users[]              @relation("asymmetric_master_key")
   server_files         ServerFiles[]
   folders              Folders[]
-  created_at           DateTime      @default(now())
+  created_at           DateTime             @default(now())
+  shopping_lists       ShoppingLists[]
+  shopping_list_shares ShoppingListShares[]
 
   @@map("keys")
 }
 
 model Users {
-  id                       String             @id @default(uuid(7)) @db.Uuid
-  username                 String             @db.VarChar(30) // Public display name
-  email                    String             @unique
+  id                       String               @id @default(uuid(7)) @db.Uuid
+  username                 String               @db.VarChar(30) // Public display name
+  email                    String               @unique
   password                 String // Hashed
   jwt_id                   Bytes // JWT ID for token revocation
-  master_key_id            String             @db.Uuid // Optional master key ID for user-specific keys
-  master_key               Keys               @relation("master_key", fields: [master_key_id], references: [id], onDelete: Cascade)
-  asymmetric_master_key_id String             @db.Uuid // Optional asymmetric key ID for user-specific keys
-  asymmetric_master_key    Keys               @relation("asymmetric_master_key", fields: [asymmetric_master_key_id], references: [id], onDelete: Cascade)
+  master_key_id            String               @db.Uuid // Optional master key ID for user-specific keys
+  master_key               Keys                 @relation("master_key", fields: [master_key_id], references: [id], onDelete: Cascade)
+  asymmetric_master_key_id String               @db.Uuid // Optional asymmetric key ID for user-specific keys
+  asymmetric_master_key    Keys                 @relation("asymmetric_master_key", fields: [asymmetric_master_key_id], references: [id], onDelete: Cascade)
   avatars                  Avatars?
   email_verifications      EmailVerification?
   folders                  Folders[]
   files                    Files[]
-  created_at               DateTime           @default(now())
-  updated_at               DateTime           @updatedAt
+  created_at               DateTime             @default(now())
+  updated_at               DateTime             @updatedAt
+  shopping_lists           ShoppingLists[]
+  shopping_list_shares     ShoppingListShares[]
+  family_members           FamilyMembers[]      @relation("family_owner")
+  member_of_families       FamilyMembers[]      @relation("family_member")
 
   @@map("users")
+}
+
+model FamilyMembers {
+  id        String @id @default(uuid(7)) @db.Uuid
+  user_id   String @db.Uuid
+  user      Users  @relation("family_owner", fields: [user_id], references: [id], onDelete: Cascade)
+  member_id String @unique @db.Uuid
+  member    Users  @relation("family_member", fields: [member_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, member_id])
+  @@map("family_members")
 }
 
 model EmailVerification {
@@ -70,18 +86,19 @@ model EmailVerification {
 }
 
 model ServerFiles {
-  id          String   @id @default(uuid(7)) @db.Uuid
-  s3_key      String   @unique @db.Uuid
-  checksum    String   @db.VarChar(64) // SHA-256 checksum for file integrity
-  mime_type   String?  @db.VarChar(50) // Optional MIME type for the file
-  file_key_id String   @db.Uuid // Encrypted file key (from master key)
-  file_key    Keys     @relation(fields: [file_key_id], references: [id], onDelete: Cascade)
-  iv          Bytes // Initialization vector for encryption
-  auth_tag    Bytes // Authentication tag for encryption
-  size        Int // Size in bytes
-  avatar      Avatars?
-  files       Files[]
-  created_at  DateTime @default(now())
+  id                  String             @id @default(uuid(7)) @db.Uuid
+  s3_key              String             @unique @db.Uuid
+  checksum            String             @db.VarChar(64) // SHA-256 checksum for file integrity
+  mime_type           String?            @db.VarChar(50) // Optional MIME type for the file
+  file_key_id         String             @db.Uuid // Encrypted file key (from master key)
+  file_key            Keys               @relation(fields: [file_key_id], references: [id], onDelete: Cascade)
+  iv                  Bytes // Initialization vector for encryption
+  auth_tag            Bytes // Authentication tag for encryption
+  size                Int // Size in bytes
+  avatar              Avatars?
+  files               Files?
+  shopping_list_image ShoppingListItems?
+  created_at          DateTime           @default(now())
 
   @@map("server_files")
 }
@@ -94,6 +111,18 @@ model Avatars {
   created_at     DateTime    @default(now())
 
   @@map("avatars")
+}
+
+model EncryptedFields {
+  id                            String              @id @default(uuid(7)) @db.Uuid
+  value                         Bytes
+  iv                            Bytes
+  auth_tag                      Bytes
+  shopping_lists                ShoppingLists[]
+  shopping_list_item_names      ShoppingListItems[] @relation("name")
+  shopping_list_item_quantities ShoppingListItems[] @relation("quantity")
+
+  @@map("encrypted_fields")
 }
 
 enum FolderTypes {
@@ -111,11 +140,11 @@ model Folders {
   name          String       @db.VarChar(100)
   type          FolderTypes? // Optional type for special folders (e.g., media)
   parent_id     String?      @db.Uuid // Null for root folders
-  created_at    DateTime     @default(now())
-  updated_at    DateTime     @updatedAt
   parent        Folders?     @relation("folder_hierarchy", fields: [parent_id], references: [id], onDelete: Cascade)
   children      Folders[]    @relation("folder_hierarchy")
   files         Files[]
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
 
   @@unique([name, parent_id]) // Ensure unique folder names per parent
   @@unique([user_id, type]) // Ensure unique folder names per user and type
@@ -126,7 +155,7 @@ model Files {
   id        String      @id @default(uuid(7)) @db.Uuid
   user_id   String      @db.Uuid
   user      Users       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  file_id   String      @db.Uuid
+  file_id   String      @unique @db.Uuid
   file      ServerFiles @relation(fields: [file_id], references: [id], onDelete: Cascade)
   name      String      @db.VarChar(100)
   folder_id String?     @db.Uuid // Null for root files
@@ -134,4 +163,56 @@ model Files {
 
   @@unique([name, folder_id]) // Ensure unique file names per folder
   @@map("files")
+}
+
+model ShoppingLists {
+  id                   String               @id @default(uuid(7)) @db.Uuid
+  user_id              String               @db.Uuid
+  user                 Users                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  encrypted_name_id    String               @db.Uuid
+  encrypted_name       EncryptedFields      @relation(fields: [encrypted_name_id], references: [id], onDelete: Cascade)
+  shopping_list_key_id String               @db.Uuid // Encrypted shopping list key (from user key)
+  shopping_list_key    Keys                 @relation(fields: [shopping_list_key_id], references: [id], onDelete: Cascade)
+  shopping_list_items  ShoppingListItems[]
+  shopping_list_shares ShoppingListShares[]
+  shopping_list_cards  ShoppingListCards[]
+
+  @@map("shopping_lists")
+}
+
+model ShoppingListItems {
+  id                    String          @id @default(uuid(7)) @db.Uuid
+  shopping_list_id      String          @db.Uuid
+  shopping_list         ShoppingLists   @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+  encrypted_name_id     String          @db.Uuid
+  encrypted_name        EncryptedFields @relation("name", fields: [encrypted_name_id], references: [id], onDelete: Cascade)
+  encrypted_quantity_id String          @db.Uuid
+  encrypted_quantity    EncryptedFields @relation("quantity", fields: [encrypted_quantity_id], references: [id], onDelete: Cascade)
+  image_id              String?         @unique @db.Uuid
+  image                 ServerFiles?    @relation(fields: [image_id], references: [id], onDelete: SetNull)
+  is_purchased          Boolean         @default(false)
+
+  @@map("shopping_list_items")
+}
+
+model ShoppingListCards {
+  id               String        @id @default(uuid(7)) @db.Uuid
+  shopping_list_id String        @db.Uuid
+  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+  name             String
+  value            String
+
+  @@map("shopping_list_cards")
+}
+
+model ShoppingListShares {
+  id               String        @id @default(uuid(7)) @db.Uuid
+  shopping_list_id String        @db.Uuid
+  shopping_list    ShoppingLists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+  user_id          String        @db.Uuid
+  user             Users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  key_id           String        @db.Uuid // Encrypted shared key (from user public key)
+  key              Keys          @relation(fields: [key_id], references: [id], onDelete: Cascade)
+
+  @@map("shopping_list_shares")
 }
