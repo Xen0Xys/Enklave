@@ -56,12 +56,30 @@ export default defineNuxtConfig({
                 changefreq: "weekly",
                 priority: 0.9,
             },
+            {
+                loc: "/terms-of-use",
+                changefreq: "monthly",
+                priority: 0.7,
+            },
+            {
+                loc: "/terms-of-sale",
+                changefreq: "monthly",
+                priority: 0.7,
+            },
         ],
     },
     robots: {
         enabled: true,
         disallow: ["/admin", "/api", "/.env", "/.git"],
-        allow: ["/", "/contact", "/whats-new", "/unsubscribe", "/newsletter/*"],
+        allow: [
+            "/",
+            "/contact",
+            "/whats-new",
+            "/unsubscribe",
+            "/newsletter/*",
+            "/terms-of-use",
+            "/terms-of-sale",
+        ],
         sitemap: "https://enklave.cloud/sitemap.xml",
     },
     schemaOrg: {
