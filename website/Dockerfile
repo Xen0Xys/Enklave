@@ -9,7 +9,7 @@ RUN apk add --no-cache python3 make g++ sqlite-dev
 
 COPY package.json ./
 
-RUN bun install
+RUN npm_config_build_from_source=true bun install --frozen-lockfile
 
 COPY . .
 
@@ -27,4 +27,4 @@ EXPOSE 3000
 
 COPY --chown=bun:bun --from=build /usr/src/app/.output /usr/src/app/.output
 
-CMD ["node", ".output/server/index.mjs"]
+CMD ["bun", ".output/server/index.mjs"]

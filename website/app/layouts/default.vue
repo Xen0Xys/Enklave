@@ -93,6 +93,18 @@ import "vue-sonner/style.css";
                     © {{ new Date().getFullYear() }} Enklave. All rights
                     reserved.
                 </p>
+                <nav class="flex gap-4 text-sm">
+                    <NuxtLink
+                        to="/terms-of-use"
+                        class="text-muted-foreground hover:text-foreground transition-colors">
+                        Terms of Use
+                    </NuxtLink>
+                    <NuxtLink
+                        to="/terms-of-sale"
+                        class="text-muted-foreground hover:text-foreground transition-colors">
+                        Terms of Sale
+                    </NuxtLink>
+                </nav>
             </div>
         </footer>
         <ClientOnly>
