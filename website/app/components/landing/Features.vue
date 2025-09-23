@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {landingConfig} from "~/config/landing";
 </script>
 
 <template>
@@ -11,21 +10,19 @@ import {landingConfig} from "~/config/landing";
             <div class="mb-16 text-center">
                 <h2
                     class="mb-4 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-4xl font-bold text-transparent md:text-5xl dark:from-white dark:to-gray-300">
-                    {{ landingConfig.features.title }}
+                    {{ $t("features.title") }}
                 </h2>
                 <p
                     class="text-muted-foreground mx-auto max-w-2xl text-xl leading-relaxed">
-                    {{ landingConfig.features.description }}
+                    {{ $t("features.description") }}
                 </p>
             </div>
 
             <!-- Features grid -->
             <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 <div
-                    v-for="(feature, index) in landingConfig.features.items"
-                    :key="feature.title"
                     class="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10 dark:border-gray-700 dark:bg-gray-800"
-                    :style="`animation-delay: ${index * 100}ms`">
+                    style="animation-delay: 0ms">
                     <!-- Background gradient on hover -->
                     <div
                         class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-teal-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
@@ -35,7 +32,7 @@ import {landingConfig} from "~/config/landing";
                         <div
                             class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 shadow-lg transition-transform duration-300 group-hover:scale-110">
                             <Icon
-                                :name="feature.icon"
+                                name="iconoir:folder"
                                 class="size-8 text-white" />
                         </div>
                     </div>
@@ -44,10 +41,185 @@ import {landingConfig} from "~/config/landing";
                     <div class="relative z-10">
                         <h3
                             class="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600 dark:text-white dark:group-hover:text-purple-400">
-                            {{ feature.title }}
+                            {{ $t("features.items.storage.title") }}
                         </h3>
                         <p class="text-muted-foreground leading-relaxed">
-                            {{ feature.description }}
+                            {{ $t("features.items.storage.description") }}
+                        </p>
+                    </div>
+
+                    <!-- Decorative elements -->
+                    <div
+                        class="absolute top-4 right-4 h-8 w-8 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <div
+                        class="absolute bottom-4 left-4 h-6 w-6 rounded-full bg-gradient-to-br from-blue-500/20 to-teal-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        style="transition-delay: 100ms"></div>
+                </div>
+                <div
+                    class="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10 dark:border-gray-700 dark:bg-gray-800"
+                    style="animation-delay: 100ms">
+                    <!-- Background gradient on hover -->
+                    <div
+                        class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-teal-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+
+                    <!-- Icon container with enhanced styling -->
+                    <div class="relative z-10 mb-6">
+                        <div
+                            class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 shadow-lg transition-transform duration-300 group-hover:scale-110">
+                            <Icon
+                                name="iconoir:list"
+                                class="size-8 text-white" />
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative z-10">
+                        <h3
+                            class="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600 dark:text-white dark:group-hover:text-purple-400">
+                            {{ $t("features.items.lists.title") }}
+                        </h3>
+                        <p class="text-muted-foreground leading-relaxed">
+                            {{ $t("features.items.lists.description") }}
+                        </p>
+                    </div>
+
+                    <!-- Decorative elements -->
+                    <div
+                        class="absolute top-4 right-4 h-8 w-8 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <div
+                        class="absolute bottom-4 left-4 h-6 w-6 rounded-full bg-gradient-to-br from-blue-500/20 to-teal-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        style="transition-delay: 100ms"></div>
+                </div>
+                <div
+                    class="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10 dark:border-gray-700 dark:bg-gray-800"
+                    style="animation-delay: 200ms">
+                    <!-- Background gradient on hover -->
+                    <div
+                        class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-teal-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+
+                    <!-- Icon container with enhanced styling -->
+                    <div class="relative z-10 mb-6">
+                        <div
+                            class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 shadow-lg transition-transform duration-300 group-hover:scale-110">
+                            <Icon
+                                name="iconoir:notes"
+                                class="size-8 text-white" />
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative z-10">
+                        <h3
+                            class="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600 dark:text-white dark:group-hover:text-purple-400">
+                            {{ $t("features.items.notes.title") }}
+                        </h3>
+                        <p class="text-muted-foreground leading-relaxed">
+                            {{ $t("features.items.notes.description") }}
+                        </p>
+                    </div>
+
+                    <!-- Decorative elements -->
+                    <div
+                        class="absolute top-4 right-4 h-8 w-8 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <div
+                        class="absolute bottom-4 left-4 h-6 w-6 rounded-full bg-gradient-to-br from-blue-500/20 to-teal-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        style="transition-delay: 100ms"></div>
+                </div>
+                <div
+                    class="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10 dark:border-gray-700 dark:bg-gray-800"
+                    style="animation-delay: 300ms">
+                    <!-- Background gradient on hover -->
+                    <div
+                        class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-teal-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+
+                    <!-- Icon container with enhanced styling -->
+                    <div class="relative z-10 mb-6">
+                        <div
+                            class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 shadow-lg transition-transform duration-300 group-hover:scale-110">
+                            <Icon
+                                name="iconoir:share-android"
+                                class="size-8 text-white" />
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative z-10">
+                        <h3
+                            class="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600 dark:text-white dark:group-hover:text-purple-400">
+                            {{ $t("features.items.sharing.title") }}
+                        </h3>
+                        <p class="text-muted-foreground leading-relaxed">
+                            {{ $t("features.items.sharing.description") }}
+                        </p>
+                    </div>
+
+                    <!-- Decorative elements -->
+                    <div
+                        class="absolute top-4 right-4 h-8 w-8 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <div
+                        class="absolute bottom-4 left-4 h-6 w-6 rounded-full bg-gradient-to-br from-blue-500/20 to-teal-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        style="transition-delay: 100ms"></div>
+                </div>
+                <div
+                    class="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10 dark:border-gray-700 dark:bg-gray-800"
+                    style="animation-delay: 400ms">
+                    <!-- Background gradient on hover -->
+                    <div
+                        class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-teal-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+
+                    <!-- Icon container with enhanced styling -->
+                    <div class="relative z-10 mb-6">
+                        <div
+                            class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 shadow-lg transition-transform duration-300 group-hover:scale-110">
+                            <Icon
+                                name="iconoir:laptop"
+                                class="size-8 text-white" />
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative z-10">
+                        <h3
+                            class="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600 dark:text-white dark:group-hover:text-purple-400">
+                            {{ $t("features.items.crossPlatform.title") }}
+                        </h3>
+                        <p class="text-muted-foreground leading-relaxed">
+                            {{ $t("features.items.crossPlatform.description") }}
+                        </p>
+                    </div>
+
+                    <!-- Decorative elements -->
+                    <div
+                        class="absolute top-4 right-4 h-8 w-8 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <div
+                        class="absolute bottom-4 left-4 h-6 w-6 rounded-full bg-gradient-to-br from-blue-500/20 to-teal-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        style="transition-delay: 100ms"></div>
+                </div>
+                <div
+                    class="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10 dark:border-gray-700 dark:bg-gray-800"
+                    style="animation-delay: 500ms">
+                    <!-- Background gradient on hover -->
+                    <div
+                        class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-teal-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+
+                    <!-- Icon container with enhanced styling -->
+                    <div class="relative z-10 mb-6">
+                        <div
+                            class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 shadow-lg transition-transform duration-300 group-hover:scale-110">
+                            <Icon
+                                name="iconoir:home-secure"
+                                class="size-8 text-white" />
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative z-10">
+                        <h3
+                            class="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600 dark:text-white dark:group-hover:text-purple-400">
+                            {{ $t("features.items.security.title") }}
+                        </h3>
+                        <p class="text-muted-foreground leading-relaxed">
+                            {{ $t("features.items.security.description") }}
                         </p>
                     </div>
 
@@ -63,12 +235,12 @@ import {landingConfig} from "~/config/landing";
             <!-- Bottom CTA -->
             <div class="mt-16 text-center">
                 <p class="text-muted-foreground mb-6">
-                    Ready to secure your digital life?
+                    {{ $t("features.ctaText") }}
                 </p>
                 <Button
                     class="bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-3 shadow-lg shadow-purple-500/25 hover:from-purple-700 hover:to-blue-700"
                     as-child>
-                    <NuxtLink to="/#pricing">Start Free Today</NuxtLink>
+                    <NuxtLink to="/#pricing">{{ $t("features.ctaButton") }}</NuxtLink>
                 </Button>
             </div>
         </div>

@@ -10,12 +10,6 @@
         "openMenu": "Open navigation menu",
         "accessApp": "Access Enklave application"
     },
-    "hero": {
-        "welcome": "Welcome to Enklave",
-        "title": "Collaborative family and couple management software",
-        "description": "Enklave is a collaborative family and couple management software with secure file storage, shopping lists, and organization tools.",
-        "searchPlaceholder": "Search files, notes, or lists..."
-    },
     "footer": {
         "copyright": "All rights reserved",
         "termsOfUse": "Terms of Use",
@@ -25,14 +19,219 @@
         "home": {
             "title": "Enklave - Collaborative family and couple management software",
             "description": "Enklave is a collaborative family and couple management software with secure file storage, shopping lists, and organization tools."
-        },
-        "about": {
-            "title": "About Enklave",
-            "description": "Learn more about our mission to help families stay organized and connected."
         }
     },
     "language": {
         "switchTo": "Switch to {lang}",
         "current": "Current language: {lang}"
+    },
+    "hero": {
+        "title": "Simplify your family's digital life",
+        "description": "Enklave is the collaborative family and couple management software that helps you organize, share, and manage your daily life together.",
+        "cta": "Get started for free",
+        "badge": "Open Source & Self-Hosted",
+        "githubButton": "View on GitHub",
+        "trustLine": "Trusted by developers and security professionals",
+        "githubStars": "GitHub Stars",
+        "zeroTrust": "Zero Trust Security",
+        "openSource": "100% Open Source"
+    },
+    "problem": {
+        "title": "Family coordination is getting harder",
+        "description": "Managing family life across multiple apps and platforms creates chaos. Important documents get lost, shopping lists are forgotten, and communication breaks down.",
+        "solution": "There's a better way. A way that puts you in control.",
+        "painPoints": {
+            "scattered": {
+                "title": "Scattered Information",
+                "description": "Photos, documents, and notes spread across different apps and devices"
+            },
+            "forgotten": {
+                "title": "Forgotten Tasks",
+                "description": "Shopping lists, appointments, and family tasks get lost in messaging apps"
+            },
+            "privacy": {
+                "title": "Privacy Concerns",
+                "description": "Your family's personal data stored on servers you don't control"
+            }
+        }
+    },
+    "demo": {
+        "title": "See Enklave in action",
+        "description": "Experience how Enklave brings your family together in one secure platform",
+        "cta": "Start for Free",
+        "features": [
+            "Secure file storage and sharing",
+            "Collaborative shopping lists",
+            "Family notes and organization",
+            "Cross-platform access"
+        ],
+        "mockup": {
+            "title": "The Smith Family",
+            "recentFiles": "Recent Files",
+            "shoppingList": "Shopping List",
+            "files": ["Family_Budget_2025.pdf", "Kids School Documents"],
+            "timestamps": ["2 min ago", "1 hour ago"],
+            "shoppingItems": ["Organic milk", "Fresh bread", "Kids snacks"],
+            "status": "✓ All family members connected",
+            "statusText": "Secure"
+        }
+    },
+    "features": {
+        "title": "Everything your family needs, in one place",
+        "description": "Discover the features that make Enklave the perfect solution for family collaboration and organization.",
+        "ctaText": "Ready to secure your digital life?",
+        "ctaButton": "Start Free Today",
+        "items": {
+            "storage": {
+                "title": "Secure file storage",
+                "description": "Store and organize important family documents, photos, and media with end-to-end encryption and organized folder structures."
+            },
+            "lists": {
+                "title": "Shared shopping lists",
+                "description": "Create and share shopping lists with family members. Real-time updates ensure everyone stays in sync."
+            },
+            "notes": {
+                "title": "Family notes",
+                "description": "Keep track of important information, schedules, and reminders that everyone in the family can access."
+            },
+            "sharing": {
+                "title": "Smart sharing",
+                "description": "Share files and information with specific family members with granular permissions and access controls."
+            },
+            "crossPlatform": {
+                "title": "Cross-platform access",
+                "description": "Access your family's information from any device - web browser, desktop app, or mobile (coming soon)."
+            },
+            "security": {
+                "title": "Privacy & Security",
+                "description": "Self-host on your own infrastructure with full source code transparency. Your family data stays private."
+            }
+        }
+    },
+    "socialProof": {
+        "title": "Trusted by families worldwide",
+        "description": "Join families who have simplified their digital life with Enklave",
+        "githubCta": "Star us on GitHub",
+        "stats": {
+            "githubStars": "GitHub Stars",
+            "families": "Families",
+            "downloads": "Downloads",
+            "uptime": "Uptime"
+        },
+        "testimonials": [
+            {
+                "quote": "Finally, a place to keep all our family documents organized and secure. No more searching through dozens of apps.",
+                "author": "Sarah Chen",
+                "role": "Mother of 3",
+                "location": "Toronto, Canada"
+            },
+            {
+                "quote": "The shopping lists feature has revolutionized our grocery shopping. Everyone can add items and we never forget anything.",
+                "author": "Miguel Rodriguez",
+                "role": "Father",
+                "location": "Barcelona, Spain"
+            },
+            {
+                "quote": "Being able to self-host gives us peace of mind that our family's private information stays private.",
+                "author": "Alex Thompson",
+                "role": "Family",
+                "location": "Austin, Texas"
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Flexible pricing for every family",
+        "description": "Choose the plan that's right for your family, start for free.",
+        "freePlanCta": "Looking for the Free plan?",
+        "freePlanButton": "Create an account now",
+        "mostPopular": "Most Popular",
+        "compareFeatures": "Compare features",
+        "plans": {
+            "family": {
+                "title": "Family",
+                "description": "Perfect for families and couples getting started.",
+                "price": "$4.99",
+                "period": "/ month",
+                "cta": "Choose Family",
+                "features": [
+                    "Secure storage (500 GB)",
+                    "Unlimited shopping lists & notes",
+                    "Access on 10 devices",
+                    "Email support"
+                ]
+            },
+            "pro": {
+                "title": "Pro",
+                "description": "For larger families that need more storage and features.",
+                "price": "$9.99",
+                "period": "/ month",
+                "cta": "Choose Pro",
+                "features": [
+                    "Unlimited storage",
+                    "Advanced sharing controls",
+                    "Priority support",
+                    "Custom backup schedules"
+                ]
+            },
+            "selfHosted": {
+                "title": "Self-Hosted",
+                "description": "Deploy Enklave on your own infrastructure for complete control.",
+                "price": "Free",
+                "cta": "Get Started",
+                "features": [
+                    "Full source code access",
+                    "Unlimited storage",
+                    "Complete privacy control",
+                    "Community support"
+                ]
+            }
+        },
+        "comparison": {
+            "headers": {
+                "features": "Features",
+                "free": "Free",
+                "family": "Family",
+                "pro": "Pro",
+                "enterprise": "Enterprise"
+            },
+            "features": {
+                "secureStorage": "Secure storage",
+                "fileSharing": "File and folder sharing",
+                "shoppingLists": "Shopping lists & notes",
+                "advancedSharing": "Advanced sharing permissions",
+                "crossDevice": "Cross-device access",
+                "customBackup": "Custom backup schedules",
+                "selfHosting": "Self-hosting",
+                "customerSupport": "Customer support"
+            },
+            "values": {
+                "limited": "Limited",
+                "unlimited": "Unlimited",
+                "community": "Community",
+                "email": "Email",
+                "priority": "Priority",
+                "devices3": "3 devices",
+                "devices10": "10 devices"
+            }
+        }
+    },
+    "newsletter": {
+        "title": "Stay connected with your family",
+        "description": "Get family organization tips, product updates, and early access to new features. Join our community of organized families.",
+        "placeholder": "family@example.com",
+        "cta": "Join the community",
+        "features": [
+            "Monthly family organization tips and best practices",
+            "Early access to new features and updates",
+            "Family-friendly tutorials and guides",
+            "No spam, unsubscribe anytime"
+        ],
+        "stats": {
+            "families": "families",
+            "frequency": "Monthly updates",
+            "familySubscribers": "Family subscribers",
+            "organizationTips": "Organization tips",
+            "featureAccess": "Feature access"
+        }
     }
 }

@@ -10,12 +10,6 @@
         "openMenu": "Ouvrir le menu de navigation",
         "accessApp": "Accéder à l'application Enklave"
     },
-    "hero": {
-        "welcome": "Bienvenue sur Enklave",
-        "title": "Logiciel collaboratif de gestion familiale et de couple",
-        "description": "Enklave est un logiciel collaboratif de gestion familiale et de couple avec stockage sécurisé de fichiers, listes de courses et outils d'organisation.",
-        "searchPlaceholder": "Rechercher des fichiers, notes ou listes..."
-    },
     "footer": {
         "copyright": "Tous droits réservés",
         "termsOfUse": "Conditions d'utilisation",
@@ -25,14 +19,219 @@
         "home": {
             "title": "Enklave - Logiciel collaboratif de gestion familiale et de couple",
             "description": "Enklave est un logiciel collaboratif de gestion familiale et de couple avec stockage sécurisé de fichiers, listes de courses et outils d'organisation."
-        },
-        "about": {
-            "title": "À propos d'Enklave",
-            "description": "Découvrez notre mission d'aider les familles à rester organisées et connectées."
         }
     },
     "language": {
         "switchTo": "Passer en {lang}",
         "current": "Langue actuelle : {lang}"
+    },
+    "hero": {
+        "title": "Simplifiez la vie numérique de votre famille",
+        "description": "Enklave est le logiciel collaboratif de gestion familiale et de couple qui vous aide à organiser, partager et gérer votre quotidien ensemble.",
+        "cta": "Commencer gratuitement",
+        "badge": "Open Source et Auto-hébergé",
+        "githubButton": "Voir sur GitHub",
+        "trustLine": "Approuvé par les développeurs et professionnels de la sécurité",
+        "githubStars": "Étoiles GitHub",
+        "zeroTrust": "Sécurité Zero Trust",
+        "openSource": "100% Open Source"
+    },
+    "problem": {
+        "title": "La coordination familiale devient de plus en plus difficile",
+        "description": "Gérer la vie de famille à travers plusieurs applications et plateformes crée le chaos. Les documents importants se perdent, les listes de courses sont oubliées et la communication se dégrade.",
+        "solution": "Il y a une meilleure façon. Une façon qui vous donne le contrôle.",
+        "painPoints": {
+            "scattered": {
+                "title": "Informations éparpillées",
+                "description": "Photos, documents et notes dispersés entre différentes applications et appareils"
+            },
+            "forgotten": {
+                "title": "Tâches oubliées",
+                "description": "Listes de courses, rendez-vous et tâches familiales perdues dans les applications de messagerie"
+            },
+            "privacy": {
+                "title": "Problèmes de confidentialité",
+                "description": "Les données personnelles de votre famille stockées sur des serveurs que vous ne contrôlez pas"
+            }
+        }
+    },
+    "demo": {
+        "title": "Voir Enklave en action",
+        "description": "Découvrez comment Enklave rassemble votre famille sur une plateforme sécurisée",
+        "cta": "Commencer gratuitement",
+        "features": [
+            "Stockage et partage de fichiers sécurisés",
+            "Listes de courses collaboratives",
+            "Notes et organisation familiales",
+            "Accès multi-plateforme"
+        ],
+        "mockup": {
+            "title": "La Famille Smith",
+            "recentFiles": "Fichiers récents",
+            "shoppingList": "Liste de courses",
+            "files": ["Budget_Familial_2025.pdf", "Documents École Enfants"],
+            "timestamps": ["Il y a 2 min", "Il y a 1 heure"],
+            "shoppingItems": ["Lait bio", "Pain frais", "Snacks pour enfants"],
+            "status": "✓ Tous les membres de la famille connectés",
+            "statusText": "Sécurisé"
+        }
+    },
+    "features": {
+        "title": "Tout ce dont votre famille a besoin, en un seul endroit",
+        "description": "Découvrez les fonctionnalités qui font d'Enklave la solution parfaite pour la collaboration et l'organisation familiales.",
+        "ctaText": "Prêt à sécuriser votre vie numérique ?",
+        "ctaButton": "Commencer gratuitement aujourd'hui",
+        "items": {
+            "storage": {
+                "title": "Stockage de fichiers sécurisé",
+                "description": "Stockez et organisez vos documents familiaux importants, photos et médias avec un chiffrement de bout en bout et des structures de dossiers organisées."
+            },
+            "lists": {
+                "title": "Listes de courses partagées",
+                "description": "Créez et partagez des listes de courses avec les membres de la famille. Les mises à jour en temps réel garantissent que tout le monde reste synchronisé."
+            },
+            "notes": {
+                "title": "Notes familiales",
+                "description": "Gardez une trace des informations importantes, des horaires et des rappels auxquels tous les membres de la famille peuvent accéder."
+            },
+            "sharing": {
+                "title": "Partage intelligent",
+                "description": "Partagez des fichiers et des informations avec des membres spécifiques de la famille avec des permissions granulaires et des contrôles d'accès."
+            },
+            "crossPlatform": {
+                "title": "Accès multi-plateforme",
+                "description": "Accédez aux informations de votre famille depuis n'importe quel appareil - navigateur web, application de bureau ou mobile (bientôt disponible)."
+            },
+            "security": {
+                "title": "Confidentialité et sécurité",
+                "description": "Auto-hébergez sur votre propre infrastructure avec une transparence complète du code source. Les données de votre famille restent privées."
+            }
+        }
+    },
+    "socialProof": {
+        "title": "Approuvé par des familles du monde entier",
+        "description": "Rejoignez les familles qui ont simplifié leur vie numérique avec Enklave",
+        "githubCta": "Mettez-nous une étoile sur GitHub",
+        "stats": {
+            "githubStars": "Étoiles GitHub",
+            "families": "Familles",
+            "downloads": "Téléchargements",
+            "uptime": "Temps de fonctionnement"
+        },
+        "testimonials": [
+            {
+                "quote": "Enfin, un endroit pour garder tous nos documents familiaux organisés et sécurisés. Plus besoin de chercher dans des dizaines d'applications.",
+                "author": "Sarah Chen",
+                "role": "Mère de 3 enfants",
+                "location": "Toronto, Canada"
+            },
+            {
+                "quote": "La fonctionnalité des listes de courses a révolutionné nos achats d'épicerie. Tout le monde peut ajouter des articles et nous n'oublions jamais rien.",
+                "author": "Miguel Rodriguez",
+                "role": "Père",
+                "location": "Barcelone, Espagne"
+            },
+            {
+                "quote": "Pouvoir auto-héberger nous donne la tranquillité d'esprit que les informations privées de notre famille restent privées.",
+                "author": "Alex Thompson",
+                "role": "Famille",
+                "location": "Austin, Texas"
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Tarification flexible pour chaque famille",
+        "description": "Choisissez le plan qui convient à votre famille, commencez gratuitement.",
+        "freePlanCta": "Vous cherchez le plan gratuit ?",
+        "freePlanButton": "Créer un compte maintenant",
+        "mostPopular": "Le plus populaire",
+        "compareFeatures": "Comparer les fonctionnalités",
+        "plans": {
+            "family": {
+                "title": "Famille",
+                "description": "Parfait pour les familles et couples qui débutent.",
+                "price": "4,99 €",
+                "period": "/ mois",
+                "cta": "Choisir Famille",
+                "features": [
+                    "Stockage sécurisé (500 Go)",
+                    "Listes de courses et notes illimitées",
+                    "Accès sur 10 appareils",
+                    "Support par email"
+                ]
+            },
+            "pro": {
+                "title": "Pro",
+                "description": "Pour les familles nombreuses qui ont besoin de plus de stockage et de fonctionnalités.",
+                "price": "9,99 €",
+                "period": "/ mois",
+                "cta": "Choisir Pro",
+                "features": [
+                    "Stockage illimité",
+                    "Contrôles de partage avancés",
+                    "Support prioritaire",
+                    "Planifications de sauvegarde personnalisées"
+                ]
+            },
+            "selfHosted": {
+                "title": "Auto-hébergé",
+                "description": "Déployez Enklave sur votre propre infrastructure pour un contrôle complet.",
+                "price": "Gratuit",
+                "cta": "Commencer",
+                "features": [
+                    "Accès complet au code source",
+                    "Stockage illimité",
+                    "Contrôle complet de la confidentialité",
+                    "Support communautaire"
+                ]
+            }
+        },
+        "comparison": {
+            "headers": {
+                "features": "Fonctionnalités",
+                "free": "Gratuit",
+                "family": "Famille",
+                "pro": "Pro",
+                "enterprise": "Entreprise"
+            },
+            "features": {
+                "secureStorage": "Stockage sécurisé",
+                "fileSharing": "Partage de fichiers et dossiers",
+                "shoppingLists": "Listes de courses et notes",
+                "advancedSharing": "Permissions de partage avancées",
+                "crossDevice": "Accès multi-appareils",
+                "customBackup": "Planifications de sauvegarde personnalisées",
+                "selfHosting": "Auto-hébergement",
+                "customerSupport": "Support client"
+            },
+            "values": {
+                "limited": "Limité",
+                "unlimited": "Illimité",
+                "community": "Communauté",
+                "email": "Email",
+                "priority": "Prioritaire",
+                "devices3": "3 appareils",
+                "devices10": "10 appareils"
+            }
+        }
+    },
+    "newsletter": {
+        "title": "Restez connecté avec votre famille",
+        "description": "Recevez des conseils d'organisation familiale, des mises à jour de produits et un accès anticipé aux nouvelles fonctionnalités. Rejoignez notre communauté de familles organisées.",
+        "placeholder": "famille@exemple.com",
+        "cta": "Rejoindre la communauté",
+        "features": [
+            "Conseils d'organisation familiale mensuels et meilleures pratiques",
+            "Accès anticipé aux nouvelles fonctionnalités et mises à jour",
+            "Tutoriels et guides adaptés aux familles",
+            "Pas de spam, désabonnement à tout moment"
+        ],
+        "stats": {
+            "families": "familles",
+            "frequency": "Mises à jour mensuelles",
+            "familySubscribers": "Abonnés familiaux",
+            "organizationTips": "Conseils d'organisation",
+            "featureAccess": "Accès aux fonctionnalités"
+        }
     }
 }
