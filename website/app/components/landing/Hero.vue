@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
-import {landingConfig} from "~/config/landing";
 </script>
 
 <template>
@@ -34,7 +33,7 @@ import {landingConfig} from "~/config/landing";
             <div
                 class="animate-fade-in mb-8 inline-flex items-center rounded-full bg-purple-100 px-4 py-2 text-sm font-semibold text-purple-800 dark:bg-purple-900/30 dark:text-purple-200">
                 <Icon name="iconoir:code" class="mr-2 size-4" />
-                {{ landingConfig.hero.badge }}
+                {{ $t("hero.badge") }}
             </div>
 
             <!-- Main headline with gradient text -->
@@ -42,18 +41,18 @@ import {landingConfig} from "~/config/landing";
                 class="animate-fade-in mb-6 text-5xl font-extrabold tracking-tight md:text-6xl lg:text-7xl">
                 <span
                     class="bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 bg-clip-text text-transparent">
-                    {{ landingConfig.hero.title.split(".")[0] }}.
+                    {{ $t("hero.title").split(".")[0] }}.
                 </span>
                 <br />
                 <span class="text-gray-900 dark:text-white">
-                    {{ landingConfig.hero.title.split(".")[1] }}.
+                    {{ $t("hero.title").split(".")[1] }}.
                 </span>
             </h1>
 
             <!-- Enhanced description -->
             <p
                 class="text-muted-foreground animate-fade-in-delay-1 mx-auto mt-6 max-w-3xl text-xl leading-relaxed md:text-2xl">
-                {{ landingConfig.hero.description }}
+                {{ $t("hero.description") }}
             </p>
 
             <!-- Enhanced CTA section -->
@@ -64,7 +63,7 @@ import {landingConfig} from "~/config/landing";
                     class="transform bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 text-lg font-semibold shadow-lg shadow-purple-500/25 transition-all duration-200 hover:scale-105 hover:from-purple-700 hover:to-blue-700"
                     as-child>
                     <NuxtLink to="/#pricing">{{
-                        landingConfig.hero.cta
+                        $t("hero.cta")
                     }}</NuxtLink>
                 </Button>
 
@@ -74,11 +73,11 @@ import {landingConfig} from "~/config/landing";
                     class="transform border-2 px-8 py-4 text-lg font-semibold transition-all duration-200 hover:scale-105 hover:bg-gray-50 dark:hover:bg-gray-800"
                     as-child>
                     <a
-                        :href="landingConfig.hero.githubUrl"
+                        href="https://github.com/Xen0Xys/Enklave"
                         target="_blank"
                         rel="noopener">
                         <Icon name="iconoir:github" class="mr-2 size-5" />
-                        View on GitHub
+                        {{ $t("hero.githubButton") }}
                     </a>
                 </Button>
             </div>
@@ -86,7 +85,7 @@ import {landingConfig} from "~/config/landing";
             <!-- GitHub stats and trust indicators -->
             <div class="animate-fade-in-delay-3 mt-16">
                 <p class="text-muted-foreground mb-6 text-sm">
-                    Trusted by developers and security professionals
+                    {{ $t("hero.trustLine") }}
                 </p>
                 <div class="flex flex-wrap items-center justify-center gap-6">
                     <div
@@ -95,19 +94,25 @@ import {landingConfig} from "~/config/landing";
                             name="iconoir:star"
                             class="size-4 text-yellow-500" />
                         <span class="text-sm font-medium"
-                            >{{ landingConfig.hero.githubStars }} GitHub
-                            Stars</span
+                            >2.1k+ {{ $t("hero.githubStars") }}</span
                         >
                     </div>
                     <div
-                        v-for="indicator in landingConfig.hero.trustIndicators"
-                        :key="indicator.text"
                         class="flex items-center space-x-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm dark:bg-gray-800/50">
                         <Icon
-                            :name="indicator.icon"
-                            :class="`size-4 ${indicator.color}`" />
+                            name="iconoir:shield-check"
+                            class="size-4 text-green-500" />
                         <span class="text-sm font-medium">{{
-                            indicator.text
+                            $t("hero.zeroTrust")
+                        }}</span>
+                    </div>
+                    <div
+                        class="flex items-center space-x-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm dark:bg-gray-800/50">
+                        <Icon
+                            name="iconoir:code"
+                            class="size-4 text-blue-500" />
+                        <span class="text-sm font-medium">{{
+                            $t("hero.openSource")
                         }}</span>
                     </div>
                 </div>

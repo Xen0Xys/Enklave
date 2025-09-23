@@ -1,18 +1,17 @@
 <script setup lang="ts">
+// Use i18n composable for dynamic meta tags
+const {t} = useI18n();
+
 useSeoMeta({
-    title: "Enklave - Collaborative family and couple management software.",
-    description:
-        "Enklave is a collaborative family and couple management software.",
-    ogTitle: "Enklave - Collaborative family and couple management software.",
-    ogDescription:
-        "Enklave is a collaborative family and couple management software.",
+    title: () => t("pages.home.title"),
+    description: () => t("pages.home.description"),
+    ogTitle: () => t("pages.home.title"),
+    ogDescription: () => t("pages.home.description"),
     ogImage: "https://enklave.cloud/og-image.png",
     ogUrl: "https://enklave.cloud",
     twitterCard: "summary_large_image",
-    twitterTitle:
-        "Enklave - Collaborative family and couple management software.",
-    twitterDescription:
-        "Enklave is a collaborative family and couple management software.",
+    twitterTitle: () => t("pages.home.title"),
+    twitterDescription: () => t("pages.home.description"),
     twitterImage: "https://enklave.cloud/og-image.png",
 });
 
@@ -24,12 +23,12 @@ useSchemaOrg([
         sameAs: [
             // Add social media links when available
         ],
-        description: "Collaborative family and couple management software.",
+        description: () => t("pages.home.description"),
     }),
     defineWebSite({
         name: "Enklave",
         url: "https://enklave.cloud",
-        description: "Collaborative family and couple management software.",
+        description: () => t("pages.home.description"),
     }),
 ]);
 </script>

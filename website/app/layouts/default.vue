@@ -18,7 +18,7 @@ import "vue-sonner/style.css";
                             variant="ghost"
                             size="icon"
                             class="md:hidden"
-                            aria-label="Ouvrir le menu de navigation">
+                            :aria-label="$t('nav.openMenu')">
                             <Icon name="iconoir:menu" class="size-6" />
                         </Button>
                     </SheetTrigger>
@@ -30,35 +30,45 @@ import "vue-sonner/style.css";
                         </SheetHeader>
                         <NuxtLink to="/#features"
                             ><SheetClose as-child
-                                ><span>Features</span></SheetClose
+                                ><span>{{
+                                    $t("nav.features")
+                                }}</span></SheetClose
                             ></NuxtLink
                         >
                         <NuxtLink to="/#pricing"
                             ><SheetClose as-child
-                                ><span>Pricing</span></SheetClose
+                                ><span>{{
+                                    $t("nav.pricing")
+                                }}</span></SheetClose
                             ></NuxtLink
                         >
                         <NuxtLink to="/#newsletter"
                             ><SheetClose as-child
-                                ><span>Newsletter</span></SheetClose
+                                ><span>{{
+                                    $t("nav.newsletter")
+                                }}</span></SheetClose
                             ></NuxtLink
                         >
                         <NuxtLink to="/whats-new"
                             ><SheetClose as-child
-                                ><span>What's New</span></SheetClose
+                                ><span>{{
+                                    $t("nav.whatsNew")
+                                }}</span></SheetClose
                             ></NuxtLink
                         >
                         <NuxtLink to="/contact"
                             ><SheetClose as-child
-                                ><span>Contact</span></SheetClose
+                                ><span>{{
+                                    $t("nav.contact")
+                                }}</span></SheetClose
                             ></NuxtLink
                         >
                         <SheetClose as-child>
                             <Button as-child class="mt-4 w-full">
                                 <a
                                     href="https://app.enklave.cloud"
-                                    aria-label="Accéder à l'application Enklave"
-                                    >Go to App</a
+                                    :aria-label="$t('nav.accessApp')"
+                                    >{{ $t("nav.goToApp") }}</a
                                 >
                             </Button>
                         </SheetClose>
@@ -66,18 +76,25 @@ import "vue-sonner/style.css";
                 </Sheet>
                 <nav
                     class="hidden items-center space-x-6 text-sm font-medium md:flex">
-                    <NuxtLink to="/#features">Features</NuxtLink>
-                    <NuxtLink to="/#pricing">Pricing</NuxtLink>
-                    <NuxtLink to="/#newsletter">Newsletter</NuxtLink>
-                    <NuxtLink to="/whats-new">What's New</NuxtLink>
-                    <NuxtLink to="/contact">Contact</NuxtLink>
+                    <NuxtLink to="/#features">{{
+                        $t("nav.features")
+                    }}</NuxtLink>
+                    <NuxtLink to="/#pricing">{{ $t("nav.pricing") }}</NuxtLink>
+                    <NuxtLink to="/#newsletter">{{
+                        $t("nav.newsletter")
+                    }}</NuxtLink>
+                    <NuxtLink to="/whats-new">{{
+                        $t("nav.whatsNew")
+                    }}</NuxtLink>
+                    <NuxtLink to="/contact">{{ $t("nav.contact") }}</NuxtLink>
                 </nav>
                 <div class="flex flex-1 items-center justify-end space-x-4">
+                    <LanguageSwitcher />
                     <Button as-child>
                         <a
                             href="https://app.enklave.cloud"
-                            aria-label="Accéder à l'application Enklave"
-                            >Go to App</a
+                            :aria-label="$t('nav.accessApp')"
+                            >{{ $t("nav.goToApp") }}</a
                         >
                     </Button>
                 </div>
@@ -90,19 +107,19 @@ import "vue-sonner/style.css";
             <div
                 class="container flex flex-col items-center justify-between gap-4 px-4 md:h-24 md:flex-row md:px-10">
                 <p class="text-muted-foreground text-sm">
-                    © {{ new Date().getFullYear() }} Enklave. All rights
-                    reserved.
+                    © {{ new Date().getFullYear() }} Enklave.
+                    {{ $t("footer.copyright") }}
                 </p>
                 <nav class="flex gap-4 text-sm">
                     <NuxtLink
                         to="/terms-of-use"
                         class="text-muted-foreground hover:text-foreground transition-colors">
-                        Terms of Use
+                        {{ $t("footer.termsOfUse") }}
                     </NuxtLink>
                     <NuxtLink
                         to="/terms-of-sale"
                         class="text-muted-foreground hover:text-foreground transition-colors">
-                        Terms of Sale
+                        {{ $t("footer.termsOfSale") }}
                     </NuxtLink>
                 </nav>
             </div>

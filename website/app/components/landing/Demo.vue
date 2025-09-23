@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
-import {landingConfig} from "~/config/landing";
 </script>
 
 <template>
@@ -11,17 +10,17 @@ import {landingConfig} from "~/config/landing";
                 <!-- Content -->
                 <div class="text-white">
                     <h2 class="mb-6 text-4xl font-bold md:text-5xl">
-                        {{ landingConfig.demo.title }}
+                        {{ $t("demo.title") }}
                     </h2>
                     <p class="mb-8 text-xl leading-relaxed text-purple-100">
-                        {{ landingConfig.demo.description }}
+                        {{ $t("demo.description") }}
                     </p>
 
                     <!-- Features list -->
                     <ul class="mb-8 space-y-4">
                         <li
-                            v-for="feature in landingConfig.demo.features"
-                            :key="feature"
+                            v-for="(feature, index) in $t('demo.features')"
+                            :key="index"
                             class="flex items-center">
                             <Icon
                                 name="iconoir:check-circle"
@@ -34,8 +33,8 @@ import {landingConfig} from "~/config/landing";
                         size="lg"
                         class="transform bg-white px-8 py-4 text-lg font-semibold text-purple-900 shadow-lg transition-all duration-200 hover:scale-105 hover:bg-gray-100"
                         as-child>
-                        <a :href="landingConfig.demo.demoUrl">
-                            {{ landingConfig.demo.cta }}
+                        <a href="https://app.enklave.cloud">
+                            {{ $t("demo.cta") }}
                         </a>
                     </Button>
                 </div>
@@ -56,8 +55,7 @@ import {landingConfig} from "~/config/landing";
                                         class="size-4 text-white" />
                                 </div>
                                 <span class="font-semibold text-gray-900">{{
-                                    landingConfig.demo.mockup?.title ||
-                                    "The Smith Family"
+                                    $t("demo.mockup.title")
                                 }}</span>
                             </div>
                             <div class="flex space-x-2">
@@ -75,10 +73,7 @@ import {landingConfig} from "~/config/landing";
                             <!-- Recent files -->
                             <div class="space-y-2">
                                 <h3 class="text-sm font-medium text-gray-600">
-                                    {{
-                                        landingConfig.demo.mockup?.sections
-                                            ?.recentFiles || "Recent Files"
-                                    }}
+                                    {{ $t("demo.mockup.recentFiles") }}
                                 </h3>
                                 <div class="space-y-2">
                                     <div
@@ -87,16 +82,12 @@ import {landingConfig} from "~/config/landing";
                                             name="iconoir:page"
                                             class="size-4 text-blue-600" />
                                         <span class="text-sm text-gray-900">{{
-                                            landingConfig.demo.mockup
-                                                ?.files?.[0] ||
-                                            "Family_Budget_2025.pdf"
+                                            $t("demo.mockup.files.0")
                                         }}</span>
                                         <span
                                             class="ml-auto text-xs text-gray-500"
                                             >{{
-                                                landingConfig.demo.mockup
-                                                    ?.timestamps?.[0] ||
-                                                "2 min ago"
+                                                $t("demo.mockup.timestamps.0")
                                             }}</span
                                         >
                                     </div>
@@ -106,16 +97,12 @@ import {landingConfig} from "~/config/landing";
                                             name="iconoir:folder"
                                             class="size-4 text-green-600" />
                                         <span class="text-sm text-gray-900">{{
-                                            landingConfig.demo.mockup
-                                                ?.files?.[1] ||
-                                            "Kids School Documents"
+                                            $t("demo.mockup.files.1")
                                         }}</span>
                                         <span
                                             class="ml-auto text-xs text-gray-500"
                                             >{{
-                                                landingConfig.demo.mockup
-                                                    ?.timestamps?.[1] ||
-                                                "1 hour ago"
+                                                $t("demo.mockup.timestamps.1")
                                             }}</span
                                         >
                                     </div>
@@ -125,19 +112,14 @@ import {landingConfig} from "~/config/landing";
                             <!-- Shopping list -->
                             <div class="space-y-2">
                                 <h3 class="text-sm font-medium text-gray-600">
-                                    {{
-                                        landingConfig.demo.mockup?.sections
-                                            ?.shoppingList || "Shopping List"
-                                    }}
+                                    {{ $t("demo.mockup.shoppingList") }}
                                 </h3>
                                 <div class="space-y-1">
                                     <div class="flex items-center space-x-2">
                                         <div
                                             class="h-4 w-4 rounded border-2 border-purple-300"></div>
                                         <span class="text-sm text-gray-900">{{
-                                            landingConfig.demo.mockup
-                                                ?.shoppingItems?.[0] ||
-                                            "Organic milk"
+                                            $t("demo.mockup.shoppingItems.0")
                                         }}</span>
                                     </div>
                                     <div class="flex items-center space-x-2">
@@ -150,9 +132,7 @@ import {landingConfig} from "~/config/landing";
                                         <span
                                             class="text-sm text-gray-500 line-through"
                                             >{{
-                                                landingConfig.demo.mockup
-                                                    ?.shoppingItems?.[1] ||
-                                                "Fresh bread"
+                                                $t("demo.mockup.shoppingItems.1")
                                             }}</span
                                         >
                                     </div>
@@ -160,9 +140,7 @@ import {landingConfig} from "~/config/landing";
                                         <div
                                             class="h-4 w-4 rounded border-2 border-purple-300"></div>
                                         <span class="text-sm text-gray-900">{{
-                                            landingConfig.demo.mockup
-                                                ?.shoppingItems?.[2] ||
-                                            "Kids snacks"
+                                            $t("demo.mockup.shoppingItems.2")
                                         }}</span>
                                     </div>
                                 </div>
@@ -173,15 +151,13 @@ import {landingConfig} from "~/config/landing";
                                 <div
                                     class="flex items-center justify-between text-xs text-gray-500">
                                     <span>{{
-                                        landingConfig.demo.mockup?.status ||
-                                        "✓ All family members connected"
+                                        $t("demo.mockup.status")
                                     }}</span>
                                     <div class="flex space-x-1">
                                         <div
                                             class="h-2 w-2 rounded-full bg-green-500"></div>
                                         <span>{{
-                                            landingConfig.demo.mockup
-                                                ?.statusText || "Secure"
+                                            $t("demo.mockup.statusText")
                                         }}</span>
                                     </div>
                                 </div>
