@@ -218,7 +218,7 @@
     "newsletter": {
         "title": "Restez connecté avec votre famille",
         "description": "Recevez des conseils d'organisation familiale, des mises à jour de produits et un accès anticipé aux nouvelles fonctionnalités. Rejoignez notre communauté de familles organisées.",
-        "placeholder": "famille@exemple.com",
+        "placeholder": "Entrez votre adresse email",
         "cta": "Rejoindre la communauté",
         "features": [
             "Conseils d'organisation familiale mensuels et meilleures pratiques",

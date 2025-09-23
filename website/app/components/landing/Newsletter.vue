@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {landingConfig} from "~/config/landing";
 import {toast} from "vue-sonner";
 
 const email = ref("");
@@ -60,18 +59,18 @@ const subscribe = async () => {
 
             <!-- Heading -->
             <h2 class="mb-6 text-4xl font-bold md:text-5xl">
-                {{ landingConfig.newsletter.title }}
+                {{ $t("newsletter.title") }}
             </h2>
             <p
                 class="mx-auto mb-8 max-w-2xl text-xl leading-relaxed text-blue-100 md:text-2xl">
-                {{ landingConfig.newsletter.description }}
+                {{ $t("newsletter.description") }}
             </p>
 
             <!-- Features grid -->
             <div class="mx-auto mb-8 grid max-w-3xl gap-4 md:grid-cols-2">
                 <div
-                    v-for="feature in landingConfig.newsletter.features"
-                    :key="feature"
+                    v-for="(feature, index) in $t('newsletter.features')"
+                    :key="index"
                     class="flex items-center rounded-lg bg-white/10 p-4 text-left backdrop-blur-sm">
                     <Icon
                         name="iconoir:check-circle"
@@ -127,7 +126,7 @@ const subscribe = async () => {
                         <Input
                             v-model="email"
                             type="email"
-                            :placeholder="landingConfig.newsletter.placeholder"
+                            :placeholder="$t('newsletter.placeholder')"
                             class="flex-1 border-0 bg-white/90 text-gray-900 backdrop-blur-sm transition-all duration-200 placeholder:text-gray-500 focus:bg-white"
                             :disabled="isLoading"
                             @keyup.enter="subscribe" />
@@ -146,7 +145,7 @@ const subscribe = async () => {
                             {{
                                 isLoading
                                     ? "Subscribing..."
-                                    : landingConfig.newsletter.cta
+                                    : $t("newsletter.cta")
                             }}
                         </Button>
                     </div>
@@ -158,18 +157,13 @@ const subscribe = async () => {
                     <div class="flex items-center gap-2">
                         <Icon name="iconoir:group" class="size-4" />
                         <span
-                            >{{ landingConfig.newsletter.stats.subscribers }}
-                            {{
-                                landingConfig.newsletter.stats
-                                    .subscribersLabel || "families"
-                            }}</span
+                            >5,200+
+                            {{ $t("newsletter.stats.families") }}</span
                         >
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon name="iconoir:calendar" class="size-4" />
-                        <span>{{
-                            landingConfig.newsletter.stats.frequency
-                        }}</span>
+                        <span>{{ $t("newsletter.stats.frequency") }}</span>
                     </div>
                 </div>
             </div>
@@ -179,46 +173,26 @@ const subscribe = async () => {
                 class="mt-16 grid grid-cols-1 gap-8 text-center md:grid-cols-3">
                 <div class="space-y-2">
                     <div class="text-3xl font-bold text-blue-300">
-                        {{
-                            landingConfig.newsletter.stats.subscribers.replace(
-                                "+",
-                                "",
-                            )
-                        }}+
+                        5,200+
                     </div>
                     <div class="text-blue-200">
-                        {{
-                            landingConfig.newsletter.additionalStats
-                                ?.stat1Label || "Family subscribers"
-                        }}
+                        {{ $t("newsletter.stats.familySubscribers") }}
                     </div>
                 </div>
                 <div class="space-y-2">
                     <div class="text-3xl font-bold text-purple-300">
-                        {{
-                            landingConfig.newsletter.additionalStats
-                                ?.stat2Value || "Monthly"
-                        }}
+                        Monthly
                     </div>
                     <div class="text-blue-200">
-                        {{
-                            landingConfig.newsletter.additionalStats
-                                ?.stat2Label || "Organization tips"
-                        }}
+                        {{ $t("newsletter.stats.organizationTips") }}
                     </div>
                 </div>
                 <div class="space-y-2">
                     <div class="text-3xl font-bold text-teal-300">
-                        {{
-                            landingConfig.newsletter.additionalStats
-                                ?.stat3Value || "Early"
-                        }}
+                        Early
                     </div>
                     <div class="text-blue-200">
-                        {{
-                            landingConfig.newsletter.additionalStats
-                                ?.stat3Label || "Feature access"
-                        }}
+                        {{ $t("newsletter.stats.featureAccess") }}
                     </div>
                 </div>
             </div>

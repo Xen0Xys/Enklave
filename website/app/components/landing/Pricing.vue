@@ -16,9 +16,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {landingConfig} from "~/config/landing";
-
-const features = landingConfig.pricing.comparison.features;
 </script>
 
 <template>
@@ -30,10 +27,10 @@ const features = landingConfig.pricing.comparison.features;
             <div class="mb-16 text-center">
                 <h2
                     class="mb-4 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-4xl font-bold text-transparent md:text-5xl dark:from-white dark:to-gray-300">
-                    {{ landingConfig.pricing.title }}
+                    {{ $t("pricing.title") }}
                 </h2>
                 <p class="text-muted-foreground mx-auto mb-8 max-w-2xl text-xl">
-                    {{ landingConfig.pricing.description }}
+                    {{ $t("pricing.description") }}
                 </p>
                 <div
                     class="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-6 py-3 dark:border-blue-800 dark:bg-blue-900/20">
@@ -41,14 +38,14 @@ const features = landingConfig.pricing.comparison.features;
                         name="iconoir:gift"
                         class="mr-2 size-5 text-blue-600" />
                     <span class="font-medium text-blue-800 dark:text-blue-200">
-                        {{ landingConfig.pricing.freePlanCta }}
+                        {{ $t("pricing.freePlanCta") }}
                     </span>
                     <Button
                         variant="link"
                         class="ml-2 h-auto p-0 font-semibold text-blue-600 dark:text-blue-400"
                         as-child>
                         <NuxtLink to="https://app.enklave.cloud/register">{{
-                            landingConfig.pricing.freePlanButton
+                            $t("pricing.freePlanButton")
                         }}</NuxtLink>
                     </Button>
                 </div>
@@ -56,32 +53,24 @@ const features = landingConfig.pricing.comparison.features;
 
             <!-- Pricing cards -->
             <div class="mb-20 grid gap-8 md:grid-cols-3">
+                <!-- Family Plan -->
                 <Card
-                    v-for="(plan, index) in landingConfig.pricing.plans"
-                    :key="plan.title"
-                    :class="[
-                        'relative flex h-full flex-col transition-all duration-300 hover:scale-105',
-                        plan.isPrimary
-                            ? 'scale-105 transform border-purple-500 shadow-2xl ring-2 shadow-purple-500/20 ring-purple-500/20'
-                            : 'border-gray-200 hover:shadow-xl dark:border-gray-700',
-                    ]"
-                    :style="`animation-delay: ${index * 100}ms`">
+                    class="relative flex h-full flex-col transition-all duration-300 hover:scale-105 scale-105 transform border-purple-500 shadow-2xl ring-2 shadow-purple-500/20 ring-purple-500/20"
+                    style="animation-delay: 0ms">
                     <!-- Popular badge -->
-                    <div
-                        v-if="plan.isPrimary"
-                        class="absolute -top-4 left-1/2 -translate-x-1/2 transform">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 transform">
                         <div
                             class="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg">
-                            Most Popular
+                            {{ $t("pricing.mostPopular") }}
                         </div>
                     </div>
 
                     <CardHeader class="pb-8 text-center">
                         <CardTitle class="mb-2 text-2xl font-bold">{{
-                            plan.title
+                            $t("pricing.plans.family.title")
                         }}</CardTitle>
                         <CardDescription class="text-base">{{
-                            plan.description
+                            $t("pricing.plans.family.description")
                         }}</CardDescription>
                     </CardHeader>
 
@@ -91,12 +80,11 @@ const features = landingConfig.pricing.comparison.features;
                             <div class="flex items-baseline justify-center">
                                 <span
                                     class="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-5xl font-bold text-transparent">
-                                    {{ plan.price }}
+                                    {{ $t("pricing.plans.family.price") }}
                                 </span>
                                 <span
-                                    v-if="plan.pricePeriod"
                                     class="text-muted-foreground ml-2 text-lg font-medium">
-                                    {{ plan.pricePeriod }}
+                                    {{ $t("pricing.plans.family.period") }}
                                 </span>
                             </div>
                         </div>
@@ -104,8 +92,68 @@ const features = landingConfig.pricing.comparison.features;
                         <!-- Features list -->
                         <ul class="space-y-4">
                             <li
-                                v-for="feature in plan.features"
-                                :key="feature"
+                                v-for="(feature, index) in $t('pricing.plans.family.features')"
+                                :key="index"
+                                class="flex items-center text-sm">
+                                <div
+                                    class="mr-3 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                                    <Icon
+                                        name="iconoir:check"
+                                        class="size-3 text-green-600 dark:text-green-400" />
+                                </div>
+                                <span
+                                    class="text-gray-700 dark:text-gray-300"
+                                    >{{ feature }}</span
+                                >
+                            </li>
+                        </ul>
+                    </CardContent>
+
+                    <CardFooter class="pt-6">
+                        <Button
+                            class="w-full py-3 font-semibold bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg shadow-purple-500/25 hover:from-purple-700 hover:to-blue-700"
+                            as-child>
+                            <NuxtLink to="https://app.enklave.cloud/register">{{
+                                $t("pricing.plans.family.cta")
+                            }}</NuxtLink>
+                        </Button>
+                    </CardFooter>
+                </Card>
+
+                <!-- Pro Plan -->
+                <Card
+                    class="relative flex h-full flex-col transition-all duration-300 hover:scale-105 border-gray-200 hover:shadow-xl dark:border-gray-700"
+                    style="animation-delay: 100ms">
+
+                    <CardHeader class="pb-8 text-center">
+                        <CardTitle class="mb-2 text-2xl font-bold">{{
+                            $t("pricing.plans.pro.title")
+                        }}</CardTitle>
+                        <CardDescription class="text-base">{{
+                            $t("pricing.plans.pro.description")
+                        }}</CardDescription>
+                    </CardHeader>
+
+                    <CardContent class="flex-grow">
+                        <!-- Price display -->
+                        <div class="mb-8 text-center">
+                            <div class="flex items-baseline justify-center">
+                                <span
+                                    class="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-5xl font-bold text-transparent">
+                                    {{ $t("pricing.plans.pro.price") }}
+                                </span>
+                                <span
+                                    class="text-muted-foreground ml-2 text-lg font-medium">
+                                    {{ $t("pricing.plans.pro.period") }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Features list -->
+                        <ul class="space-y-4">
+                            <li
+                                v-for="(feature, index) in $t('pricing.plans.pro.features')"
+                                :key="index"
                                 class="flex items-center text-sm">
                                 <div
                                     class="mr-3 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
@@ -124,21 +172,67 @@ const features = landingConfig.pricing.comparison.features;
                     <CardFooter class="pt-6">
                         <Button
                             class="w-full py-3 font-semibold"
-                            as-child
-                            :class="[
-                                plan.isPrimary
-                                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg shadow-purple-500/25 hover:from-purple-700 hover:to-blue-700'
-                                    : '',
-                            ]"
-                            :variant="
-                                plan.price === 'Contact Us'
-                                    ? 'outline'
-                                    : plan.isPrimary
-                                      ? 'default'
-                                      : 'outline'
-                            ">
+                            variant="outline"
+                            as-child>
                             <NuxtLink to="https://app.enklave.cloud/register">{{
-                                plan.cta
+                                $t("pricing.plans.pro.cta")
+                            }}</NuxtLink>
+                        </Button>
+                    </CardFooter>
+                </Card>
+
+                <!-- Self-Hosted Plan -->
+                <Card
+                    class="relative flex h-full flex-col transition-all duration-300 hover:scale-105 border-gray-200 hover:shadow-xl dark:border-gray-700"
+                    style="animation-delay: 200ms">
+
+                    <CardHeader class="pb-8 text-center">
+                        <CardTitle class="mb-2 text-2xl font-bold">{{
+                            $t("pricing.plans.selfHosted.title")
+                        }}</CardTitle>
+                        <CardDescription class="text-base">{{
+                            $t("pricing.plans.selfHosted.description")
+                        }}</CardDescription>
+                    </CardHeader>
+
+                    <CardContent class="flex-grow">
+                        <!-- Price display -->
+                        <div class="mb-8 text-center">
+                            <div class="flex items-baseline justify-center">
+                                <span
+                                    class="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-5xl font-bold text-transparent">
+                                    {{ $t("pricing.plans.selfHosted.price") }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Features list -->
+                        <ul class="space-y-4">
+                            <li
+                                v-for="(feature, index) in $t('pricing.plans.selfHosted.features')"
+                                :key="index"
+                                class="flex items-center text-sm">
+                                <div
+                                    class="mr-3 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                                    <Icon
+                                        name="iconoir:check"
+                                        class="size-3 text-green-600 dark:text-green-400" />
+                                </div>
+                                <span
+                                    class="text-gray-700 dark:text-gray-300"
+                                    >{{ feature }}</span
+                                >
+                            </li>
+                        </ul>
+                    </CardContent>
+
+                    <CardFooter class="pt-6">
+                        <Button
+                            class="w-full py-3 font-semibold"
+                            variant="outline"
+                            as-child>
+                            <NuxtLink to="https://app.enklave.cloud/register">{{
+                                $t("pricing.plans.selfHosted.cta")
                             }}</NuxtLink>
                         </Button>
                     </CardFooter>
@@ -151,7 +245,7 @@ const features = landingConfig.pricing.comparison.features;
                 <div
                     class="bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-6">
                     <h3 class="text-center text-2xl font-bold text-white">
-                        {{ landingConfig.pricing.comparison.title }}
+                        {{ $t("pricing.compareFeatures") }}
                     </h3>
                 </div>
 
@@ -161,107 +255,153 @@ const features = landingConfig.pricing.comparison.features;
                             <TableRow class="bg-gray-50 dark:bg-gray-800/50">
                                 <TableHead
                                     class="w-[300px] font-semibold text-gray-900 dark:text-white"
-                                    >Features</TableHead
+                                    >{{ $t("pricing.comparison.headers.features") }}</TableHead
                                 >
                                 <TableHead
                                     class="text-center font-semibold text-gray-900 dark:text-white"
-                                    >Free</TableHead
+                                    >{{ $t("pricing.comparison.headers.free") }}</TableHead
                                 >
                                 <TableHead
                                     class="bg-purple-50 text-center font-semibold text-purple-600 dark:bg-purple-900/20 dark:text-purple-400"
-                                    >Family</TableHead
+                                    >{{ $t("pricing.comparison.headers.family") }}</TableHead
                                 >
                                 <TableHead
                                     class="text-center font-semibold text-gray-900 dark:text-white"
-                                    >Pro</TableHead
+                                    >{{ $t("pricing.comparison.headers.pro") }}</TableHead
                                 >
                                 <TableHead
                                     class="text-center font-semibold text-gray-900 dark:text-white"
-                                    >Enterprise</TableHead
+                                    >{{ $t("pricing.comparison.headers.enterprise") }}</TableHead
                                 >
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            <TableRow
-                                v-for="feature in features"
-                                :key="feature.name"
-                                class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                <TableCell
-                                    class="font-medium text-gray-900 dark:text-white"
-                                    >{{ feature.name }}</TableCell
-                                >
+                            <!-- Secure storage -->
+                            <TableRow class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <TableCell class="font-medium text-gray-900 dark:text-white">{{ $t("pricing.comparison.features.secureStorage") }}</TableCell>
                                 <TableCell class="text-center">
-                                    <span
-                                        v-if="feature.plans.free === true"
-                                        class="text-lg text-green-600"
-                                        >✔️</span
-                                    >
-                                    <span
-                                        v-else-if="
-                                            typeof feature.plans.free ===
-                                            'string'
-                                        "
-                                        class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        {{ feature.plans.free }}
-                                    </span>
-                                    <span v-else class="text-lg text-red-500"
-                                        >❌</span
-                                    >
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">1 GB</span>
                                 </TableCell>
-                                <TableCell
-                                    class="bg-purple-50/50 text-center dark:bg-purple-900/10">
-                                    <span
-                                        v-if="feature.plans.family === true"
-                                        class="text-lg text-green-600"
-                                        >✔️</span
-                                    >
-                                    <span
-                                        v-else-if="
-                                            typeof feature.plans.family ===
-                                            'string'
-                                        "
-                                        class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        {{ feature.plans.family }}
-                                    </span>
-                                    <span v-else class="text-lg text-red-500"
-                                        >❌</span
-                                    >
+                                <TableCell class="bg-purple-50/50 text-center dark:bg-purple-900/10">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">500 GB</span>
                                 </TableCell>
                                 <TableCell class="text-center">
-                                    <span
-                                        v-if="feature.plans.pro === true"
-                                        class="text-lg text-green-600"
-                                        >✔️</span
-                                    >
-                                    <span
-                                        v-else-if="
-                                            typeof feature.plans.pro ===
-                                            'string'
-                                        "
-                                        class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        {{ feature.plans.pro }}
-                                    </span>
-                                    <span v-else class="text-lg text-red-500"
-                                        >❌</span
-                                    >
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.unlimited") }}</span>
                                 </TableCell>
                                 <TableCell class="text-center">
-                                    <span
-                                        v-if="feature.plans.enterprise === true"
-                                        class="text-lg text-green-600"
-                                        >✔️</span
-                                    >
-                                    <span
-                                        v-else-if="
-                                            typeof feature.plans.enterprise ===
-                                            'string'
-                                        "
-                                        class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        {{ feature.plans.enterprise }}
-                                    </span>
-                                    <span v-else class="text-lg text-red-500"
-                                        >❌</span
-                                    >
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                            </TableRow>
+                            <!-- File and folder sharing -->
+                            <TableRow class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <TableCell class="font-medium text-gray-900 dark:text-white">{{ $t("pricing.comparison.features.fileSharing") }}</TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-green-600">✔️</span>
+                                </TableCell>
+                                <TableCell class="bg-purple-50/50 text-center dark:bg-purple-900/10">
+                                    <span class="text-lg text-green-600">✔️</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-green-600">✔️</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                            </TableRow>
+                            <!-- Shopping lists & notes -->
+                            <TableRow class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <TableCell class="font-medium text-gray-900 dark:text-white">{{ $t("pricing.comparison.features.shoppingLists") }}</TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.limited") }}</span>
+                                </TableCell>
+                                <TableCell class="bg-purple-50/50 text-center dark:bg-purple-900/10">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.unlimited") }}</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.unlimited") }}</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                            </TableRow>
+                            <!-- Advanced sharing permissions -->
+                            <TableRow class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <TableCell class="font-medium text-gray-900 dark:text-white">{{ $t("pricing.comparison.features.advancedSharing") }}</TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                                <TableCell class="bg-purple-50/50 text-center dark:bg-purple-900/10">
+                                    <span class="text-lg text-green-600">✔️</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-green-600">✔️</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                            </TableRow>
+                            <!-- Cross-device access -->
+                            <TableRow class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <TableCell class="font-medium text-gray-900 dark:text-white">{{ $t("pricing.comparison.features.crossDevice") }}</TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.devices3") }}</span>
+                                </TableCell>
+                                <TableCell class="bg-purple-50/50 text-center dark:bg-purple-900/10">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.devices10") }}</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.unlimited") }}</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                            </TableRow>
+                            <!-- Custom backup schedules -->
+                            <TableRow class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <TableCell class="font-medium text-gray-900 dark:text-white">{{ $t("pricing.comparison.features.customBackup") }}</TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                                <TableCell class="bg-purple-50/50 text-center dark:bg-purple-900/10">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-green-600">✔️</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                            </TableRow>
+                            <!-- Self-hosting -->
+                            <TableRow class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <TableCell class="font-medium text-gray-900 dark:text-white">{{ $t("pricing.comparison.features.selfHosting") }}</TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                                <TableCell class="bg-purple-50/50 text-center dark:bg-purple-900/10">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
+                                </TableCell>
+                            </TableRow>
+                            <!-- Customer support -->
+                            <TableRow class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <TableCell class="font-medium text-gray-900 dark:text-white">{{ $t("pricing.comparison.features.customerSupport") }}</TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.community") }}</span>
+                                </TableCell>
+                                <TableCell class="bg-purple-50/50 text-center dark:bg-purple-900/10">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.email") }}</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $t("pricing.comparison.values.priority") }}</span>
+                                </TableCell>
+                                <TableCell class="text-center">
+                                    <span class="text-lg text-red-500">❌</span>
                                 </TableCell>
                             </TableRow>
                         </TableBody>

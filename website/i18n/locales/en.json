@@ -218,7 +218,7 @@
     "newsletter": {
         "title": "Stay connected with your family",
         "description": "Get family organization tips, product updates, and early access to new features. Join our community of organized families.",
-        "placeholder": "family@example.com",
+        "placeholder": "Enter your email address",
         "cta": "Join the community",
         "features": [
             "Monthly family organization tips and best practices",
