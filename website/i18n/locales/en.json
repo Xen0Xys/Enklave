@@ -1,0 +1,38 @@
+{
+    "nav": {
+        "home": "Home",
+        "features": "Features",
+        "pricing": "Pricing",
+        "newsletter": "Newsletter",
+        "whatsNew": "What's New",
+        "contact": "Contact",
+        "goToApp": "Go to App",
+        "openMenu": "Open navigation menu",
+        "accessApp": "Access Enklave application"
+    },
+    "hero": {
+        "welcome": "Welcome to Enklave",
+        "title": "Collaborative family and couple management software",
+        "description": "Enklave is a collaborative family and couple management software with secure file storage, shopping lists, and organization tools.",
+        "searchPlaceholder": "Search files, notes, or lists..."
+    },
+    "footer": {
+        "copyright": "All rights reserved",
+        "termsOfUse": "Terms of Use",
+        "termsOfSale": "Terms of Sale"
+    },
+    "pages": {
+        "home": {
+            "title": "Enklave - Collaborative family and couple management software",
+            "description": "Enklave is a collaborative family and couple management software with secure file storage, shopping lists, and organization tools."
+        },
+        "about": {
+            "title": "About Enklave",
+            "description": "Learn more about our mission to help families stay organized and connected."
+        }
+    },
+    "language": {
+        "switchTo": "Switch to {lang}",
+        "current": "Current language: {lang}"
+    }
+}

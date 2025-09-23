@@ -1,7 +1,9 @@
 <script setup lang="ts">
+const {locale} = useI18n();
+
 useSeoMeta({
     htmlAttrs: {
-        lang: "en",
+        lang: locale,
     },
     viewport: "width=device-width, initial-scale=1",
     charset: "utf-8",
@@ -23,13 +25,16 @@ useSeoMeta({
     // Open Graph defaults
     ogType: "website",
     ogSiteName: "Enklave",
-    ogLocale: "en_US",
+    ogLocale: () => (locale.value === "fr" ? "fr_FR" : "en_US"),
     // Twitter defaults
     twitterCard: "summary_large_image",
     twitterSite: "@enklave", // Update with actual Twitter handle
 });
 
 useHead({
+    htmlAttrs: {
+        lang: locale,
+    },
     link: [
         {rel: "icon", type: "image/webp", href: "/icon.webp"},
         {rel: "canonical", href: "https://enklave.cloud"},
@@ -40,7 +45,7 @@ useHead({
 </script>
 
 <template>
-    <Html lang="en">
+    <Html :lang="locale">
         <Head>
             <meta charset="utf-8" />
             <meta

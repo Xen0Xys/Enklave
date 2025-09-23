@@ -1,0 +1,38 @@
+{
+    "nav": {
+        "home": "Accueil",
+        "features": "Fonctionnalités",
+        "pricing": "Tarifs",
+        "newsletter": "Newsletter",
+        "whatsNew": "Nouveautés",
+        "contact": "Contact",
+        "goToApp": "Aller à l'App",
+        "openMenu": "Ouvrir le menu de navigation",
+        "accessApp": "Accéder à l'application Enklave"
+    },
+    "hero": {
+        "welcome": "Bienvenue sur Enklave",
+        "title": "Logiciel collaboratif de gestion familiale et de couple",
+        "description": "Enklave est un logiciel collaboratif de gestion familiale et de couple avec stockage sécurisé de fichiers, listes de courses et outils d'organisation.",
+        "searchPlaceholder": "Rechercher des fichiers, notes ou listes..."
+    },
+    "footer": {
+        "copyright": "Tous droits réservés",
+        "termsOfUse": "Conditions d'utilisation",
+        "termsOfSale": "Conditions de vente"
+    },
+    "pages": {
+        "home": {
+            "title": "Enklave - Logiciel collaboratif de gestion familiale et de couple",
+            "description": "Enklave est un logiciel collaboratif de gestion familiale et de couple avec stockage sécurisé de fichiers, listes de courses et outils d'organisation."
+        },
+        "about": {
+            "title": "À propos d'Enklave",
+            "description": "Découvrez notre mission d'aider les familles à rester organisées et connectées."
+        }
+    },
+    "language": {
+        "switchTo": "Passer en {lang}",
+        "current": "Langue actuelle : {lang}"
+    }
+}

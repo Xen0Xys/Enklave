@@ -11,6 +11,7 @@ export default defineNuxtConfig({
         "@nuxtjs/google-fonts",
         "@nuxtjs/seo",
         "@nuxt/content",
+        "@nuxtjs/i18n",
     ],
     css: ["./app/assets/css/tailwind.css"],
     vite: {
@@ -89,6 +90,35 @@ export default defineNuxtConfig({
         public: {
             apiBase:
                 process.env.NUXT_PUBLIC_API_BASE || "https://api.enklave.cloud",
+        },
+    },
+    i18n: {
+        locales: [
+            {
+                code: "en",
+                language: "en-US",
+                name: "English",
+                file: "en.json",
+            },
+            {
+                code: "fr",
+                language: "fr-FR",
+                name: "Français",
+                file: "fr.json",
+            },
+        ],
+        defaultLocale: "en",
+        strategy: "prefix_except_default",
+        detectBrowserLanguage: {
+            useCookie: true,
+            cookieKey: "i18n_redirected",
+            redirectOn: "root",
+            alwaysRedirect: false,
+            fallbackLocale: "en",
+        },
+        lazy: true,
+        compilation: {
+            strictMessage: false,
         },
     },
 });
